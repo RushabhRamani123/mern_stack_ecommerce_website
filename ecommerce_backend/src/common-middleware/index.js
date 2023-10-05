@@ -22,7 +22,7 @@ exports.userMiddleware = (req, res, next) => {
   if (!user) {
     return res.status(403).json({ message: "User only: Access Denied" });
   }
-  res.status(200).json({ user: req.user });
+  next();
 };
 
 exports.adminMiddleware = (req, res, next) => {

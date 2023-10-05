@@ -9,6 +9,8 @@ const adminRoutes = require("./routes/admin/auth");
 const categoryRoutes = require("./routes/category");
 // routes for the product
 const productRoutes = require("./routes/product");
+// routes for the cart
+const cartRoutes = require("./routes/cart");
 // environment variables or constants
 env.config();
 //database connection
@@ -32,6 +34,7 @@ app.use("/api", productRoutes);
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
+app.use("/api", cartRoutes);
 //listening to the port
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
