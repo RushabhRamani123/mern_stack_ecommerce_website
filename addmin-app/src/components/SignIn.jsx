@@ -1,9 +1,22 @@
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
+import { login } from '../actions/auth';
+import { useDispatch } from 'react-redux';
 function SignIn() {
+  const dispatch = useDispatch();
   const containerVariants = {
     hidden: { opacity: 0, x: +20 },
     visible: { opacity: 1, x: 0 },
   };
+  const userLogin = (e) => {
+    alert("You have successfully logged in")
+    e.preventDefault();
+    const user = {
+      email: "a@a.com",
+      password: "123456",
+    }
+    dispatch(login(user));
+    
+  }
   return (
     <div className='mt-11'>
     <div className='container d-flex justify-content-center align-items-center vh-100'>
@@ -21,7 +34,7 @@ function SignIn() {
         <label htmlFor="password">Password</label>
         <input type="password" id="password" placeholder="Enter your password" />
       </div>
-      <button type="submit" className="btn-primary">Sign Up</button>
+      <button type="submit" onClick={userLogin} className="btn-primary">Sign Up</button>
     </motion.form>
   </div>
   </div>
