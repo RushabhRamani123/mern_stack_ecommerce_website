@@ -15,6 +15,8 @@ const cartRoutes = require("./routes/cart");
 env.config();
 //database connection
 const mongoose = require("mongoose");
+// cors
+const cors = require("cors");
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.33mtcp3.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`,
@@ -29,6 +31,7 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+app.use(cors());
 app.use(express.json());
 app.use("/api", productRoutes);
 app.use("/api", userRoutes);

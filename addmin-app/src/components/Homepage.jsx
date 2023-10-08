@@ -1,8 +1,8 @@
-function Homepage() {
+const Homepage = () => {
   return (
-    <div >
-        <h1>Welcome to Admin</h1> 
-    </div>
+    <>
+      <h1 style={{ textAlign: 'center', fontWeight: 'bold' , fontSize: '50px' }}>Homepage</h1>
+    </>
   );
 }
 

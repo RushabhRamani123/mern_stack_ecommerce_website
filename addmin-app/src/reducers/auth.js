@@ -1,18 +1,34 @@
 import { authConst } from "../actions/constants";
 const initState = {
-  name: "Rushabh",
+  token: null,
+  user: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    picture: "",
+  },
+  authenticate: false,
+  authenticating: false,
 };
 
 export default (state = initState, action) => {
-  console.log(action);
   switch (action.type) {
-    case authConst.LOGIN:
+    case authConst.LOGIN_REQUEST:
       state = {
         ...state,
-        ...action.payload,
+        authenticating: true,
       };
       break;
+    case authConst.LOGIN_SUCCESS:
+      state = {
+        ...state,
+        authenticate: true,
+        user: action.payload.user,
+        token: action.payload.token,
+      };
   }
-  console.log(state);
+  if (action.type === authConst.LOGIN_SUCCESS) {
+    console.log(state);
+  }
   return state;
 };

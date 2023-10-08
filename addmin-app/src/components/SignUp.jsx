@@ -6,8 +6,10 @@ function SignUp() {
     visible: { opacity: 1, x: 0 },
   };
   return (
-    <div className='mt-11' >
-      <div className='container d-flex justify-content-center align-items-center vh-100'>
+    <>
+     
+     <div className='mt-11' >
+      <div className='container d-flex justify-content-center align-items-center vh-100' style={{ height: "75vh", width: "30%" }}>
         <motion.form className="signup-form"
         initial='hidden'
         animate='visible'
@@ -33,7 +35,8 @@ function SignUp() {
         <button type="submit" className="btn-primary">Sign Up</button>
       </motion.form>
     </div>
-    </div>
+      </div>
+    </>
   );
 }
 
