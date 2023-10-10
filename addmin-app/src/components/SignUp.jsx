@@ -1,10 +1,18 @@
 import './SignUp.css';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router';
+
 function SignUp() {
+
   const containerVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 },
   };
+  const auth = useSelector((state) => state.auth);
+  if(!auth.authenticate) {
+    <Navigate to="/" replace />
+  }
   return (
     <>
      

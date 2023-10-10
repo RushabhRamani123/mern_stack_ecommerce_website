@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { login, isuserLoggedIn } from '../actions/auth';
+import { login } from '../actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState , useEffect } from 'react';
+import { useState } from 'react';
 import { Navigate } from 'react-router';
 
 // import { useEffect } from 'react';
@@ -11,11 +11,7 @@ function SignIn() {
   const [password, setPassword] = useState("123456");
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  useEffect(() => {
-    if(!auth.authenticate) {
-      dispatch(isuserLoggedIn());
-    }
-  },[auth.authenticate]);
+
   const containerVariants = {
     hidden: { opacity: 0, x: +20 },
     visible: { opacity: 1, x: 0 },

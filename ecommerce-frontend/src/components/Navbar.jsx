@@ -1,13 +1,17 @@
-import logo from '../assets/logo.svg'
-import { BiSearchAlt } from 'react-icons/bi'
-import { AiOutlineHeart , AiOutlineAppstore} from 'react-icons/ai'
-import { PiShoppingCartBold } from 'react-icons/pi'
-import {TfiHeadphoneAlt} from 'react-icons/tfi'
+import logo from '../assets/logo.svg';
+import { motion } from 'framer-motion'
+import { BiSearchAlt } from 'react-icons/bi';
+import { AiOutlineHeart, AiOutlineAppstore } from 'react-icons/ai';
+import { PiShoppingCartBold } from 'react-icons/pi';
+import { TfiHeadphoneAlt } from 'react-icons/tfi';
 import { useRef } from 'react';
 import { useState } from 'react';
-import { PiDressThin } from 'react-icons/pi'
-import { PiTShirtThin } from 'react-icons/pi'
-import {IoIosPhonePortrait} from 'react-icons/io'
+import { PiDressThin, PiTShirtThin, PiTelevisionSimple } from 'react-icons/pi';
+import { IoIosPhonePortrait } from 'react-icons/io';
+import { GiWoodenChair, GiRunningShoe } from 'react-icons/gi';
+import { RiBearSmileLine } from 'react-icons/ri';
+import { BsLaptop } from 'react-icons/bs';
+
 const Navbar = () => {
   const [clickCategories, setClickCategories] = useState(false);
   const Margin = {
@@ -46,11 +50,13 @@ const Navbar = () => {
             <AiOutlineAppstore onClick={() => setClickCategories(!clickCategories)} style={{ fontSize: '1.5rem', color: 'grey' }} />
             <h3 style={{ fontSize: '1.5rem', margin: '0px' }}>Browse Categories</h3>
           </div>
-        <div style={{ display: 'flex',gap: '1rem' }}>
-        <h3>Categories</h3>
-        <h3>Brands</h3>
-        <h3>Price</h3>
-        <h3>Rating</h3>
+        <div style={{ display: 'flex',gap: '2rem' }}>
+        <h3>Home</h3>
+        <h3>About</h3>
+        <h3>Shop</h3>
+              <h3>Mega menu </h3>
+              <h3>Blog</h3>
+              <h3>Contact</h3>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <TfiHeadphoneAlt style={{ fontSize: '1.5rem', color: 'grey' }} />
@@ -61,25 +67,48 @@ const Navbar = () => {
           </div>
         </div>
         <div style={{width: '100%',border: '0.5px solid #e8ebe9'}}></div>
-        {clickCategories && <div style={{ height: '50vh', width: '15%', borderLeft: '1px solid #e8ebe9', borderRight: '1px solid #e8ebe9', borderBottom: '1px solid #e8ebe9', backgroundColor: 'white',zIndex: '1000', position: 'absolute' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', padding: '5px' }}>
+          {clickCategories && <motion.div style={{ height: '50vh', width: '15%', borderLeft: '1px solid #e8ebe9', borderRight: '1px solid #e8ebe9', borderBottom: '1px solid #e8ebe9', backgroundColor: 'white', zIndex: '1000', position: 'absolute' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' , padding: '1.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <PiDressThin style={{ fontSize: '1.5rem', color: 'grey' }} />
+            <PiDressThin style={{ fontSize: '1.5rem', color: 'grey' }} />
             <h4 style={Margin}>Womens Clothes</h4>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-             <PiTShirtThin style={{ fontSize: '1.5rem', color: 'grey' }} />
+            <PiTShirtThin style={{ fontSize: '1.5rem', color: 'grey' }} />
             <h4  style={Margin}>Mens Clothes</h4>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <IoIosPhonePortrait style={{ fontSize: '1.5rem', color: 'grey' }} />
+            <IoIosPhonePortrait style={{ fontSize: '1.5rem', color: 'grey' }} />
             <h4 style={Margin}>Cellphones</h4>
-
-           </div>
-            <h4 style={Margin}>Shoes</h4>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <PiTelevisionSimple style={{ fontSize: '1.5rem', color: 'grey' }} />
+            <h4 style={Margin}>Tv & Appliances</h4>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <GiWoodenChair style={{ fontSize: '1.5rem', color: 'grey' }} />
+            <h4 style={Margin}>Home & Furniture</h4>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <RiBearSmileLine style={{ fontSize: '1.5rem', color: 'grey' }} />
             <h4 style={Margin}>Mother & Toys</h4>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <GiRunningShoe style={{ fontSize: '1.5rem', color: 'grey' }} />
+            <h4 style={Margin}>Shoes</h4>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <BsLaptop style={{ fontSize: '1.5rem', color: 'grey' }} />
+            <h4 style={Margin}>Computers</h4>
+            </div>
+            
         </div>
-        </div>}
+        </motion.div>}
    </div>
     </div>
     </>
