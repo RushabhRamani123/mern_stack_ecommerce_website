@@ -11,6 +11,8 @@ import { IoIosPhonePortrait } from 'react-icons/io';
 import { GiWoodenChair, GiRunningShoe } from 'react-icons/gi';
 import { RiBearSmileLine } from 'react-icons/ri';
 import { BsLaptop } from 'react-icons/bs';
+import { FcShop } from 'react-icons/fc';
+import {CgProfile} from 'react-icons/cg'
 
 const Navbar = () => {
   const [clickCategories, setClickCategories] = useState(false);
@@ -37,7 +39,15 @@ const Navbar = () => {
         <div style={{position: 'relative'}}>
         <BiSearchAlt onClick={handleSearch} style={{ position: 'absolute',paddingRight: '0.5rem', top: '50%', color: 'grey' , left: '0.5rem', transform: 'translateY(-50%)', fontSize: '1.5em' }}/>
         <input type="text" ref={inputRef} placeholder="Search the products..."  style={{ width:"40em", padding: '1rem 3rem', borderRadius: '0.5rem', border: '1px solid #e8ebe9',fontSize: '1rem', outline: 'none' }}/>
-        </div>
+          </div>
+          <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+            <FcShop style={{ fontSize: '2rem' }} />
+            <h3>Become Seller</h3>
+          </div>
+
+          <div>
+            <CgProfile style={{ fontSize: '2rem', paddingTop: '0.75rem', color: 'grey' }} />
+          </div>
         <div style={{padding: '0.75rem',display: 'flex', gap: '1em'}}>
           <AiOutlineHeart style={{ fontSize: '2rem' }} />
           <PiShoppingCartBold style={{ fontSize: '2rem' }} />  
@@ -71,7 +81,7 @@ const Navbar = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 1 }}
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' , padding: '1.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -106,7 +116,6 @@ const Navbar = () => {
             <BsLaptop style={{ fontSize: '1.5rem', color: 'grey' }} />
             <h4 style={Margin}>Computers</h4>
             </div>
-            
         </div>
         </motion.div>}
    </div>
