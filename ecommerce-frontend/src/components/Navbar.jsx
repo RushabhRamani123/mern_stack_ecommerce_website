@@ -16,6 +16,7 @@ import {CgProfile} from 'react-icons/cg'
 
 const Navbar = () => {
   const [clickCategories, setClickCategories] = useState(false);
+  const [loginconfirm, setLoginconfirm] = useState(true);
   const Margin = {
     color: '#5B6270',
     fontSize: '1rem',
@@ -37,7 +38,7 @@ const Navbar = () => {
         <img src={logo} alt="logo" style={{ height: '2em' }} />
         </div>
         <div style={{position: 'relative'}}>
-        <BiSearchAlt onClick={handleSearch} style={{ position: 'absolute',paddingRight: '0.5rem', top: '50%', color: 'grey' , left: '0.5rem', transform: 'translateY(-50%)', fontSize: '1.5em' }}/>
+        <BiSearchAlt onClick={handleSearch} style={{ position: 'absolute',paddingRight: '0.5rem', top: '40%', color: 'grey' , left: '0.5rem', transform: 'translateY(-50%)', fontSize: '1.5em' }}/>
         <input type="text" ref={inputRef} placeholder="Search the products..."  style={{ width:"40em", padding: '1rem 3rem', borderRadius: '0.5rem', border: '1px solid #e8ebe9',fontSize: '1rem', outline: 'none' }}/>
           </div>
           <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
@@ -45,15 +46,22 @@ const Navbar = () => {
             <h3>Become Seller</h3>
           </div>
 
-          <div>
-            <CgProfile style={{ fontSize: '2rem', paddingTop: '0.75rem', color: 'grey' }} />
-          </div>
+          {
+            loginconfirm ? (
+              <div onClick={() => setLoginconfirm(false)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem',color: 'green' }}>Login</div>
+             
+            ) : (
+              <div>
+              <CgProfile style={{ fontSize: '2rem', paddingTop: '0.75rem', color: 'grey' }} />
+            </div>
+            )
+          }
         <div style={{padding: '0.75rem',display: 'flex', gap: '1em'}}>
           <AiOutlineHeart style={{ fontSize: '2rem' }} />
           <PiShoppingCartBold style={{ fontSize: '2rem' }} />  
         </div>
       </div>
-      <div style={{padding:'0rem 2rem' }}>
+      <div className="category-section lg:hidden" style={{padding:'0rem 2rem' }}>
       <div style={{width: '100%',border: '0.5px solid #e8ebe9'}}></div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{  display: 'flex',alignContent: 'center'}}>
