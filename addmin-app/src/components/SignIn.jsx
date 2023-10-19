@@ -3,7 +3,7 @@ import { login } from '../actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Navigate } from 'react-router';
-
+import Navbar from './Navbar';
 // import { useEffect } from 'react';
 
 function SignIn() {
@@ -33,7 +33,7 @@ function SignIn() {
   return (
 
     <>
-    
+    <Navbar />
      <div className='container mt-11 d-flex justify-content-center align-items-center vh-200' style={{ height: "50vh", width: "30%" }}>
          <motion.form className="signup-form"
            initial='hidden'

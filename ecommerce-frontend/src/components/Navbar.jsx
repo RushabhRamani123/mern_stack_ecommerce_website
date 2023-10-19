@@ -43,15 +43,15 @@ const Navbar = () => {
           </div>
           <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
             <FcShop style={{ fontSize: '2rem' }} />
-            <h3>Become Seller</h3>
+            <h3 onClick={() => window.location.href = 'http://localhost:5174/signin'}
+            style={{cursor:'pointer'}}>Become Seller</h3>
           </div>
 
           {
             loginconfirm ? (
-              <div onClick={() => setLoginconfirm(false)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem',color: 'green' }}>Login</div>
-             
-            ) : (
-              <div>
+              <div onClick={() => setLoginconfirm(false)} style={{ paddingTop: '1.35rem', color: 'green', }}>Login</div>)
+              :
+              (<div>
               <CgProfile style={{ fontSize: '2rem', paddingTop: '0.75rem', color: 'grey' }} />
             </div>
             )

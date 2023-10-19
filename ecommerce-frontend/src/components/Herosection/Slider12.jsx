@@ -24,7 +24,7 @@ export default class AutoPlayMethods extends Component {
 
         <Slider {...settings}>
           <div style={{ position: 'relative' }}>
-            <img src={slider1} alt="slider" style={{ width: '145vh', height: '80vh', borderRadius: '0.75rem' }} />
+            <img src={slider1} alt="slider" style={{ width: '145vh', height: '85vh', borderRadius: '0.75rem' }} />
             <div>
               <h4 style={{ color: '#5B6270', position: 'absolute', top: '8rem', left: '5rem', fontSize: '1.25rem' }}>Tech Promotions</h4>
               <h1 style={{ position: 'absolute', top: '10rem', left: '5rem', fontSize: '3rem' }}>Tech Trending<br />
@@ -35,7 +35,7 @@ export default class AutoPlayMethods extends Component {
             </div>
           </div>
           <div>
-            <img src={slider} alt="slider" style={{ width: '145vh', height: '80vh', borderRadius: '0.75rem' }} />
+            <img src={slider} alt="slider" style={{ width: '145vh', height: '85vh', borderRadius: '0.75rem' }} />
             <div>
               <h4 style={{ color: '#5B6270', position: 'absolute', top: '8rem', left: '5rem', fontSize: '1.25rem' }}>Trade-In Promotions</h4>
               <h1 style={{ position: 'absolute', top: '10rem', left: '5rem', fontSize: '3rem' }}>Super Value Discount<br/>
@@ -78,3 +78,8 @@ export default class AutoPlayMethods extends Component {
 // }
 
 // export default Slider
+// this is the css for the slider image
+//width: 62vh;
+// height: 40vh;
+// border-radius: 2rem;
+// }

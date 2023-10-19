@@ -2,7 +2,7 @@ import './SignUp.css';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
-
+import Navbar from './Navbar';
 function SignUp() {
 
   const containerVariants = {
@@ -15,7 +15,7 @@ function SignUp() {
   }
   return (
     <>
-     
+     <Navbar />
      <div className='mt-11' >
       <div className='container d-flex justify-content-center align-items-center vh-100' style={{ height: "75vh", width: "30%" }}>
         <motion.form className="signup-form"
