@@ -1,9 +1,10 @@
 import axios from "../helpers/axios";
-import { authConst } from "./constants";
+import { authConstants } from "./constants";
+//authConstantsants
 export const login = (user) => {
   return async (dispatch) => {
     dispatch({
-      type: authConst.LOGIN_REQUEST,
+      type: authConstants.LOGIN_REQUEST,
     });
     const res = await axios.post("/admin/signin", {
       email: user.email,
@@ -14,19 +15,21 @@ export const login = (user) => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
       dispatch({
-        type: authConst.LOGIN_SUCCESS,
+        type: authConstants.LOGIN_SUCCESS,
         payload: {
           token,
           user,
         },
       });
     } else {
-      dispatch({
-        type: authConst.LOGIN_FAILURE,
-        payload: {
-          error: res.data.error,
-        },
-      });
+      if (res.status === 400) {
+        dispatch({
+          type: authConstants.LOGIN_FAILURE,
+          payload: {
+            error: res.data.error,
+          },
+        });
+      }
     }
   };
 };
@@ -36,7 +39,7 @@ export const isuserLoggedIn = () => {
     if (token) {
       const user = JSON.parse(localStorage.getItem("user"));
       dispatch({
-        type: authConst.LOGIN_SUCCESS,
+        type: authConstants.LOGIN_SUCCESS,
         payload: {
           token,
           user,
@@ -44,7 +47,7 @@ export const isuserLoggedIn = () => {
       });
     } else {
       dispatch({
-        type: authConst.LOGIN_FAILURE,
+        type: authConstants.LOGIN_FAILURE,
         payload: {
           error: { error: "Please login first" },
         },

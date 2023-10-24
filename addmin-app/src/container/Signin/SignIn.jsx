@@ -1,11 +1,7 @@
 import { motion } from 'framer-motion';
-import { login } from '../actions/auth';
+import { login } from '../../actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { Navigate } from 'react-router';
-import Navbar from './Navbar';
-// import { useEffect } from 'react';
-
 function SignIn() {
   const [email, setEmail] = useState("a@a.com");
   const [password, setPassword] = useState("123456");
@@ -19,7 +15,6 @@ function SignIn() {
   
   const userLogin = (e) => {
     e.preventDefault();
-    alert("You have successfully logged in")
     const user = {
       email: email,
       password: password ,
@@ -27,14 +22,13 @@ function SignIn() {
     dispatch(login(user));
   }
   if (auth.authenticate) {
-    return <Navigate to="/" replace />;
+    return (window.location.href = "/");
   }
-  // 
+
   return (
 
     <>
-    <Navbar />
-     <div className='container mt-11 d-flex justify-content-center align-items-center vh-200' style={{ height: "50vh", width: "30%" }}>
+     <div className='container mt-11 d-flex justify-content-center align-items-center vh-200' style={{ height: "50vh",marginTop: '5srem', width: "30%" }}>
          <motion.form className="signup-form"
            initial='hidden'
            animate='visible'
@@ -49,7 +43,7 @@ function SignIn() {
          <label htmlFor="password">Password</label>
          <input type="password" id="password" placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
        </div>
-       <button type="submit" onClick={userLogin} className="btn-primary">Sign Up</button>
+       <button type="submit" onClick={userLogin} className="btn-primary">Sign In</button>
      </motion.form>
    </div>
   </>
