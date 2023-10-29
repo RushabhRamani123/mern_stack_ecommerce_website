@@ -1,34 +1,36 @@
 import { categoryConstansts } from "../actions/constants";
-const initState = {
+
+const initialState = {
   categories: [],
   loading: false,
   error: null,
 };
 
-export default (state = initState, action) => {
+const categoryReducer = (state = initialState, action) => {
   switch (action.type) {
     case categoryConstansts.GET_ALL_CATEGORIES_REQUEST:
-      state = {
+      return {
         ...state,
         loading: true,
+        error: null,
       };
-      break;
     case categoryConstansts.GET_ALL_CATEGORIES_SUCCESS:
-      state = {
+      console.log("Action received:", action.type);
+      console.log("Payload:", action.payload);
+      return {
         ...state,
         categories: action.payload.categories,
         loading: false,
       };
-      break;
     case categoryConstansts.GET_ALL_CATEGORIES_FAILURE:
-      state = {
+      return {
         ...state,
-        error: action.payload.error,
         loading: false,
+        error: action.payload.error,
       };
-      break;
     default:
-      break;
+      return state;
   }
-  return state;
 };
+
+export default categoryReducer;

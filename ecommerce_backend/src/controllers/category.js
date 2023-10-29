@@ -10,41 +10,46 @@ exports.addCategory = async (req, res) => {
   if (req.body.parentId) {
     category.parentId = req.body.parentId;
   }
-
-  try {
-    const newCategory = new Category(category);
-    const savedCategory = await newCategory.save();
-    res.status(200).json(savedCategory);
-  } catch (error) {
-    res.status(400).json({ message: "Something went wrong" });
+  if (req.file) {
+    category.categoryImage = "/public/" + req.file.filename;
   }
+  const cat = new Category(category);
+  cat.save((error, category) => {
+    if (error) return res.status(400).json({ error });
+    if (category) {
+      return res.status(201).json({ category });
+    }
+  });
 };
-//Getting the categories(recursive function)
-const getcategoryList = (categories, parentId) => {
+
+function createCategories(categories, parentId = null) {
   const categoryList = [];
   let category;
-  if (parentId === null) {
-    category = categories.filter((cat) => cat.parentId == null);
+  if (parentId == null) {
+    category = categories.filter((cat) => cat.parentId == undefined);
   } else {
     category = categories.filter((cat) => cat.parentId == parentId);
   }
+
   for (let cate of category) {
     categoryList.push({
       _id: cate._id,
       name: cate.name,
       slug: cate.slug,
       parentId: cate.parentId,
+      type: cate.type,
+      children: createCategories(categories, cate._id),
     });
-    categoryList.push(getcategoryList(categories, cate._id));
   }
   return categoryList;
-};
+}
+
 exports.getCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
-    const categoryList = getcategoryList(categories);
-    res.status(200).json(categoryList);
+    const categories = await Category.find({});
+    const categoryList = createCategories(categories);
+    res.status(200).json({ categoryList });
   } catch (error) {
-    res.status(400).json({ message: "Something went wrong" });
+    res.status(400).json({ error: error.message });
   }
 };

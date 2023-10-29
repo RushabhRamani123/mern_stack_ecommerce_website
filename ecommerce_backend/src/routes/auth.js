@@ -10,8 +10,8 @@ const {
 
 // signup route
 router.post("/signup", validate, isResultValid, signup);
-
 // signin route
 router.post("/signin", validateSigninRequest, isResultValid, signin);
+//signout route
 
 module.exports = router;

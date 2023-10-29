@@ -13,7 +13,7 @@ function Navbar() {
           {!auth.authenticate ?(
             <>
               <Link to="/signin" className="text-white hover:text-blue-500 font-bold py-2 px-4">Sign In</Link>
-              <Link to="/signup" className="bg-blue-500 shadow-sm hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Sign Up</Link>
+              <Link to="/signup" className=" shadow-sm hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md" style={{ backgroundColor: '#36ff57'}}>Sign Up</Link>
             </>
           ) : (<>
              

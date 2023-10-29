@@ -1,12 +1,12 @@
 import './SignUp.css';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router';
-// import { signup } from '../../assets';
+import { signup } from '../../actions/user';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {  Navigate } from 'react-router-dom';
 function SignUp() {
+  const user = useSelector((state) => state.user);
   const [email, setEmail] = useState("a@a.com");
   const [password, setPassword] = useState("123456");
   const [firstName, setFirstName] = useState("a");
@@ -16,7 +16,7 @@ function SignUp() {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 },
   };
-  const auth = useSelector((state) => state.auth);
+  
   
   const userSignUp = (e) => {
     e.preventDefault();
@@ -26,11 +26,11 @@ function SignUp() {
       email: email,
       password: password,
     }
-    // dispatch(signup(user));
+    dispatch(signup(user));
   }
   
-  if (auth.authenticate) {
-    return (<Link to="/" replace /> && window.location.reload());
+  if (user.message !== null) {
+    return (<Navigate to="/sigin" replace /> && window.location.reload());
   }
   return (
     <>
