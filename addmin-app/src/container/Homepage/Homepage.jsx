@@ -64,7 +64,7 @@ const App = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-       <Layout style={{ minHeight: '80vh' }}>
+       <Layout style={{ minHeight: '75vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>
         <div className="demo-logo-vertical" />
         <Menu theme="dark" defaultSelectedKeys={['/']} mode="inline" items={items} onClick={(e) => handleNavigate(e.key)} />

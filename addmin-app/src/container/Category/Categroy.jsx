@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { addCategory, getAllCategory } from "../../actions/category";
+import { getAllCategory } from "../../actions/category";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { Modal } from "antd";
@@ -17,10 +17,14 @@ const Category = () => {
     const form = new FormData();
     form.append("name", CategoryName);
     form.append("parentId", parentCategoryId);
-    // form.append("categoryImage", categoryImage);
-    dispatch(addCategory(form));
+    form.append("categoryImage", categoryImage);
+    // dispatch(addCategory(form));
+logFormData(form);
   };
-
+  
+const logFormData = (form) => {
+  console.log("This is the form data", form);
+};
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -48,9 +52,10 @@ const Category = () => {
         >
           {category.categories[i].name}
           <ul style={{ paddingLeft: "20px" }}>
-           {(category.categories[i].children && category.categories[i].children.length > 0)
-             ? renderChildCategories(category.categories[i].children)
-             : null}
+            {category.categories[i].children &&
+            category.categories[i].children.length > 0
+              ? renderChildCategories(category.categories[i].children)
+              : null}
           </ul>
         </li>
       );
@@ -64,13 +69,12 @@ const Category = () => {
 
     for (let i = 0; i < children.length; i++) {
       childCategories.push(
-        <li key={children[i].id}
-        >
+        <li key={children[i].id}>
           {children[i].name}
           <ul style={{ paddingLeft: "20px" }}>
-           {children[i].children && children[i].children.length > 0
-             ? renderChildCategories(children[i].children)
-             : null}
+            {children[i].children && children[i].children.length > 0
+              ? renderChildCategories(children[i].children)
+              : null}
           </ul>
         </li>
       );
@@ -87,42 +91,63 @@ const Category = () => {
           key={category.categories[i].id}
           style={{ cursor: "pointer", padding: "10px" }}
         >
-          {category.categories[i].name} 
+          {category.categories[i].name}
         </option>
       );
-      if (category.categories[i].children.length > 0)
-      {
+      if (category.categories[i].children.length > 0) {
         myCategories.push(
           <option style={{ paddingLeft: "20px" }}>
-          {childCategories(category.categories[i].children)}
-        </option>
+            {childCategories(category.categories[i].children)}
+          </option>
         );
-        }
-   
+      }
     }
 
     return myCategories;
   };
 
- const childCategories = (children) => {
-   let childOptions = [];
- 
-   for (let i = 0; i < children.length; i++) {
-     childOptions.push(<option key={children[i].id}>{children[i].name}</option>);
- // this is the amazing case where you are passing the children array with its previous data 
-     if (children[i].children && children[i].children.length > 0) {
-       childOptions.push(...childCategories(children[i].children));
-     }
-   }
- 
-   return childOptions;
- };
+  const childCategories = (children) => {
+    let childOptions = [];
+
+    for (let i = 0; i < children.length; i++) {
+      childOptions.push(
+        <option key={children[i].id}>{children[i].name}</option>
+      );
+      // this is the amazing case where you are passing the children array with its previous data
+      if (children[i].children && children[i].children.length > 0) {
+        childOptions.push(...childCategories(children[i].children));
+      }
+    }
+
+    return childOptions;
+  };
   const handleCategoryImage = (e) => {
     setcategoryImage(e.target.files[0]);
+    // console.log(categoryImage);
   };
+  const handleaddCategory = (e) => {
+    e.preventDefault();
+    setCategoryName(e.target.value);
+    // console.log(CategoryName);
+  }
   const handelparentcategoryId = (e) => {
     setparentCategoryId(e.target.value);
+    // console.log(parentCategoryId);
   };
+  useEffect(() => {
+    console.log(categoryImage);
+}, [categoryImage]);
+
+useEffect(() => {
+    console.log(CategoryName);
+}, [CategoryName]);
+
+useEffect(() => {
+    console.log(parentCategoryId);
+}, [parentCategoryId]);
+const handleOkWithLogging = () => {
+  handleOk();
+};
   return (
     <>
       <div>
@@ -164,16 +189,16 @@ const Category = () => {
         okText="SaveChanges "
         title="Add Category"
         open={isModalOpen}
-        onOk={handleOk}
+        onOk={handleOkWithLogging}
         onCancel={handleCancel}
       >
         <input
           type="text"
           placeholder="Category"
-          onChange={(e) => setCategoryName(e.target.value)}
+          onChange={handelparentcategoryId}
         />
         <select
-          onChange={handelparentcategoryId}
+          onChange={handleaddCategory}
           style={{
             padding: "10px",
             borderRadius: "5px",
