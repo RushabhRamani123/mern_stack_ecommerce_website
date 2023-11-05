@@ -20,7 +20,7 @@ const fileFilter = (req, file, cb) => {
   // Check if the file type is allowed
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/jpg")
   {
-      cb(null, true); // Accept the file
+      cb(null, true); 
   } else {
     cb(new Error("Invalid file type. Only JPEG, PNG, and JPG files are allowed."));
   }
@@ -32,7 +32,7 @@ router.post(
   "/product/create",
   requireSignin,
   adminMiddleware,
-  upload.array("productPicture"),
+  upload.array("productImage"),
   createProduct
 );
 

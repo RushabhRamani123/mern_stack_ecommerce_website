@@ -10,16 +10,14 @@ exports.addCategory = async (req, res) => {
   if (req.body.parentId) {
     category.parentId = req.body.parentId;
   }
-  if (req.file) {
-    category.categoryImage = "/public/" + req.file.filename;
+
+  try {
+    const newCategory = new Category(category);
+    const savedCategory = await newCategory.save();
+    res.status(200).json(savedCategory);
+  } catch (error) {
+    res.status(400).json({ message: "Something went wrong" });
   }
-  const cat = new Category(category);
-  cat.save((error, category) => {
-    if (error) return res.status(400).json({ error });
-    if (category) {
-      return res.status(201).json({ category });
-    }
-  });
 };
 
 function createCategories(categories, parentId = null) {

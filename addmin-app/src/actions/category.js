@@ -15,26 +15,29 @@ export const getAllCategory = () => {
                 payload: { categories: categoryList }
             });
         } else {
-            dispatch({
-                type: categoryConstansts.GET_ALL_CATEGORIES_FAILURE,
-                payload: { error: res.data.error }
-            });
+            dispatch({ type: categoryConstansts.GET_ALL_CATEGORIES_FAILURE, payload: { error: res.data.error } });
         }
     }
 }
 
 export const addCategory = (form) => {
     return async dispatch => {
-        dispatch({ type: categoryConstansts.ADD_NEW_CATEGORY_REQUEST });
+        dispatch({
+            type: categoryConstansts.ADD_NEW_CATEGORY_REQUEST
+
+        });
         try {
-           const res = await axios.post('category/create', form);
-            if (res.status === 201) {
-                console.log(res.data.category);
+            const res = await axios.post('category/create', form, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+           });
+            if (res.status === 200) {
+                console.log(res);
                 dispatch({
                     type: categoryConstansts.ADD_NEW_CATEGORY_SUCCESS,
-                    payload: { category: res.data.category }
+                    payload: { category: res.data}
                 });
-
             } else {
                 dispatch({
                     type: categoryConstansts.ADD_NEW_CATEGORY_FAILURE,

@@ -2,29 +2,30 @@ import { useEffect } from "react";
 import { getAllCategory } from "../../actions/category";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { Modal } from "antd";
+import { addCategory } from "../../actions/category";
+import { Modal , Button } from "antd";
 const Category = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [CategoryName, setCategoryName] = useState("");
   const [parentCategoryId, setparentCategoryId] = useState("");
-  const [categoryImage, setcategoryImage] = useState("");
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
     setIsModalOpen(false);
-    const form = new FormData();
-    form.append("name", CategoryName);
-    form.append("parentId", parentCategoryId);
-    form.append("categoryImage", categoryImage);
-    // dispatch(addCategory(form));
-logFormData(form);
+    const form = {
+      name: CategoryName ,
+      parentId: parentCategoryId,
+      
+   }
+    dispatch(addCategory(form));
+    // setparentCategoryId("");
+    // setCategoryName("");
+
   };
   
-const logFormData = (form) => {
-  console.log("This is the form data", form);
-};
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -82,49 +83,27 @@ const logFormData = (form) => {
 
     return childCategories;
   };
-  const createCategoryList = () => {
-    let myCategories = [];
+const createCategoryList = () => {
+  let myCategories = [];
 
-    for (let i = 0; i < category.categories.length; i++) {
+  const renderCategoryOptions = (categories) => {
+    for (let i = 0; i < categories.length; i++) {
       myCategories.push(
-        <option
-          key={category.categories[i].id}
-          style={{ cursor: "pointer", padding: "10px" }}
-        >
-          {category.categories[i].name}
+        <option key={categories[i].id} value={categories[i]._id}>
+          {categories[i].name}
         </option>
       );
-      if (category.categories[i].children.length > 0) {
-        myCategories.push(
-          <option style={{ paddingLeft: "20px" }}>
-            {childCategories(category.categories[i].children)}
-          </option>
-        );
+
+      if (categories[i].children.length > 0) {
+        renderCategoryOptions(categories[i].children);
       }
     }
-
-    return myCategories;
   };
 
-  const childCategories = (children) => {
-    let childOptions = [];
+  renderCategoryOptions(category.categories);
 
-    for (let i = 0; i < children.length; i++) {
-      childOptions.push(
-        <option key={children[i].id}>{children[i].name}</option>
-      );
-      // this is the amazing case where you are passing the children array with its previous data
-      if (children[i].children && children[i].children.length > 0) {
-        childOptions.push(...childCategories(children[i].children));
-      }
-    }
-
-    return childOptions;
-  };
-  const handleCategoryImage = (e) => {
-    setcategoryImage(e.target.files[0]);
-    // console.log(categoryImage);
-  };
+  return myCategories;
+};
   const handleaddCategory = (e) => {
     e.preventDefault();
     setCategoryName(e.target.value);
@@ -134,10 +113,6 @@ const logFormData = (form) => {
     setparentCategoryId(e.target.value);
     // console.log(parentCategoryId);
   };
-  useEffect(() => {
-    console.log(categoryImage);
-}, [categoryImage]);
-
 useEffect(() => {
     console.log(CategoryName);
 }, [CategoryName]);
@@ -186,19 +161,25 @@ const handleOkWithLogging = () => {
       <Modal
         okButtonProps={{ style: { backgroundColor: "green" } }}
         set
-        okText="SaveChanges "
-        title="Add Category"
+        okText="Save"
+        title={<span style={{ color: "green" , fontWeight: "bold" , fontSize: "20px"}}>Add Category</span>} 
+        cancelText="Cancel"
+        cancelButtonProps={{ style: { backgroundColor: "red"  , color: "white"} }}
         open={isModalOpen}
         onOk={handleOkWithLogging}
         onCancel={handleCancel}
       >
         <input
           type="text"
+          style={{
+            border: "1px solid black",
+          }}
           placeholder="Category"
-          onChange={handelparentcategoryId}
-        />
-        <select
           onChange={handleaddCategory}
+        />
+
+        <select
+          onChange={handelparentcategoryId}
           style={{
             padding: "10px",
             borderRadius: "5px",
@@ -207,16 +188,11 @@ const handleOkWithLogging = () => {
             cursor: "pointer",
             width: "100%",
           }}
+          autoFocus={false}
         >
           <option>Select Categories</option>
           {createCategoryList()}
         </select>
-        <input
-          type="file"
-          name="image"
-          style={{ marginTop: "10px", cursor: "pointer", width: "100%" }}
-          onChange={handleCategoryImage}
-        />
       </Modal>
     </>
   );

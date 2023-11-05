@@ -1,11 +1,12 @@
 const Product = require("../models/product");
 const slugify = require("slugify");
+const user = require("../models/user");
 
 
 exports.createProduct = (req, res) => {
   //res.status(200).json( { file: req.files, body: req.body } );
 
-  const { name, price, description, category, quantity, createdBy } = req.body;
+  const { name, price, description, category, quantity } = req.body;
   let productPictures = [];
 
   if (req.files.length > 0) {
@@ -18,17 +19,18 @@ exports.createProduct = (req, res) => {
     name: name,
     slug: slugify(name),
     price,
-    quantity,
     description,
-    productPictures,
     category,
+    quantity,
     createdBy: req.user._id,
+    productPictures,
   });
 
-  product.save((error, product) => {
-    if (error) return res.status(400).json({ error });
-    if (product) {
+  product.save()
+    .then((product) => {
       res.status(201).json({ product, files: req.files });
-    }
-  });
-};
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+}

@@ -1,34 +1,20 @@
 import { useState } from 'react'
-import { Modal } from 'antd'
+import { Modal, Table } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'  
 import {addProduct} from '../../actions/product'
 const Product = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [productPictures, setProductPictures] = useState([]);
-  const [categoryId, setCategoryName] = useState("653c0e47d58054f01b4c8e8c");
-  const dispatch = useDispatch(); 
-
-  const category = useSelector((state) => state.category);
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [name, setName] = useState("");
+const [quantity, setQuantity] = useState("");
+const [price, setPrice] = useState("");
+const [description, setDescription] = useState("");
+const [productImage, setProductPictures] = useState([]);
+const [categoryId, setCategoryName] = useState("653c0e47d58054f01b4c8e8c");
+const dispatch = useDispatch(); 
+const category = useSelector((state) => state.category);
   const showModal = () => {
     setIsModalOpen(true);
   };
-  // name: name,
-  // slug: slugify(name),
-  // price,
-  // description,
-  // quantity,
-  // category,
-//   // productImage,
-  // name
-// price
-// description
-// quantity
-// category
-// productImage
   const handleOk = () => {
     setIsModalOpen(false);
     const form = new FormData();
@@ -38,8 +24,8 @@ const Product = () => {
     form.append("description", description);
     form.append("category", categoryId);
 
-    for (let pic of productPictures) {
-      form.append("productPicture", pic);
+    for (let pic of productImage) {
+      form.append("productImage", pic);
     }
 
     dispatch(addProduct(form))
@@ -47,49 +33,31 @@ const Product = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
-  const handleAddCategory = () => {
+  const handleAddCategory = (e) => {
     setIsModalOpen(true);
+    setCategoryName(e.target.value);
+    console.log(categoryId);
   };
   const createCategoryList = () => {
     let myCategories = [];
-
-    for (let i = 0; i < category.categories.length; i++) {
-      myCategories.push(
-        <option
-          key={category.categories[i].id}
-          style={{ cursor: "pointer", padding: "10px" }}
-          value={category.categories[i].id}
-        >
-          {category.categories[i].name}
-        </option>
-      );
-      if (category.categories[i].children.length > 0) {
+  
+    const renderCategoryOptions = (categories) => {
+      for (let i = 0; i < categories.length; i++) {
         myCategories.push(
-          <option key={category.categories[i].id} style={{ paddingLeft: "20px" }}>
-            {childCategories(category.categories[i].children)}
+          <option key={categories[i].id} value={categories[i]._id}>
+            {categories[i].name}
           </option>
         );
+  
+        if (categories[i].children.length > 0) {
+          renderCategoryOptions(categories[i].children);
+        }
       }
-    }
-
+    };
+  
+    renderCategoryOptions(category.categories);
+  
     return myCategories;
-  };
-
-  const childCategories = (children) => {
-    let childOptions = [];
-
-    for (let i = 0; i < children.length; i++) {
-      childOptions.push(
-        <option key={children[i].id} value={children[i].id}>{children[i].name}</option>
-      );
-      // this is the amazing case where you are passing the children array with its previous data
-      if (children[i].children && children[i].children.length > 0) {
-        childOptions.push(...childCategories(children[i].children));
-      }
-    }
-
-    return childOptions;
   };
   const handleaddCategory = (e) => {
     e.preventDefault();
@@ -98,7 +66,7 @@ const Product = () => {
   }
   const handelProductPicture = (e) => {
     setProductPictures([
-      ...productPictures,
+      ...productImage,
       e.target.files[0]
     ])
   }
@@ -113,6 +81,125 @@ const Product = () => {
   };
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
+  };
+  // table data 
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      filters: [
+        {
+          text: 'Joe',
+          value: 'Joe',
+        },
+        {
+          text: 'Category 1',
+          value: 'Category 1',
+        },
+        {
+          text: 'Category 2',
+          value: 'Category 2',
+        },
+      ],
+      filterMode: 'tree',
+      filterSearch: true,
+      onFilter: (value, record) => record.name.startsWith(value),
+      width: '25%',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      filters: [
+        {
+          text: 'Joe',
+          value: 'Joe',
+        },
+        {
+          text: 'Category 1',
+          value: 'Category 1',
+        },
+        {
+          text: 'Category 2',
+          value: 'Category 2',
+        },
+      ],
+      filterMode: 'tree',
+      filterSearch: true,
+      onFilter: (value, record) => record.name.startsWith(value),
+      width: '15%',
+    },
+    {
+      title: 'Qauntity',
+      dataIndex: 'quantity',
+      filters: [
+        {
+          text: 'Joe',
+          value: 'Joe',
+        },
+        {
+          text: 'Category 1',
+          value: 'Category 1',
+        },
+        {
+          text: 'Category 2',
+          value: 'Category 2',
+        },
+      ],
+      filterMode: 'tree',
+      filterSearch: true,
+      onFilter: (value, record) => record.name.startsWith(value),
+      width: '15%',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      filters: [
+        {
+          text: 'London',
+          value: 'London',
+        },
+        {
+          text: 'New York',
+          value: 'New York',
+        },
+      ],
+      filterMode: 'tree',
+      onFilter: (value, record) => record.address.startsWith(value),
+      filterSearch: true,
+      width: '25%',
+    },
+      {
+        title: 'Category',
+        dataIndex: 'category',
+        filters: [
+          {
+            text: 'London',
+            value: 'London',
+          },
+          {
+            text: 'New York',
+            value: 'New York',
+          },
+        
+        ],
+        filterMode: 'tree',
+        onFilter: (value, record) => record.address.startsWith(value),
+        filterSearch: true,
+        width: '25%',
+    }
+  ];
+  const data = [
+    {
+      key: '1',
+      name: 'Samasung',
+      price: '1000',
+      quantity: '10',
+      description: 'description',
+      category: 'category'
+    }
+  ];
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log('params', pagination, filters, sorter, extra);
   };
   return ( 
     
@@ -219,6 +306,7 @@ const Product = () => {
         />
        
       </Modal>
+      <Table columns={columns} dataSource={data} onChange={onChange} />;
     </>
   )
 }
