@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Modal, Table } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'  
-import {addProduct} from '../../actions/product'
+import { addProduct } from '../../actions/product'
+
 const Product = () => {
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [name, setName] = useState("");
@@ -11,7 +12,8 @@ const [description, setDescription] = useState("");
 const [productImage, setProductPictures] = useState([]);
 const [categoryId, setCategoryName] = useState("653c0e47d58054f01b4c8e8c");
 const dispatch = useDispatch(); 
-const category = useSelector((state) => state.category);
+  const category = useSelector((state) => state.category);
+  const product = useSelector((state) => state.product);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -49,7 +51,7 @@ const category = useSelector((state) => state.category);
           </option>
         );
   
-        if (categories[i].children.length > 0) {
+        if (categories[i].children && categories[i].children.length > 0) {
           renderCategoryOptions(categories[i].children);
         }
       }
@@ -188,16 +190,23 @@ const category = useSelector((state) => state.category);
         width: '25%',
     }
   ];
-  const data = [
-    {
-      key: '1',
-      name: 'Samasung',
-      price: '1000',
-      quantity: '10',
-      description: 'description',
-      category: 'category'
-    }
-  ];
+  const data = [];
+  for (let i = 0; i <(product.products&&product.products.length); i++) {
+    console.log(product.products[i].name);
+    console.log(product.products[i].price);
+    console.log(product.products[i].quantity);
+    console.log(product.products[i].description);
+    console.log(product.products[i].category);
+    data.push({
+      key: i + 1,
+      name: product.products[i].name,
+      price: product.products[i].price,
+      quantity: product.products[i].quantity,
+      description: product.products[i].description,
+      category: product.products[i].category
+    });
+  }
+  console.log(data); 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };

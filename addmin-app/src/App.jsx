@@ -7,6 +7,7 @@ import { isuserLoggedIn } from './actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateRoute from './component/HOC/PrivateRoute.jsx'
 import Navbar from './container/Navbar/Navbar';
+import { intialData } from './actions/intialData.js';
 function App() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -14,7 +15,8 @@ function App() {
     if(!auth.authenticate) {
       dispatch(isuserLoggedIn());
     }
-  },[]);
+  }, []);
+  dispatch( intialData() );
   return (
     <>
       <Navbar/>

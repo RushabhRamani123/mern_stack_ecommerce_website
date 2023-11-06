@@ -94,7 +94,7 @@ const createCategoryList = () => {
         </option>
       );
 
-      if (categories[i].children.length > 0) {
+      if (categories[i].children && categories[i].children.length > 0) {
         renderCategoryOptions(categories[i].children);
       }
     }

@@ -1,5 +1,5 @@
 const express = require("express");
 const router = express.Router();
-router.post("/admin/signup", validate, isResultValid, signup);
+const { initialData } = require("../../controllers/admin/initialData");
+router.post("/admin/intialdata", initialData);
 module.exports = router;
-
