@@ -63,8 +63,8 @@ const dispatch = useDispatch();
   };
   const handleaddCategory = (e) => {
     e.preventDefault();
-    // setCategoryName(e.target.value);
-    // console.log(CategoryName);
+    setCategoryName(e.target.value);
+    console.log(categoryId);
   }
   const handelProductPicture = (e) => {
     setProductPictures([
@@ -191,22 +191,35 @@ const dispatch = useDispatch();
     }
   ];
   const data = [];
-  for (let i = 0; i <(product.products&&product.products.length); i++) {
-    console.log(product.products[i].name);
-    console.log(product.products[i].price);
-    console.log(product.products[i].quantity);
-    console.log(product.products[i].description);
-    console.log(product.products[i].category);
+  for (let i = 0; i < (product.products && product.products.length); i++) {
     data.push({
       key: i + 1,
       name: product.products[i].name,
       price: product.products[i].price,
       quantity: product.products[i].quantity,
       description: product.products[i].description,
-      category: product.products[i].category
+      category: product.products[i].category,
     });
   }
-  console.log(data); 
+  const [pagination, setPagination] = useState('false')
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  // Function to open the modal
+  const handleRowClick = (record) => {
+    setSelectedRow(record);
+    setIsModalVisible(true);
+  };
+
+  // Function to close the modal
+  const handleok = () => {
+    setIsModalVisible(false);
+  };
+
+  // Function to handle cancel (e.g., clicking outside the modal)
+  const handlecancel = () => {
+    setIsModalVisible(false);
+  };
   const onChange = (pagination, filters, sorter, extra) => {
     console.log('params', pagination, filters, sorter, extra);
   };
@@ -315,7 +328,36 @@ const dispatch = useDispatch();
         />
        
       </Modal>
-      <Table columns={columns} dataSource={data} onChange={onChange} />;
+      <Table columns={columns} dataSource={data} onChange={onChange}
+       onRow={(record) => ({
+        onClick: () => handleRowClick(record),
+        })} />;
+        <Modal
+        title="Row Details"
+        open={isModalVisible}
+        onOk={handleok}
+        onCancel={handlecancel}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+        })}
+      >
+        {selectedRow && (
+          <div>
+            <p>Name: {selectedRow.name}</p>
+            <p>Price: {selectedRow.price}</p>
+            <p>Quantity: {selectedRow.quantity}</p>
+            <p>Description: {selectedRow.description}</p>
+            <p>Category: {selectedRow.category}</p>
+            <div>
+              <img
+                src={`http://localhost:2000/${ selectedRow.productPictures && selectedRow.productPictures[0]}`}
+                alt="Product"
+                style={{ width: "200px", height: "200px" }}
+              />
+            </div>
+          </div>
+        )}
+      </Modal>
     </>
   )
 }
