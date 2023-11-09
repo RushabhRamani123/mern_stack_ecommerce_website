@@ -7,11 +7,10 @@ exports.createProduct = (req, res) => {
   //res.status(200).json( { file: req.files, body: req.body } );
 
   const { name, price, description, category, quantity } = req.body;
-  let productPictures = [];
-
+  let productPictures = []; 
   if (req.files.length > 0) {
     productPictures = req.files.map((file) => {
-      return { img: file.location };
+      return { img: file.filename};
     });
   }
 
@@ -23,7 +22,7 @@ exports.createProduct = (req, res) => {
     category,
     quantity,
     createdBy: req.user._id,
-    productPictures,
+    productPictures: productPictures,
   });
 
   product.save()

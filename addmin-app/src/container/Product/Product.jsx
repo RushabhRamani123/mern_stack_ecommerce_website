@@ -190,17 +190,24 @@ const dispatch = useDispatch();
         width: '25%',
     }
   ];
-  const data = [];
-  for (let i = 0; i < (product.products && product.products.length); i++) {
-    data.push({
-      key: i + 1,
-      name: product.products[i].name,
-      price: product.products[i].price,
-      quantity: product.products[i].quantity,
-      description: product.products[i].description,
-      category: product.products[i].category,
-    });
+ const data = [];
+ for (let i = 0; i < (product.products && product.products.length); i++) {
+   const productData = {
+     key: i + 1,
+     name: product.products[i].name,
+     price: product.products[i].price,
+     quantity: product.products[i].quantity,
+     description: product.products[i].description,
+     category: product.products[i].category,
+   };
+ 
+   if (product.products[i].productPictures && product.products[i].productPictures.length > 0) {
+     productData.productPictures = product.products[i].productPictures;
+   }
+ 
+   data.push(productData);
   }
+  console.log(data );
   const [pagination, setPagination] = useState('false')
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -209,14 +216,11 @@ const dispatch = useDispatch();
   const handleRowClick = (record) => {
     setSelectedRow(record);
     setIsModalVisible(true);
+    console.log(record);
   };
-
-  // Function to close the modal
   const handleok = () => {
     setIsModalVisible(false);
   };
-
-  // Function to handle cancel (e.g., clicking outside the modal)
   const handlecancel = () => {
     setIsModalVisible(false);
   };
@@ -343,20 +347,20 @@ const dispatch = useDispatch();
       >
         {selectedRow && (
           <div>
-            <p>Name: {selectedRow.name}</p>
-            <p>Price: {selectedRow.price}</p>
-            <p>Quantity: {selectedRow.quantity}</p>
-            <p>Description: {selectedRow.description}</p>
-            <p>Category: {selectedRow.category}</p>
-            <div>
-              <img
-                src={`http://localhost:2000/${ selectedRow.productPictures && selectedRow.productPictures[0]}`}
-                alt="Product"
-                style={{ width: "200px", height: "200px" }}
-              />
-            </div>
+            <p>Name:{selectedRow.name}</p>
+            <p>Price:{selectedRow.price}</p>
+            <p>Quantity:{selectedRow.quantity}</p>
+            <p>Description:{selectedRow.description}</p>
+            <p>Category:{selectedRow.category}</p>
+            {
+              selectedRow.productPictures && selectedRow.productPictures.map((pic) => {
+                <div>
+               <img src={`http://localhost:2000/public/${pic.img}`} alt="Product" />
+                  </div>
+              })
+           }
           </div>
-        )}
+        )}        
       </Modal>
     </>
   )
