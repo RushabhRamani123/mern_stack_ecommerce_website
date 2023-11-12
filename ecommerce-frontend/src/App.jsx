@@ -1,19 +1,16 @@
-import Navbar from './components/Navbar'
-// import Homepage from './components/Homepage' 
-// import {Routes , Route} from 'react-router-dom'
-import HeroSection from './components/Herosection/HeroSection'
-// import Fade from './components/Herosection/Slider12';
+import Homepage from "./components/Homepage/Homepage";
+import {Routes , Route} from "react-router-dom";
+import ProductsListPage from "./components/ProductsListPage/ProductsListPage";
 function App() {
- 
-
   return (
     <>
-      <Navbar />
-     
-        <HeroSection />
-     
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/:slug" element={<ProductsListPage />} />
+     </Routes>
+   
     </>
-  )
+  );
 }
 
-export default App
+export default App;

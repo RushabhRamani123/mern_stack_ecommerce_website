@@ -3,86 +3,55 @@ import { getAllCategory } from "../../actions/category";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { addCategory } from "../../actions/category";
-import { Modal , Button } from "antd";
+import { Modal } from "antd";
+import CheckboxTree from 'react-checkbox-tree';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+import { IoIosCheckboxOutline } from "react-icons/io";
+import {AiFillCheckSquare} from "react-icons/ai";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 const Category = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [CategoryName, setCategoryName] = useState("");
-  const [parentCategoryId, setparentCategoryId] = useState("");
-  const showModal = () => {
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [CategoryName, setCategoryName] = useState("");
+const [parentCategoryId, setparentCategoryId] = useState("");
+const [checked, setChecked] = useState([]);
+const [expanded, setExpanded] = useState([]);
+const showModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
+};
+const handleOk = () => {
     setIsModalOpen(false);
     const form = {
       name: CategoryName ,
       parentId: parentCategoryId,
-      
    }
     dispatch(addCategory(form));
-    // setparentCategoryId("");
-    // setCategoryName("");
-
-  };
-  
-
-  const handleCancel = () => {
+};
+const handleCancel = () => {
     setIsModalOpen(false);
-  };
-
-  const handleAddCategory = () => {
+};
+const handleAddCategory = () => {
     setIsModalOpen(true);
-  };
-
-  const category = useSelector((state) => state.category);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
+};
+const category = useSelector((state) => state.category);
+const dispatch = useDispatch();
+useEffect(() => {
     console.log("get all category");
     dispatch(getAllCategory());
   }, []);
-
-  const renderCategory = () => {
+const renderCategories = (categories) => {
     let myCategories = [];
-
-    for (let i = 0; i < category.categories.length; i++) {
-      myCategories.push(
-        <li
-          key={category.categories[i].id}
-          style={{ cursor: "pointer", padding: "10px" }}
-        >
-          {category.categories[i].name}
-          <ul style={{ paddingLeft: "20px" }}>
-            {category.categories[i].children &&
-            category.categories[i].children.length > 0
-              ? renderChildCategories(category.categories[i].children)
-              : null}
-          </ul>
-        </li>
-      );
+    for (let category of categories) {
+        myCategories.push(
+            {
+                label: category.name,
+                value: category._id,
+                children: (category.children &&category.children.length > 0) && renderCategories(category.children)
+            }
+        );
     }
-
     return myCategories;
-  };
-
-  const renderChildCategories = (children) => {
-    let childCategories = [];
-
-    for (let i = 0; i < children.length; i++) {
-      childCategories.push(
-        <li key={children[i].id}>
-          {children[i].name}
-          <ul style={{ paddingLeft: "20px" }}>
-            {children[i].children && children[i].children.length > 0
-              ? renderChildCategories(children[i].children)
-              : null}
-          </ul>
-        </li>
-      );
-    }
-
-    return childCategories;
-  };
+}
 const createCategoryList = () => {
   let myCategories = [];
 
@@ -104,28 +73,25 @@ const createCategoryList = () => {
 
   return myCategories;
 };
-  const handleaddCategory = (e) => {
+const handleaddCategory = (e) => {
     e.preventDefault();
     setCategoryName(e.target.value);
-    // console.log(CategoryName);
-  }
-  const handelparentcategoryId = (e) => {
-    setparentCategoryId(e.target.value);
-    // console.log(parentCategoryId);
-  };
+}
+const handelparentcategoryId = (e) => {
+setparentCategoryId(e.target.value);
+};
 useEffect(() => {
     console.log(CategoryName);
 }, [CategoryName]);
-
 useEffect(() => {
     console.log(parentCategoryId);
 }, [parentCategoryId]);
 const handleOkWithLogging = () => {
   handleOk();
 };
-  return (
+return (
     <>
-      <div>
+      <div>``
         <div
           style={{
             display: "flex",
@@ -157,7 +123,17 @@ const handleOkWithLogging = () => {
           </button>
         </div>
       </div>
-      {<ul>{renderCategory(category)}</ul>}
+<CheckboxTree
+nodes={renderCategories(category.categories)}
+checked={checked}
+expanded={expanded}
+onCheck={checked => setChecked(checked)}
+onExpand={expanded => setExpanded(expanded)}
+icons={{check: <AiFillCheckSquare/>,uncheck:<IoIosCheckboxOutline />,halfCheck:<IoIosCheckboxOutline />,expandClose:<MdOutlineArrowForwardIos />,expandOpen:<MdKeyboardArrowDown />}} />
+<div style={{ display: "flex", gap: "10px" , marginTop: "10px" }}>
+<button onClick={() => {alert("Are you sure you want to delete")}} style={{ backgroundColor: "red", color: "white", padding: "10px", borderRadius: "10px" }}>Delete</button>
+<button onClick={() => {alert("Are you sure you want to edit it")}}   style={{ backgroundColor: "green", color: "white", padding: "10px", borderRadius: "10px" }}>Edit</button>
+      </div>
       <Modal
         okButtonProps={{ style: { backgroundColor: "green" } }}
         set
@@ -194,8 +170,7 @@ const handleOkWithLogging = () => {
           {createCategoryList()}
         </select>
       </Modal>
-    </>
-  );
+  </>
+);
 };
-
 export default Category;

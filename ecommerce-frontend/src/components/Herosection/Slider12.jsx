@@ -24,7 +24,7 @@ export default class AutoPlayMethods extends Component {
 
         <Slider {...settings}>
           <div style={{ position: 'relative' }}>
-            <img src={slider1} alt="slider" style={{ width: '145vh', height: '85vh', borderRadius: '0.75rem' }} />
+            <img src={slider1} alt="slider" style={{ width: '145vh', height: '80vh', borderRadius: '0.75rem' }} />
             <div>
               <h4 style={{ color: '#5B6270', position: 'absolute', top: '8rem', left: '5rem', fontSize: '1.25rem' }}>Tech Promotions</h4>
               <h1 style={{ position: 'absolute', top: '10rem', left: '5rem', fontSize: '3rem' }}>Tech Trending<br />
@@ -35,7 +35,7 @@ export default class AutoPlayMethods extends Component {
             </div>
           </div>
           <div>
-            <img src={slider} alt="slider" style={{ width: '145vh', height: '85vh', borderRadius: '0.75rem' }} />
+            <img src={slider} alt="slider" style={{ width: '145vh', height: '80vh', borderRadius: '0.75rem' }} />
             <div>
               <h4 style={{ color: '#5B6270', position: 'absolute', top: '8rem', left: '5rem', fontSize: '1.25rem' }}>Trade-In Promotions</h4>
               <h1 style={{ position: 'absolute', top: '10rem', left: '5rem', fontSize: '3rem' }}>Super Value Discount<br/>
@@ -50,36 +50,3 @@ export default class AutoPlayMethods extends Component {
     );
   }
 }
-// import { useState } from 'react';
-// import slider1 from '../../assets/slider-5.png';
-// import slider from '../../assets/slider-4.png';
-// const Slider = () => {
-//     const [clickCategories, setClickCategories] = useState(false);
-//   return (
-//     <div>
-//         <div className="hero" onClick={() => setClickCategories(!clickCategories)}>
-//   {clickCategories ? (
-//      <div>
-//      <img src={slider} alt="slider" style={{ width: '145vh', height: '80vh', borderRadius: '0.75rem' }} />
-// </div>
-//   ) : (
-//               <div>
-//                 <img src={slider1} alt="slider" style={{ width: '145vh', height: '80vh', borderRadius: '0.75rem' }} />
-//               </div>
-//           )}
-//           <div style={{position:"absolute",display:"flex", flexDirection:"row", justifyContent:"space-between", alignItems:"center",top:"45%", left:"3%", gap:"56rem",}
-//             }>
-//             <div style={{ fontSize: '1rem', color: '#5B6270', backgroundColor: '#edf4f4', padding: '0.5rem 0.5rem', width: '1rem', borderRadius: '50%', Color: 'grey', outline: 'none' }}>&#x1F81C;</div>
-//             <div style={{ fontSize: '1rem', color: '#5B6270', backgroundColor: '#DFEDEC', padding: '0.5rem 0.5rem', width: '1rem', borderRadius: '50%', Color: 'grey', outline: 'none' }}>&#x1F81E;</div>
-//           </div>
-// </div>
-//     </div>
-//   )
-// }
-
-// export default Slider
-// this is the css for the slider image
-//width: 62vh;
-// height: 40vh;
-// border-radius: 2rem;
-// }
