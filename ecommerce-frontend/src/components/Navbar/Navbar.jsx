@@ -137,7 +137,8 @@ const Navbar = () => {
             <FcShop style={{ fontSize: "2rem" }} />
             <h3
               onClick={() =>
-                (window.location.href = "http://localhost:5174/signin")
+              {(window.location.href = "http://localhost:5174/signin");}
+                
               }
               style={{ cursor: "pointer" }}
             >
@@ -152,7 +153,7 @@ const Navbar = () => {
             >
               Login
             </div>
-          ) : (
+          ):(
             <div>
               <CgProfile
                 style={{

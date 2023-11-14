@@ -9,10 +9,10 @@ function SignIn() {
   const dispatch = useDispatch();
 
   const containerVariants = {
-    hidden: { opacity: 0, x: +20 },
-    visible: { opacity: 1, x: 0 },
+    hidden:{ opacity: 0, x: +20 },
+    visible:{ opacity: 1, x: 0 },
   };
-  
+
   const userLogin = (e) => {
     e.preventDefault();
     const user = {
@@ -21,14 +21,12 @@ function SignIn() {
     }
     dispatch(login(user));
   }
-  if (auth.authenticate) {
-    return (window.location.href = "/");
-  }
-
+  if (auth.authenticate){return (window.location.href = "/");}
   return (
 
     <>
-     <div className='container mt-11 d-flex justify-content-center align-items-center vh-200' style={{ height: "50vh",marginTop: '5srem', width: "30%" }}>
+      <div
+        className='container mt-11 d-flex justify-content-center align-items-center vh-200' style={{ height: "50vh", marginTop: '5srem', width: "30%" }}>
          <motion.form className="signup-form"
            initial='hidden'
            animate='visible'

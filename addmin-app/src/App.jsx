@@ -7,16 +7,19 @@ import { isuserLoggedIn } from './actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateRoute from './component/HOC/PrivateRoute.jsx'
 import Navbar from './container/Navbar/Navbar';
-import { intialData } from './actions/intialData.js';
 function App() {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {
-    if(!auth.authenticate) {
+    if (!auth.authenticate) {
       dispatch(isuserLoggedIn());
     }
-  }, []);
-  dispatch( intialData() );
+  }, [auth.authenticate, dispatch]);
+  
+ 
+  // window.addEventListener('unload', function() {
+  //   window.localStorage.clear();
+  // });
   return (
     <>
       <Navbar/>

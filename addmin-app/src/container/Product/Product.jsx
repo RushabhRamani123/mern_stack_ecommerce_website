@@ -1,22 +1,20 @@
-import { useState } from 'react'
-import { Modal, Table } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'  
-import { addProduct } from '../../actions/product'
+import { useState } from "react";
+import { Modal, Table } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../../actions/product";
 
 const Product = () => {
-const [isModalOpen, setIsModalOpen] = useState(false);
-const [name, setName] = useState("");
-const [quantity, setQuantity] = useState("");
-const [price, setPrice] = useState("");
-const [description, setDescription] = useState("");
-const [productImage, setProductPictures] = useState([]);
-const [categoryId, setCategoryName] = useState("653c0e47d58054f01b4c8e8c");
-const dispatch = useDispatch(); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [productImage, setProductPictures] = useState([]);
+  const [categoryId, setCategoryName] = useState("653c0e47d58054f01b4c8e8c");
+  const dispatch = useDispatch();
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+ 
   const handleOk = () => {
     setIsModalOpen(false);
     const form = new FormData();
@@ -30,7 +28,7 @@ const dispatch = useDispatch();
       form.append("productImage", pic);
     }
 
-    dispatch(addProduct(form))
+    dispatch(addProduct(form));
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -42,7 +40,7 @@ const dispatch = useDispatch();
   };
   const createCategoryList = () => {
     let myCategories = [];
-  
+
     const renderCategoryOptions = (categories) => {
       for (let i = 0; i < categories.length; i++) {
         myCategories.push(
@@ -50,28 +48,25 @@ const dispatch = useDispatch();
             {categories[i].name}
           </option>
         );
-  
+
         if (categories[i].children && categories[i].children.length > 0) {
           renderCategoryOptions(categories[i].children);
         }
       }
     };
-  
+
     renderCategoryOptions(category.categories);
-  
+
     return myCategories;
   };
   const handleaddCategory = (e) => {
     e.preventDefault();
     setCategoryName(e.target.value);
     console.log(categoryId);
-  }
+  };
   const handelProductPicture = (e) => {
-    setProductPictures([
-      ...productImage,
-      e.target.files[0]
-    ])
-  }
+    setProductPictures([...productImage, e.target.files[0]]);
+  };
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
@@ -84,131 +79,132 @@ const dispatch = useDispatch();
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
   };
-  // table data 
+  // table data
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: "Name",
+      dataIndex: "name",
       filters: [
         {
-          text: 'Joe',
-          value: 'Joe',
+          text: "Joe",
+          value: "Joe",
         },
         {
-          text: 'Category 1',
-          value: 'Category 1',
+          text: "Category 1",
+          value: "Category 1",
         },
         {
-          text: 'Category 2',
-          value: 'Category 2',
+          text: "Category 2",
+          value: "Category 2",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
-      width: '25%',
+      width: "25%",
     },
     {
-      title: 'Price',
-      dataIndex: 'price',
+      title: "Price",
+      dataIndex: "price",
       filters: [
         {
-          text: 'Joe',
-          value: 'Joe',
+          text: "Joe",
+          value: "Joe",
         },
         {
-          text: 'Category 1',
-          value: 'Category 1',
+          text: "Category 1",
+          value: "Category 1",
         },
         {
-          text: 'Category 2',
-          value: 'Category 2',
+          text: "Category 2",
+          value: "Category 2",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
-      width: '15%',
+      width: "15%",
     },
     {
-      title: 'Qauntity',
-      dataIndex: 'quantity',
+      title: "Qauntity",
+      dataIndex: "quantity",
       filters: [
         {
-          text: 'Joe',
-          value: 'Joe',
+          text: "Joe",
+          value: "Joe",
         },
         {
-          text: 'Category 1',
-          value: 'Category 1',
+          text: "Category 1",
+          value: "Category 1",
         },
         {
-          text: 'Category 2',
-          value: 'Category 2',
+          text: "Category 2",
+          value: "Category 2",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
-      width: '15%',
+      width: "15%",
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
+      title: "Description",
+      dataIndex: "description",
       filters: [
         {
-          text: 'London',
-          value: 'London',
+          text: "London",
+          value: "London",
         },
         {
-          text: 'New York',
-          value: 'New York',
+          text: "New York",
+          value: "New York",
         },
       ],
-      filterMode: 'tree',
+      filterMode: "tree",
       onFilter: (value, record) => record.address.startsWith(value),
       filterSearch: true,
-      width: '25%',
+      width: "25%",
     },
-      {
-        title: 'Category',
-        dataIndex: 'category',
-        filters: [
-          {
-            text: 'London',
-            value: 'London',
-          },
-          {
-            text: 'New York',
-            value: 'New York',
-          },
-        
-        ],
-        filterMode: 'tree',
-        onFilter: (value, record) => record.address.startsWith(value),
-        filterSearch: true,
-        width: '25%',
-    }
+    {
+      title: "Category",
+      dataIndex: "category",
+      filters: [
+        {
+          text: "London",
+          value: "London",
+        },
+        {
+          text: "New York",
+          value: "New York",
+        },
+      ],
+      filterMode: "tree",
+      onFilter: (value, record) => record.address.startsWith(value),
+      filterSearch: true,
+      width: "25%",
+    },
   ];
- const data = [];
- for (let i = 0; i < (product.products && product.products.length); i++) {
-   const productData = {
-     key: i + 1,
-     name: product.products[i].name,
-     price: product.products[i].price,
-     quantity: product.products[i].quantity,
-     description: product.products[i].description,
-     category: product.products[i].category,
-   };
- 
-   if (product.products[i].productPictures && product.products[i].productPictures.length > 0) {
-     productData.productPictures = product.products[i].productPictures;
-   }
- 
-   data.push(productData);
+  const data = [];
+  for (let i = 0; i < (product.products && product.products.length); i++) {
+    const productData = {
+      key: i + 1,
+      name: product.products[i].name,
+      price: product.products[i].price,
+      quantity: product.products[i].quantity,
+      description: product.products[i].description,
+      category: product.products[i].category,
+    };
+
+    if (
+      product.products[i].productPictures &&
+      product.products[i].productPictures.length > 0
+    ) {
+      productData.productPictures = product.products[i].productPictures;
+    }
+
+    data.push(productData);
   }
-  console.log(data );
-  const [pagination, setPagination] = useState('false')
+  console.log(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -225,11 +221,10 @@ const dispatch = useDispatch();
     setIsModalVisible(false);
   };
   const onChange = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
+    console.log("params", pagination, filters, sorter, extra);
   };
-  return ( 
-    
-         <>
+  return (
+    <>
       <div>
         <div
           style={{
@@ -258,16 +253,17 @@ const dispatch = useDispatch();
             }}
             onClick={handleAddCategory}
           >
-           Add Product
+            Add Product
           </button>
         </div>
       </div>
-    
       <Modal
         okButtonProps={{ style: { backgroundColor: "green" } }}
         set
         okText="SaveChanges "
-        cancelButtonProps={{ style: { backgroundColor: "red", color: "white" , fontWeight:"bold"} }}
+        cancelButtonProps={{
+          style: { backgroundColor: "red", color: "white", fontWeight: "bold" },
+        }}
         title="Add Product"
         open={isModalOpen}
         onOk={handleOk}
@@ -276,40 +272,40 @@ const dispatch = useDispatch();
         <input
           type="text"
           name="name"
-          placeholder="Name" 
-          style={{marginTop : "10px"}}  
+          placeholder="Name"
+          style={{ marginTop: "10px" }}
           onChange={handleNameChange}
         />
         <input
           name="price"
           type="text"
-          placeholder="Price" 
-          style={{marginTop : "10px"}}  
+          placeholder="Price"
+          style={{ marginTop: "10px" }}
           onChange={handlePriceChange}
         />
         <input
           name="description"
           type="text"
           placeholder="Description"
-          style={{marginTop : "10px"}}
+          style={{ marginTop: "10px" }}
           onChange={handleDescriptionChange}
         />
         <input
           name="quantity"
           type="text"
           placeholder="Quantity"
-          style={{marginTop : "10px"}}
+          style={{ marginTop: "10px" }}
           onChange={handleQuantityChange}
         />
         <input
-          name='CreatedBy'
+          name="CreatedBy"
           type="text"
           placeholder="CreatedBy"
-          style={{marginTop : "10px"}}
+          style={{ marginTop: "10px" }}
           onChange={(e) => console.log(e.target.value)}
         />
         <select
-          name="category" 
+          name="category"
           onChange={handleaddCategory}
           style={{
             padding: "10px",
@@ -323,20 +319,24 @@ const dispatch = useDispatch();
           <option>Select Categories</option>
           {createCategoryList()}
         </select>
-         <input
+        <input
           type="file"
           name="productImage"
           placeholder="ProductImage"
-          style={{marginTop : "10px"}}
+          style={{ marginTop: "10px" }}
           onChange={handelProductPicture}
         />
-       
       </Modal>
-      <Table columns={columns} dataSource={data} onChange={onChange}
-       onRow={(record) => ({
-        onClick: () => handleRowClick(record),
-        })} />;
-        <Modal
+      <Table
+        columns={columns}
+        dataSource={data}
+        onChange={onChange}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+        })}
+      />
+      ;
+      <Modal
         title="Row Details"
         open={isModalVisible}
         onOk={handleok}
@@ -352,19 +352,20 @@ const dispatch = useDispatch();
             <p>Quantity:{selectedRow.quantity}</p>
             <p>Description:{selectedRow.description}</p>
             <p>Category:{selectedRow.category}</p>
-            {
-              selectedRow.productPictures && selectedRow.productPictures.map((pic) => {
+            {/* {selectedRow.productPictures &&
+              selectedRow.productPictures.map((pic) => {
                 <div>
-               <img src={`http://localhost:2000/public/${pic.img}`} alt="Product" />
-                  </div>
-              })
-           }
+                  <img
+                    src={`http://localhost:2000/public/${pic.img}`}
+                    alt="Product"
+                  />
+                </div>;
+              })} */}
           </div>
-        )}        
+        )}
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default Product
-
+export default Product;

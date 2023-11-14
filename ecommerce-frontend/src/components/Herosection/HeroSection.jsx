@@ -11,6 +11,7 @@ import f5 from '../../assets/feature-5.png';
 import f6 from '../../assets/feature-6.png';
 import { motion } from 'framer-motion';
 import Productcard from './Productcard';
+import { useState, useEffect } from 'react';
 const HeroSection = () => {
   const featurestyle = {
     textAlign: 'center',
@@ -31,7 +32,21 @@ const HeroSection = () => {
   borderRadius: '4px',
 color: '#088178',
     marginTop: '10px',
-  backgroundColor: '#d1e8f2',}
+    backgroundColor: '#d1e8f2',
+  }
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
     <>
       <div>
@@ -45,10 +60,10 @@ color: '#088178',
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
             
-            style={{ position: 'relative' }}>
-            <img src={banner} alt="banner" style={{ width: '100%', height: '100%', borderRadius: '0.75rem' }} />
+            style={{ position: 'relative' ,display: windowWidth < 821 ? 'none' : 'block' }}>
+            <img src={banner} alt="banner" style={{ width: '100%', height: '100%', borderRadius: '0.75rem' ,  }} />
             <div>
-            <h4 style={{ color: '#5B6270', position: 'absolute', top: '1rem', left: '2.15rem'}}>Accessories</h4>
+            <h4 style={{ color: '#5B6270', position: 'absolute', top: '1rem', left: '2.15rem' , }}>Accessories</h4>
               <h3 style={{ position: 'absolute', top: '2.5rem', left: '2rem', fontSize: '1.25rem' }}>Save 17% on<br />Autumn Hat</h3>
               <motion.h4
                 whileHover={{ x: 5 , transition: { duration: 0.2 }, color: 'green' }}
@@ -59,7 +74,7 @@ color: '#088178',
             initial={{ scale: 0.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1 }}
-            style={{ position: 'relative' }}>
+            style={{ position: 'relative',display: windowWidth < 821 ? 'none' : 'block' }}>
             <img src={banner1} alt="banner" style={{ width: '100%', borderRadius: '0.75rem' }} />
             <div>
             <h4 style={{ color: '#5B6270', position: 'absolute', top: '1rem', right: '3.5rem'}}>Special Offer</h4>
