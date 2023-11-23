@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAllCategory , updateCategories } from "../../actions/category";
+import { getAllCategory , updateCategory , deleteCategory } from "../../actions/category";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { addCategory } from "../../actions/category";
@@ -74,47 +74,46 @@ const Category = () => {
     }
 }
   const update = () => {
-    setIsModalOpen2(true); 
     updateCheckedAndExpandedCategories();
-    upadateCategoryForm();
+    setIsModalOpen2(true); 
+    updateCategoryForm();
     setIsModalOpen2(false);
   }
-  const upadateCategoryForm = () => {
-    console.log(checkedArray);
+  const updateCategoryForm = () => {
     const form = new FormData();
-    expandedArray.forEach((item) => {
+  
+    const appendData = (item) => {
       form.append("_id", item.value);
       form.append("name", item.label);
-      form.append("parentId", item.parentId ? item.parentId : "");
+      form.append("parentId", item.parentId);
       form.append("type", item.type);
-    })
-    checkedArray.forEach((item) => {
-      console.log(item.label);
-      console.log(item.value);
-      form.append("_id", item.value);
-      form.append("name", item.label);
-      form.append("parentId", item.parentId ? item.parentId : "");
-      form.append("type", item.type);
-    })
+    };
+    checkedArray.forEach(appendData);
     console.log(form);
-    dispatch(updateCategories(form)); 
-
-  }
+    dispatch(updateCategory(form));
+  };
+  
   const handleEdit = () => {
     setIsModalOpen2(true); 
+    updateCheckedAndExpandedCategories();
+    console.log("Edit this array!!",checkedArray);
   }
   const handleCancel2 = () => {
     setIsModalOpen2(false);
   };
+  const deleteCategories = () => {
+    const checkedIdsArray =checkedArray.map((item) => ({_id: item.value}));
+    const Ids = checkedIdsArray;
+    console.log(Ids);
+    dispatch(deleteCategory(Ids));
+  }
   const handleOk1 = () => {
     setIsModalOpen1(false);
-    const form = {
-      name: CategoryName,
-      parentId: parentCategoryId,
-    };
-    dispatch(addCategory(form));
+  deleteCategories() ; 
   };
   const handleDelete = () => {
+    updateCheckedAndExpandedCategories();
+    console.log("delete", checkedArray);
     setIsModalOpen1(true); 
   }
   const handleCancel1 = () => {
@@ -146,7 +145,7 @@ const Category = () => {
       myCategories.push({
         label: category.name,
         value:  category._id,
-       parentId : category.parentId,
+       parentId : (category.parentId ? category.parentId : ""),
         children:
           category.children &&
           category.children.length > 0 &&
@@ -165,7 +164,6 @@ const Category = () => {
             {categories[i].name}
           </option>
         );
-
         if (categories[i].children && categories[i].children.length > 0) {
           renderCategoryOptions(categories[i].children);
         }
@@ -323,7 +321,7 @@ const Category = () => {
         </Row>
       ))}
    
-    </Modal>); }
+    </Modal>); } 
 const handleOkWithLogging = () => { handleOk();};
   return (
     <>
@@ -375,22 +373,15 @@ const handleOkWithLogging = () => { handleOk();};
       />
       <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
         <button
-          onClick={() => {
-           handleDelete();
+          onClick={() =>
+          {
+            handleDelete();
           }}
-          style={{
-            backgroundColor: "red",
-            color: "white",
-            padding: "10px",
-            borderRadius: "10px",
-          }}
-        >
+          style={{ backgroundColor: "red", color: "white", padding: "10px", borderRadius: "10px"}}>
           Delete
         </button>
         <button
-          onClick={() => {
-            update(); 
-            handleEdit();
+          onClick={() => { handleEdit();
           }}
           style={{
             backgroundColor: "green",
@@ -447,45 +438,36 @@ const handleOkWithLogging = () => { handleOk();};
         </select>
       </Modal>
       <Modal
-        okButtonProps={{ style: { backgroundColor: "green" } }}
-        set
-        okText="Save"
-        title={
-          <span style={{ color: "green", fontWeight: "bold", fontSize: "20px" }}>Delete Category</span>
-        }
-        cancelText="Cancel"
-        cancelButtonProps={{
-          style: { backgroundColor: "red", color: "white" },
-        }}
-        open={isModalOpen1}
+    okButtonProps={{ style: { backgroundColor: "red" } }}
+    set
+        okText="Yes"
+        
+    title={
+      <span style={{ color: "green", fontWeight: "bold", fontSize: "20px" }}>Conform</span>
+    }
+    cancelText="No"
+    cancelButtonProps={{
+      style: { backgroundColor: "green", color: "white" },
+    }}
+    open={isModalOpen1}
         onOk={handleOk1}
-        onCancel={handleCancel1}
-      >
-        <input
-          type="text"
-          style={{
-            border: "1px solid black",
-          }}
-          placeholder="Category"
-          onChange={handleaddCategory}
-        />
-
-        <select
-          onChange={handelparentcategoryId}
-          style={{
-            padding: "10px",
-            borderRadius: "5px",
-            border: "1px solid black",
-            marginTop: "10px",
-            cursor: "pointer",
-            width: "100%",
-          }}
-          autoFocus={false}
-        >
-          <option>Select Categories</option>
-          {createCategoryList()}
-        </select>
-      </Modal>
+    onCancel={handleCancel1} >
+        <h1>Are you sure you want to delete this category</h1>
+        <h1>Expanded</h1>
+       {expandedArray.length > 0 && expandedArray.map((item, index) => (
+         <div key={index}>
+           <span>{item.label}</span>
+           <br/>
+         </div>
+       ))}
+        <h1>Checked</h1>
+       {checkedArray.length > 0 && checkedArray.map((item, index) => (
+         <div key={index}>
+           <span>{item.label}</span>
+           <br/>
+         </div>
+       ))}
+  </Modal>
     {renderUpdateCategoriesModal()}
     </>
   );

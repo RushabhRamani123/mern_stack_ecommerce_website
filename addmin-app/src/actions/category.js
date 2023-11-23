@@ -50,26 +50,38 @@ export const addCategory = (form) => {
 
     }
 }
-export const updateCategories = (form) => {
+export const updateCategory = (formData) => {
     return async dispatch => {
-        // dispatch({ type: categoryConstansts.UPDATE_CATEGORIES_REQUEST });
-        const res = await axios.post(`/category/update`, form, {
+      
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+        const res = await axios.post('/category/update', jsonData, {
             headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         });
-      if (res.status === 201) {
-        console.log(res);
-            // dispatch({ type: categoryConstansts.UPDATE_CATEGORIES_SUCCESS });
-            // dispatch(getAllCategory());
-      } else {
-        console.log(res.data.error);
-            // const { error } = res.data;
-            // dispatch({
-            //     type: categoryConstansts.UPDATE_CATEGORIES_FAILURE,
-            //     payload: { error }
-            // });
+        if (res.status === 200) {
+            alert("Category updated successfully");
+            dispatch({
+                type: categoryConstansts.ADD_NEW_CATEGORY_SUCCESS,
+                payload: { category: res.data}})
+            console.log(res);
+        } else {
+            console.log(res.data.error);
         }
     }
-  }
+}
+export const deleteCategory = (Ids) => {
+    return async dispatch => {
+        const res = await axios.post('/category/delete',
+            { payload: { Ids } },
+            {
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+
+        });
+       console.log(res)
+    }
+}

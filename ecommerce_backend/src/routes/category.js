@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { addCategory, getCategories , updateCategories } = require("../controllers/category");
+const { addCategory, getCategories , updateCategories, deleteCategories } = require("../controllers/category");
 const {
   requireSignin,
   adminMiddleware,
@@ -13,4 +13,5 @@ router.post(
   adminMiddleware,
   updateCategories
 )
+router.post("/category/delete" , deleteCategories);
 module.exports = router;

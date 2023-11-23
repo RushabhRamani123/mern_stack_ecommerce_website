@@ -14,7 +14,7 @@ const Product = () => {
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
- 
+ console.log(product);
   const handleOk = () => {
     setIsModalOpen(false);
     const form = new FormData();
@@ -352,15 +352,6 @@ const Product = () => {
             <p>Quantity:{selectedRow.quantity}</p>
             <p>Description:{selectedRow.description}</p>
             <p>Category:{selectedRow.category}</p>
-            {/* {selectedRow.productPictures &&
-              selectedRow.productPictures.map((pic) => {
-                <div>
-                  <img
-                    src={`http://localhost:2000/public/${pic.img}`}
-                    alt="Product"
-                  />
-                </div>;
-              })} */}
           </div>
         )}
       </Modal>

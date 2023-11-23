@@ -46,17 +46,71 @@ exports.getCategories = async (req, res) => {
   try {
     const categories = await Category.find({});
     const categoryList = createCategories(categories);
-    res.status(200).json({ categoryList });
+    res.status(200).json({ categoryList : categoryList });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 exports.updateCategories = async (req, res) => {
-  try {
-    res.status(200).json(req.body);
-  }
-  catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+  const { _id, name, parentId, type } = req.body;
+  const updatedCategories = [];
+  if (name instanceof Array) {
+    for (let i = 0; i < name.length; i++) {
+      const category = {
+        name: name[i],
+        type: type[i],
+      };
+      if (parentId[i] !== "") {
+        category.parentId = parentId[i];
+      }
+      if(parentId === "Select Categories"){
+        category.parentId = "";
+      }
+      else {
+        category.parentId = "";
+      }
 
+      const updatedCategory = await Category.findOneAndUpdate(
+        
+        { _id: _id[i] },
+        category,
+        { new: true }
+      );
+        
+      updatedCategories.push(updatedCategory);
+    }
+    return res.status(200).json({ updatedCategories });
+  } else {
+    
+    const category = {
+      name,
+      type,
+    };
+    if (parentId !== "") {
+      category.parentId = parentId;
+    }
+    if(parentId === "Select Categories"){
+      category.parentId = "";
+    }
+
+    const updatedCategory = await Category.findOneAndUpdate(
+      
+      { _id },
+      category,
+      { new: true }
+      
+    );
+    return res.status(200).json({ updatedCategory })
+  }
+}
+exports.deleteCategories = async (req, res) => {
+  const { Ids } = req.body.payload;
+  // res.status(200).json({ Ids });
+  const deletedCategories = [];
+  for (let i = 0; i < (Ids && Ids.length) ; i++) {
+    const deleteCategory = await Category.findOneAndDelete({ _id: Ids[i] });
+    deletedCategories.push(deleteCategory);
+  }
+  res.status(200).json({ deletedCategories });
+  
+}
