@@ -2,24 +2,19 @@ const Product = require("../models/product");
 const slugify = require("slugify");
 const user = require("../models/user");
 const Category = require("../models/category");
-exports.createProduct = (req, res) => {
-  const { name, price, description, category, quantity } = req.body;
-  let productPictures = []; 
-  if (req.files.length > 0) {
-    productPictures = req.files.map((file) => {
-      return { img: file.filename};
-    });
-  }
+const axios = require("axios");
 
+exports.createProduct = async(req, res) => {
+  const { name, price, description, category, quantity , productPictures} = req.body;
   const product = new Product({
     name: name,
-    slug: slugify(name),
+    slug :name ? slugify(name) : undefined , 
     price,
     description,
     category,
     quantity,
     createdBy: req.user._id,
-    productPictures: productPictures,
+    productPictures,
   });
 
   product.save()
