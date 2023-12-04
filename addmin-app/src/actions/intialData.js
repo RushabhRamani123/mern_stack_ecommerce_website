@@ -7,6 +7,7 @@ export const intialData = () => {
             const res = await axios.post('admin/intialdata');
             if (res.status === 200) {
                 const { categories, products } = res.data;
+                console.log(categories, products);
                 dispatch({
                     type: categoryConstansts.GET_ALL_CATEGORIES_SUCCESS,
                     payload: { categories },

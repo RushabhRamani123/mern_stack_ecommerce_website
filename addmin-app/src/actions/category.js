@@ -81,7 +81,14 @@ export const deleteCategory = (Ids) => {
             {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
 
-        });
+            });
+        if (res.status === 200) {
+            alert("Category deleted successfully");
+            dispatch({
+                type: categoryConstansts.DELETE_CATEGORIES_SUCCESS,
+                payload: { categoryId: Ids }
+            });
+        }
        console.log(res)
     }
 }

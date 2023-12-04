@@ -11,6 +11,7 @@ exports.signup = async (req, res) => {
       });
     }
     const { firstName, lastName, email, password } = req.body;
+    console.log(firstName, lastName, email, password);
     const newUser = new User({
       firstName,
       lastName,
@@ -18,16 +19,18 @@ exports.signup = async (req, res) => {
       password,
       username: Math.random().toString(),
     });
+    console.log("newUser", newUser);
     await newUser.save();
     return res.status(200).json({
       message: "User created successfully!!!",
     });
   } catch (err) {
+    console.error("Error in signup controller:", err);
     return res.status(400).json({
-      message: "Something went wrong",
+     error: err,
     });
   }
-};
+}
 exports.signin = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });

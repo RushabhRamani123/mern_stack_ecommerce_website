@@ -15,11 +15,6 @@ function App() {
       dispatch(isuserLoggedIn());
     }
   }, [auth.authenticate, dispatch]);
-  
- 
-  // window.addEventListener('unload', function() {
-  //   window.localStorage.clear();
-  // });
   return (
     <>
       <Navbar/>

@@ -53,18 +53,16 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-//Hashing the password
-userSchema.virtual("password").set(async function (password) {
-  this.hash_password = await bcrypt.hash(password, 10);
+userSchema.virtual("password").set(function (password) {
+  this.hash_password = bcrypt.hashSync(password, 10);
 });
-
 userSchema.methods = {
-  authenticate: async function (password) {
-    return await bcrypt.compare(password, this.hash_password);
+  authenticate: function (password) {
+    return bcrypt.compareSync(password, this.hash_password);
   },
 };
-
 userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
+
 module.exports = mongoose.model("User", userSchema);

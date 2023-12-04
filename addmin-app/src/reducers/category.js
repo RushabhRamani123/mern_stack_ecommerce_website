@@ -4,6 +4,8 @@ const initialState = {
   loading: false,
   error: null,
 };
+
+
 const buildNewCategories = (parentId, categories, category) => {
   let myCategories = [];
   console.log(parentId)
@@ -41,9 +43,16 @@ const buildNewCategories = (parentId, categories, category) => {
       });
     }
   }
+  console.log(myCategories);
 
   return myCategories; 
 }
+const deleteCategories = (deletedIds, categories) => {
+  let myCategories = [];
+  
+
+};
+
 const categoryReducer = (state = initialState, action) => {
   let categoriesData; 
 
@@ -75,6 +84,7 @@ const categoryReducer = (state = initialState, action) => {
       }
     case categoryConstansts.ADD_NEW_CATEGORY_SUCCESS: 
       categoriesData = buildNewCategories(action.payload.category.parentId, state.categories, action.payload.category);
+      console.log("This is the data of the updated categories",categoriesData);
       return {
         ...state,
         categories: categoriesData, 
@@ -85,6 +95,14 @@ const categoryReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.payload.error
+      }
+    case categoryConstansts.DELETE_CATEGORIES_SUCCESS:
+      console.log(action.payload.categoryId[0]._id); 
+      deleteCategories(action.payload.categoryId , state.categories);
+      return {
+        ...state,
+        categories: state.categories.filter((cat) => cat._id !== action.payload.categoryId),
+        loading: false,
       }
     default:
       return state;

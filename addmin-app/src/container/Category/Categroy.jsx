@@ -12,6 +12,7 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { Row, Col } from 'antd';
 import './category.css';
+import UpdateCategoryModal from "./container/UpdateCategoryModal";
 const Category = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
@@ -74,8 +75,7 @@ const Category = () => {
     }
 }
   const update = () => {
-    updateCheckedAndExpandedCategories();
-    setIsModalOpen2(true); 
+    updateCheckedAndExpandedCategories(); 
     updateCategoryForm();
     setIsModalOpen2(false);
   }
@@ -187,6 +187,12 @@ const Category = () => {
   useEffect(() => {
     console.log(parentCategoryId);
   }, [parentCategoryId]);
+  const cheker = (data) => {
+    if (data) {
+      console.log(data);
+      console.log(checkedArray);
+    }
+  }
   const renderUpdateCategoriesModal = () => {
     return (<Modal
       okButtonProps={{ style: { backgroundColor: "green" } }}
@@ -468,7 +474,8 @@ const handleOkWithLogging = () => { handleOk();};
          </div>
        ))}
   </Modal>
-    {renderUpdateCategoriesModal()}
+      {renderUpdateCategoriesModal()}
+      <UpdateCategoryModal sendDataToParent={cheker} filler={"Category"} array={checkedArray} />
     </>
   );
 };

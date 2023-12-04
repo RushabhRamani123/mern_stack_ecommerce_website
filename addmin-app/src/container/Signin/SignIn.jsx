@@ -7,7 +7,6 @@ function SignIn() {
   const [password, setPassword] = useState("123456");
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   const containerVariants = {
     hidden:{ opacity: 0, x: +20 },
     visible:{ opacity: 1, x: 0 },

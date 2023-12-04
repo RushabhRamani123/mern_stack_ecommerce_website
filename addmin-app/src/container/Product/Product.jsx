@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Modal, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../actions/product";
-
+import {intialData} from "../../actions/intialData"
+import axios from "axios";
 const Product = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
@@ -14,8 +15,10 @@ const Product = () => {
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
- console.log(product);
-  const handleOk = () => {
+  const cloudname = 'duzddtszj'
+  const upload_preset = 'images_uploads'
+  console.log("This is the product",product);
+  const handleOk = async() => {
     setIsModalOpen(false);
     const form = new FormData();
     form.append("name", name);
@@ -23,13 +26,24 @@ const Product = () => {
     form.append("price", price);
     form.append("description", description);
     form.append("category", categoryId);
-
+    const formData = new FormData();
     for (let pic of productImage) {
-      form.append("productImage", pic);
+      formData.append("file", pic);
+      formData.append("upload_preset", upload_preset);
+      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudname}/image/upload`, formData)
+      let url = res.data.secure_url
+      console.log(url);
+      form.append("productPictures", url.toString());
     }
-
     dispatch(addProduct(form));
   };
+  const [flag, setFlag] = useState(0);
+  console.log(product);
+  if (flag == 0)
+  {
+    dispatch(intialData());
+    setFlag(1);
+    }
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -65,6 +79,7 @@ const Product = () => {
     console.log(categoryId);
   };
   const handelProductPicture = (e) => {
+    console.log(productImage);
     setProductPictures([...productImage, e.target.files[0]]);
   };
   const handleNameChange = (e) => {
@@ -101,7 +116,7 @@ const Product = () => {
       filterMode: "tree",
       filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
-      width: "25%",
+      width: "20%",
     },
     {
       title: "Price",
@@ -163,25 +178,7 @@ const Product = () => {
       filterMode: "tree",
       onFilter: (value, record) => record.address.startsWith(value),
       filterSearch: true,
-      width: "25%",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      filters: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
-      filterMode: "tree",
-      onFilter: (value, record) => record.address.startsWith(value),
-      filterSearch: true,
-      width: "25%",
+      width: "30%",
     },
   ];
   const data = [];
@@ -192,7 +189,6 @@ const Product = () => {
       price: product.products[i].price,
       quantity: product.products[i].quantity,
       description: product.products[i].description,
-      category: product.products[i].category,
     };
 
     if (
@@ -204,7 +200,7 @@ const Product = () => {
 
     data.push(productData);
   }
-  console.log(data);
+  console.log("This is the product data",data);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
 
@@ -347,11 +343,18 @@ const Product = () => {
       >
         {selectedRow && (
           <div>
-            <p>Name:{selectedRow.name}</p>
-            <p>Price:{selectedRow.price}</p>
-            <p>Quantity:{selectedRow.quantity}</p>
-            <p>Description:{selectedRow.description}</p>
-            <p>Category:{selectedRow.category}</p>
+            <p><span style={{ fontWeight: "bold" }}>Name</span>:{selectedRow.name}</p>
+            <p><span style={{fontWeight:"bold"}}>Price</span>:{selectedRow.price}</p>
+            <p><span style={{fontWeight:"bold"}}>Quantity</span>:{selectedRow.quantity}</p>
+            <p><span style={{ fontWeight: "bold" }}>Description</span>:{selectedRow.description}</p>
+            <p><span style={{ fontWeight: "bold" }}>Product Image</span>:</p>
+            <div style={{ display: "flex", gap: "30px" }}>
+            {
+              selectedRow.productPictures && selectedRow.productPictures.map(picture => {
+                return (<img key={picture} src={picture} width="110px" height="50px" style={{ objectFit: "cover", borderRadius: "5px" , cursor:"pointer" }} />)
+              })
+            }
+           </div>
           </div>
         )}
       </Modal>
