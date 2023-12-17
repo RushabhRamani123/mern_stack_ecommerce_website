@@ -13,6 +13,8 @@ const productRoutes = require("./routes/product");
 const cartRoutes = require("./routes/cart");
 // routes for the initialData 
 const initialDataRotes = require("./routes/admin/intialData");
+// routes for the page
+const pageRoutes = require("./routes/admin/page");
 // environment variables or constants
 env.config();
 //database connection
@@ -35,6 +37,7 @@ mongoose
   });
 app.use(cors());
 app.use(express.json());
+app.use("/api", pageRoutes);
 app.use("/api", productRoutes);
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);

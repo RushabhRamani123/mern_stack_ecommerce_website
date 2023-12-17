@@ -11,6 +11,8 @@ import { CgProfile } from "react-icons/cg";
 import { getAllCategory } from "../../actions/category";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { Modal } from "antd";
+import { login } from "../../actions/auth";
 
 const Navbar = () => {
   const category = useSelector((state) => state.category);
@@ -20,12 +22,35 @@ const Navbar = () => {
   }, []);
   const [clickCategories, setClickCategories] = useState(false);
   const [loginconfirm, setLoginconfirm] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSingVisible, setIsSingupVisible] = useState(true);
+  const [email, setemail] = useState(false);
+  const [password, setpassword] = useState(false);
+  const user = useSelector((state) => state.user);
+  console.log(user);
+  const handleOk = () => {
+    setIsModalVisible(false);
+  }
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  }
+  const Login = () => {
+   const user = {
+     email: email,
+     password: password
+    }
+    dispatch(login(user));
+
+
+  }
   const Margin = {
+
     color: "#5B6270",
     fontSize: "1rem",
     marginTop: "5px",
     marginBottom: "5px",
   };
+
   const inputRef = useRef(null);
   const handleSearch = () => {
     if (inputRef.current.value === "") inputRef.current.focus();
@@ -148,7 +173,7 @@ const Navbar = () => {
 
           {loginconfirm ? (
             <div
-              onClick={() => setLoginconfirm(false)}
+              onClick={() =>setIsModalVisible(true) }
               style={{ paddingTop: "1.35rem", color: "green" }}
             >
               Login
@@ -299,6 +324,28 @@ const Navbar = () => {
             </motion.div>
           )}
         </div>
+        <Modal title="Title" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+          {isSingVisible? (<>
+            <h1>Sign in</h1>
+            <input type="email" placeholder="Enter your email" onChange={(e) =>setemail(e.target.value)}></input>
+            <input type="password" placeholder="Enter your password" onChange={(e) =>setpassword(e.target.value)}></input>
+            <button onClick={Login}>Login</button>
+          <p>If you account is not there first create your account : </p>
+          <button onClick={() =>setIsSingupVisible(false)}> Sign up</button></>
+            
+          ):(
+              <>
+                <h1>Sign up</h1>
+                <input type="text" placeholder="Enter your First name"></input>
+                <input type="text" placeholder="Enter your Lastname"></input>
+                <input type="email" placeholder="Enter your email"></input>
+                <input type="password" placeholder="Enter your password"></input>
+                <button onClick={() =>setIsSingupVisible(true)}>Login</button>
+              </>
+          )
+            
+         }
+          </Modal>
       </div>
     </>
   );

@@ -25,8 +25,8 @@ exports.initialData = async (req, res) => {
     //       }
     // :createCategories(categories)
       
-    const categories = await Category.find({}).exec();
-    const products = await Product.find({}).exec();
+    const categories = await Category.find(); 
+    const products = await Product.find();
     res.status(200).json({
         categories,
         products

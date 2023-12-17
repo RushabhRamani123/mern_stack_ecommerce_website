@@ -23,7 +23,7 @@ import img81 from '../../assets/product-8-1.jpg';
 import img82 from '../../assets/product-8-2.jpg';
 import img91 from '../../assets/product-9-1.jpg';
 import img92 from '../../assets/product-9-2.jpg';
-
+import {Modal} from 'antd';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
@@ -72,6 +72,14 @@ const Productcard = () => {
   const [hovered2, setHovered2] = useState('false');
   const [hovered3, setHovered3] = useState('false');
   const [hovered4, setHovered4] = useState('false');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleOk = () => {
+    setIsModalVisible(false);
+  }
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  }
+  
   const handleMouseEnter2 = (i) => {
     if(i === 2) setHovered2('true');
     if(i === 3) setHovered3('true');
@@ -84,6 +92,14 @@ const Productcard = () => {
   }
   return (
     <>
+      <Modal
+        title="Basic Modal"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+
+      </Modal>
       <div style={{ display: 'flex' , gap: '10px' }}>
         <motion.h3
           whileHover={{ backgroundColor : "#FDE1BD" , color : "green" ,  y: -5 }}
@@ -125,7 +141,7 @@ const Productcard = () => {
                 transition={{ duration: 0.98 }}
                     src={i2} style={{ width: '100%', borderRadius: '0.75rem', transformOrigin: '50% 50%' }} alt="" />
                   <div className="view" style={{ position: 'relative', display: 'flex', gap: '0.5rem' }}>
-                  <Tooltip title={<CustomTooltip />}  trigger={['hover']}>
+                    <Tooltip title="View" onClick={() => { setIsModalVisible(true)}} trigger={['hover']}>
                       <FloatButton
                         icon={<AiOutlineEye   
                           onMouseEnter={() => handleMouseEnter2(2)}
@@ -147,7 +163,7 @@ const Productcard = () => {
                       overlay={<CustomTooltip />}
                       
                       /></Tooltip>
-                     <Tooltip title={<CustomTooltip />}  trigger={['hover']}>
+                     <Tooltip title="Add to wishlist"  trigger={['hover']}>
                     <FloatButton icon={<AiOutlineHeart
                       onMouseEnter={() => handleMouseEnter2(3)}
                       onMouseLeave={()=>handleMouseLeave2(3)}
@@ -166,7 +182,7 @@ const Productcard = () => {
                       }} />}
                       style={{ position: 'absolute',  left: '5rem', marginBottom: '3rem', transform: 'translate(-50%, -50%)' }}
                       ></FloatButton></Tooltip>
-                     <Tooltip title={<CustomTooltip />}  trigger={['hover']}>
+                     <Tooltip title="Add to cart" trigger={['hover']}>
                     <FloatButton icon={<AiOutlineShoppingCart
                       onMouseEnter={() => handleMouseEnter2(4)}
                       onMouseLeave={()=>handleMouseLeave2(4)}
@@ -219,7 +235,7 @@ const Productcard = () => {
              animate={{ scale: 1.05}}
              transition={{ duration: 0.98 }}
                     src={i2} style={{ width: '100%', borderRadius: '0.75rem', transformOrigin: '50% 50%' }} alt="" />                  <div className="view" style={{ position: 'relative', display: 'flex', gap: '0.5rem' }}>
-                    <Tooltip title={<CustomTooltip />}  trigger={['hover']}>
+                    <Tooltip title="View"  trigger={['hover']}>
                         <FloatButton
                           icon={<AiOutlineEye   
                             onMouseEnter={() => handleMouseEnter2(2)}
@@ -241,7 +257,7 @@ const Productcard = () => {
                         overlay={<CustomTooltip />}
                         
                         /></Tooltip>
-                       <Tooltip title={<CustomTooltip />}  trigger={['hover']}>
+                       <Tooltip title="Add to wishlist"  trigger={['hover']}>
                       <FloatButton icon={<AiOutlineHeart
                         onMouseEnter={() => handleMouseEnter2(3)}
                         onMouseLeave={()=>handleMouseLeave2(3)}
@@ -260,7 +276,7 @@ const Productcard = () => {
                         }} />}
                         style={{ position: 'absolute',  left: '5rem', marginBottom: '3rem', transform: 'translate(-50%, -50%)' }}
                         ></FloatButton></Tooltip>
-                       <Tooltip title={<CustomTooltip />}  trigger={['hover']}>
+                       <Tooltip title="Add to cart" trigger={['hover']}>
                       <FloatButton icon={<AiOutlineShoppingCart
                         onMouseEnter={() => handleMouseEnter2(4)}
                         onMouseLeave={()=>handleMouseLeave2(4)}

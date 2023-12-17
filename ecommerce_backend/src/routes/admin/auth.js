@@ -12,4 +12,3 @@ router.post("/admin/signin", validateSigninRequest, isResultValid, signin);
 // signup route
 router.post("/admin/signup", validate, isResultValid, signup);
 module.exports = router;
-//

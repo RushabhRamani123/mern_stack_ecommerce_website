@@ -1,4 +1,4 @@
-import { productConstants } from "../actions/constants";
+import { productConstants } from '../actions/constants';
 
 const initState = {
   products: [],
@@ -10,60 +10,31 @@ const initState = {
   productDetails: {},
   loading: false,
 };
-
-export default (state = initState, action) => {
+/* GET_ALL_PRODUCTS_REQUEST,
+   ,
+   GET_ALL_PRODUCTS_FAILURE, */
+const productReducer = (state = initState, action) => {
   switch (action.type) {
-    case productConstants.GET_PRODUCTS_BY_SLUG:
-      state = {
+    case productConstants.GET_ALL_PRODUCTS_SUCCESS:      
+      return {
         ...state,
-        products: action.payload.products,
-        priceRange: action.payload.priceRange,
-        productsByPrice: {
-          ...action.payload.productsByPrice,
-        },
-      };
-      break;
-    case productConstants.GET_PRODUCT_PAGE_REQUEST:
-      state = {
+        products: action.payload,
+      }; 
+    case productConstants.GET_ALL_PRODUCTS_FAILURE:
+      return {
         ...state,
-        pageRequest: true,
-      };
-      break;
-    case productConstants.GET_PRODUCT_PAGE_SUCCESS:
-      state = {
-        ...state,
-        page: action.payload.page,
-        pageRequest: false,
-      };
-      break;
-    case productConstants.GET_PRODUCT_PAGE_FAILURE:
-      state = {
-        ...state,
-        pageRequest: false,
         error: action.payload.error,
-      };
-      break;
-    case productConstants.GET_PRODUCT_DETAILS_BY_ID_REQUEST:
-      state = {
+      }
+    case productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS: 
+      return {
         ...state,
-        loading: true,
-      };
-      break;
-    case productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS:
-      state = {
-        ...state,
-        loading: false,
-        productDetails: action.payload.productDetails,
-      };
-      break;
-    case productConstants.GET_PRODUCT_DETAILS_BY_ID_FAILURE:
-      state = {
-        ...state,
-        loading: false,
-        error: action.payload.error,
-      };
-      break;
+        productDetails: action.payload,
+      }
+    default:
+      return state;
   }
 
-  return state;
 };
+
+export default productReducer;
+

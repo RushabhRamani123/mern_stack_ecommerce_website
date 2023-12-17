@@ -5,6 +5,7 @@ const multer = require("multer");
 const { createProduct } = require("../controllers/product");
 const { requireSignin, adminMiddleware } = require("../common-middleware/index");
 const { getProductsBySlug } = require("../controllers/product");
+const { getProductDetailsById } = require("../controllers/product");
 const path = require("path");
 const shortId = require("shortid");
 app.use(express.static(path.join(path.dirname(__dirname), "uploads")));
@@ -27,4 +28,5 @@ router.post(
   createProduct
 );
 router.get("/products/:slug", getProductsBySlug);
+router.get("/product/:productId", getProductDetailsById);
 module.exports = router;

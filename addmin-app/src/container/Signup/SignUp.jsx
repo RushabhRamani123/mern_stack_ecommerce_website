@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { signup } from '../../actions/user';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import {  Navigate } from 'react-router-dom';
+// import {  Navigate } from 'react-router-dom';
 function SignUp() {
   const user = useSelector((state) => state.user);
   const [email, setEmail] = useState("a@a.com");
@@ -29,9 +29,9 @@ function SignUp() {
     dispatch(signup(user));
   }
   
-  if (user.message !== null) {
-    return (<Navigate to="/sigin" replace /> && window.location.reload());
-  }
+  // if(user.authenticate){
+  //   return <Navigate to='/' />
+  // }
   return (
     <>
      <div className='mt-11' >

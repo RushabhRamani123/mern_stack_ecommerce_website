@@ -90,34 +90,82 @@ color: '#088178',
         <motion.div style={featurestyle}
           whileHover={{ y: -10, transition: { duration: 0.2 } }} >
           <img src={f1} alt="" />
-          <div style={featurelabelstyle}>Free Shipping</div>
+          <div style={{fontSize: '16px',
+  fontWeight: 'bold',
+  display: 'inline-block',
+  padding: '9px 8px 6px 8px',
+  lineHeight: 1,
+  borderRadius: '4px',
+color: '#088178',
+    marginTop: '10px',
+    backgroundColor: '#FDDDE4'}}>Free Shipping</div>
       </motion.div>
         <motion.div style={featurestyle}
          whileHover={{ y: -10, transition: { duration: 0.2 } }}>
           <img src={f2} alt="" />
-          <div style={featurelabelstyle}
-          >Free Shipping</div>
+          <div style={{fontSize: '16px',
+  fontWeight: 'bold',
+  display: 'inline-block',
+  padding: '9px 8px 6px 8px',
+  lineHeight: 1,
+  borderRadius: '4px',
+color: '#3B8D97',
+    marginTop: '10px',
+    backgroundColor: '#D1E8F2'}}
+          >Online Order</div>
       </motion.div>
         <motion.div style={featurestyle}
          whileHover={{ y: -10, transition: { duration: 0.2 } }}>
     <img src={f3} alt="" />
-     <div style={featurelabelstyle}>Free Shipping</div>
+     <div style={{fontSize: '16px',
+  fontWeight: 'bold',
+  display: 'inline-block',
+  padding: '9px 8px 6px 8px',
+  lineHeight: 1,
+  borderRadius: '4px',
+color: '#088178',
+    marginTop: '10px',
+    backgroundColor: '#CDEBBC'}}>Save Money</div>
       </motion.div>
         <motion.div style={featurestyle}
          whileHover={{ y: -10, transition: { duration: 0.2 } }}>
     <img src={f4} alt="" />
-     <div style={featurelabelstyle}>Free Shipping</div>
+     <div style={{fontSize: '16px',
+  fontWeight: 700,
+  display: 'inline-block',
+  padding: '9px 8px 6px 8px',
+  lineHeight: 1,
+  borderRadius: '4px',
+color: '#088178',
+    marginTop: '10px',
+    backgroundColor: '#CDD4F8'}}>Promotions</div>
       </motion.div>
         <motion.div
             whileHover={{ y: -10, transition: { duration: 0.2 } }}
           style={featurestyle}>
           <img src={f5} alt="" />
-          <div style={featurelabelstyle}>Free Shipping</div>
+          <div style={{fontSize: '16px',
+  fontWeight: 700,
+  display: 'inline-block',
+  padding: '9px 8px 6px 8px',
+  lineHeight: 1,
+  borderRadius: '4px',
+color: '#088178',
+    marginTop: '10px',
+    backgroundColor: '#F6DBF6'}}>Happy Sell</div>
       </motion.div>
         <motion.div style={featurestyle}
          whileHover={{ y: -10, transition: { duration: 0.2 } }}>
     <img src={f6} alt="" />
-     <div style={featurelabelstyle}>Free Shipping</div>
+     <div style={{fontSize: '16px',
+  fontWeight: 700,
+  display: 'inline-block',
+  padding: '9px 8px 6px 8px',
+  lineHeight: 1,
+  borderRadius: '4px',
+color: '#088178',
+marginTop: '10px',
+    backgroundColor: '#FFF2E5'}}>24/7 Support</div>
       </motion.div>
         </div>
         <div>

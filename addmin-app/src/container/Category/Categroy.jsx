@@ -12,7 +12,6 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { Row, Col } from 'antd';
 import './category.css';
-import UpdateCategoryModal from "./container/UpdateCategoryModal";
 const Category = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
@@ -75,6 +74,11 @@ const Category = () => {
     }
 }
   const update = () => {
+    if(checkedArray.length == 0 && expandedArray.length == 0){
+      alert("Please select category");
+      setIsModalOpen2(true);
+      return;
+    }
     updateCheckedAndExpandedCategories(); 
     updateCategoryForm();
     setIsModalOpen2(false);
@@ -109,6 +113,11 @@ const Category = () => {
   }
   const handleOk1 = () => {
     setIsModalOpen1(false);
+    if(checkedArray.length == 0){
+      alert("Please select category");
+      setIsModalOpen1(true);
+      return;
+    }
   deleteCategories() ; 
   };
   const handleDelete = () => {
@@ -121,6 +130,12 @@ const Category = () => {
   };
   const handleOk = () => {
     setIsModalOpen(false);
+    if (CategoryName == "") {
+      alert("Please provide category name");
+      setIsModalOpen(true);
+      return; 
+    }
+
     const form = {
       name: CategoryName,
       parentId: parentCategoryId,
@@ -258,7 +273,9 @@ const Category = () => {
                 marginTop: "10px",
                 cursor: "pointer",
                 width: "100%",
+                
               }}
+              onChange={(e) => handleCategoryInput("type", e.target.value, index, "expanded")}
             >
               <option value="">Product</option>
               <option value="">Order</option>
@@ -290,7 +307,7 @@ const Category = () => {
             <select
               onChange={(e) => {
                 handelparentcategoryId,
-                  handleCategoryInput("parentId", e.target.value, index, "checked")
+                  ("parentId", e.target.value, index, "checked")
               }}
               style={{
                 padding: "10px",
@@ -317,11 +334,12 @@ const Category = () => {
                 cursor: "pointer",
                 width: "100%",
               }}
+              onChange={(e) =>  handleCategoryInput("type", e.target.value, index, "checked")}
             >
-              <option value="">Product</option>
-              <option value="">Order</option>
-              <option value="">Cart</option>
-              <option value="">Page</option>
+              <option value="Product">Product</option>
+              <option value="Order">Order</option>
+              <option value="Cart">Cart</option>
+              <option value="Page">Page</option>
             </select>
           </Col>
         </Row>
@@ -475,7 +493,7 @@ const handleOkWithLogging = () => { handleOk();};
        ))}
   </Modal>
       {renderUpdateCategoriesModal()}
-      <UpdateCategoryModal sendDataToParent={cheker} filler={"Category"} array={checkedArray} />
+      {/* <UpdateCategoryModal sendDataToParent={cheker} filler={"Category"} array={checkedArray} /> */}
     </>
   );
 };

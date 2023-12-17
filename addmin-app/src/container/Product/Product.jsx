@@ -18,7 +18,8 @@ const Product = () => {
   const cloudname = 'duzddtszj'
   const upload_preset = 'images_uploads'
   console.log("This is the product",product);
-  const handleOk = async() => {
+  const handleOk = async () => {
+    
     setIsModalOpen(false);
     const form = new FormData();
     form.append("name", name);
@@ -36,6 +37,7 @@ const Product = () => {
       form.append("productPictures", url.toString());
     }
     dispatch(addProduct(form));
+    window.location.reload();
   };
   const [flag, setFlag] = useState(0);
   console.log(product);
@@ -94,7 +96,72 @@ const Product = () => {
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
   };
+  const data = [];
+  for (let i = 0; i < (product.products && product.products.length); i++) {
+    const productData = {
+      key: i + 1,
+      name: product.products[i].name,
+      price: product.products[i].price,
+      quantity: product.products[i].quantity,
+      description: product.products[i].description,
+    };
+
+    if (
+      product.products[i].productPictures &&
+      product.products[i].productPictures.length > 0
+    ) {
+      productData.productPictures = product.products[i].productPictures;
+    }
+
+    data.push(productData);
+  }
+  const data1 = [];
+  for (let i = 0; i < (product.products && product.products.length); i++) {
+    const maxLength = 15; // Set your desired maximum length
+
+// Assuming you are using this within a component or a function
+// and 'product' is a prop or a variable containing your product data
+const descriptionToDisplay =
+  product.products[i].description.length > maxLength
+    ? `${product.products[i].description.slice(0, maxLength)}...`
+    : product.products[i].description;
+
+    const productData = {
+      key: i + 1,
+      name: product.products[i].name,
+      price: product.products[i].price,
+      quantity: product.products[i].quantity,
+      description: descriptionToDisplay,
+    };
+
+    if (
+      product.products[i].productPictures &&
+      product.products[i].productPictures.length > 0
+    ) {
+      productData.productPictures = product.products[i].productPictures;
+    }
+
+    data1.push(productData);
+  }
   // table data
+  console.log("This is the product data",data);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  // Function to open the modal
+  const handleRowClick = (record) => {
+    setSelectedRow(record);
+    setIsModalVisible(true);
+    console.log(record);
+  }; 
+  const handleok = () => {
+    setIsModalVisible(false);
+  };
+  const handlecancel = () => {
+    setIsModalVisible(false);
+  };
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log("params", pagination, filters, sorter, extra);
+  };
   const columns = [
     {
       title: "Name",
@@ -103,15 +170,7 @@ const Product = () => {
         {
           text: "Joe",
           value: "Joe",
-        },
-        {
-          text: "Category 1",
-          value: "Category 1",
-        },
-        {
-          text: "Category 2",
-          value: "Category 2",
-        },
+       }
       ],
       filterMode: "tree",
       filterSearch: true,
@@ -181,44 +240,8 @@ const Product = () => {
       width: "30%",
     },
   ];
-  const data = [];
-  for (let i = 0; i < (product.products && product.products.length); i++) {
-    const productData = {
-      key: i + 1,
-      name: product.products[i].name,
-      price: product.products[i].price,
-      quantity: product.products[i].quantity,
-      description: product.products[i].description,
-    };
 
-    if (
-      product.products[i].productPictures &&
-      product.products[i].productPictures.length > 0
-    ) {
-      productData.productPictures = product.products[i].productPictures;
-    }
 
-    data.push(productData);
-  }
-  console.log("This is the product data",data);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  // Function to open the modal
-  const handleRowClick = (record) => {
-    setSelectedRow(record);
-    setIsModalVisible(true);
-    console.log(record);
-  };
-  const handleok = () => {
-    setIsModalVisible(false);
-  };
-  const handlecancel = () => {
-    setIsModalVisible(false);
-  };
-  const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
   return (
     <>
       <div>
@@ -325,7 +348,7 @@ const Product = () => {
       </Modal>
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={data1}
         onChange={onChange}
         onRow={(record) => ({
           onClick: () => handleRowClick(record),

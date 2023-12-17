@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import Categroy from '../Category/Categroy';
 import Product from '../Product/Product';
 import Order from '../Order/Order';
+import Newpage from '../Newpage/Newpage';
 const { Header, Content,  Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -81,7 +82,7 @@ const App = () => {
           <div style={{ padding: 24, minHeight: 720, background: colorBgContainer }}>
             <Routes>
               <Route path="/*" element={<div>Toms Profile</div>} />
-              <Route path="/page" element={<div>Bills Profile</div>} />
+              <Route path="/page" element={<div><Newpage /></div>} />
               <Route path="/category" element={<div><Categroy /></div>} />
               <Route path="/product" element={<div><Product /></div>} />
               <Route path="/order" element={<div><Order /></div>} />
