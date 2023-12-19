@@ -9,7 +9,7 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FloatButton } from 'antd';
 import { motion } from 'framer-motion';
 import { Tooltip } from 'antd';
-import { Slider, Switch } from 'antd';
+import { Slider } from 'antd';
 import { CiFilter } from "react-icons/ci";
 import { FaCartShopping } from "react-icons/fa6";
 const CustomTooltip = () => (
@@ -19,7 +19,8 @@ const CustomTooltip = () => (
 );
 
 function ProductsListPage() {
-  const {slug} = useParams();
+  const { slug } = useParams();
+  console.log(slug);
     const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProductsBySlug(slug));

@@ -1,34 +1,41 @@
-import Navbar from "../Navbar/Navbar"
-import product from '../../assets/product-2-1.jpg'
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import Navbar from "../Navbar/Navbar";
+
 const AddtoCart = () => {
+  const cart = useSelector((state) => state.cart);
+  const [cartitems, setCartitems] = useState([]);
+
+  useEffect(() => {
+    console.log("useEffect triggered");
+   
+    cart.cartItems && setCartitems(cart.cartItems);
+  
+  }, [cart.cartItems]);
+
+  console.log("cartitems", cartitems);
+
   return (
+    <div>
+      <Navbar />
       <div>
-          <Navbar />
-          <hr style={{ marginTop: '5rem' , marginLeft: '5rem',marginRight: '5rem', border:'none' , height: '3px', backgroundColor: '#eee'}} />
-          <div style={{ display: 'flex', flexDirection: 'row' , marginLeft: '5rem' , marginTop: '0rem' , marginBottom: '0rem' , justifyContent: 'space-around' }}>
-            <p >Image</p>
-            <p  >Name</p>
-            <p >Price</p>
-            <p  >Quantity</p>
-            <p  >Subtotal</p>
-            <p  >Remove</p>          
-          </div> 
-          <hr style={{ marginLeft: '5rem', marginRight: '5rem', border: 'none', height: '3px', backgroundColor: '#eee' }} />
-          <div style={{ display: 'flex', flexDirection: 'row', marginLeft: '5rem', marginTop: '0rem', marginBottom: '0rem' }}>
-            <img src={product} style={{height:'100px', weight:'100px', marginLeft:'4rem', marginRight:'6rem'}} />
-            <p style={{color:'green' , fontWeight:'bold', marginTop:'2.75rem',marginRight:'8rem' }}>J.Crew Mercantile -Sleeve</p>
-        <p style={{ color: 'green', fontWeight: 'bold', marginTop: '2.75rem' }}>$2533</p>
-        <input type="number" style={{ marginTop: '2rem', marginLeft: '11rem' , height: '40px' , width: '40px'}} value={1}></input>
-          </div>
-          <hr style={{ marginLeft: '5rem', marginRight: '5rem', border: 'none', height: '3px', backgroundColor: '#eee' }} />
+        <h1>Cart</h1>
+        <div>
+          {
+         Object.keys(cartitems).map((key) => {
+           return <div key={key}>
+             <img src={cartitems[key].img} />
+             <p>{cartitems[key].name}</p>
+             <p>{cartitems[key].price}</p>
+             <p>{cartitems[key].quantity}</p>
+             <input type="number" value={cartitems[key].qty} />
+           </div>;
+         })
+        }
+        </div>
       </div>
-  )
-}
+    </div>
+  );
+};
 
 export default AddtoCart;
-/*style={{ marginTop: '0rem' 
-style={{ margin : '0rem 12rem' }}
-style={{  marginTop: '0rem' 
-style={{ margin : '0rem 5rem' }}
-style={{ margin : '0rem 2rem' }},
-style={{   margin : '0rem 2rem' }} */

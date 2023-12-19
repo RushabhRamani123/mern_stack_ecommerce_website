@@ -1,7 +1,9 @@
 import { useEffect , useState } from 'react';
 import { useDispatch, useSelector ,} from 'react-redux'
 import { getProductDetailsById } from '../../actions/product'
-import { useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
+import { addToCart } from '../../actions/cart';
+import { Link } from 'react-router-dom';
 const ProductDetailspage = (props) => {
   const dispatch = useDispatch();
   const { productId } = useParams();
@@ -19,7 +21,7 @@ const ProductDetailspage = (props) => {
   console.log(productDetails)
   useEffect(() => {
     setPictureUrl(productDetails.productPictures && productDetails.productPictures[0]);
-    setFlag(productDetails.productPictures && productDetails.productPictures[0]);
+  setFlag(productDetails.productPictures && productDetails.productPictures[0]);
   }, [productDetails]);
   function handleClick (pic)  {
     setPictureUrl(pic);
@@ -35,8 +37,16 @@ const ProductDetailspage = (props) => {
       })
       }
     </div>
-      <div><img src={pictureUrl} style={{ height:'500px',width:'370px'}}/></div>
-
+        <div style={{ display: 'flex', flexDirection: 'column' }}><img src={pictureUrl} style={{ height: '500px', width: '370px' }} />
+          <Link to="/product/addtoCart" onClick={() => {
+            const { _id, name, price } = productDetails;
+            const img = productDetails.productPictures && productDetails.productPictures[0];
+            console.log({ _id, name, price, img });
+            dispatch(addToCart({ _id, name, price, img }));
+            
+        }}>Add to Cart</Link> 
+        </div>
+        
       </div>
       <div>
         <h1>{productDetails.name}</h1>

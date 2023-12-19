@@ -15,16 +15,11 @@ const initState = {
    GET_ALL_PRODUCTS_FAILURE, */
 const productReducer = (state = initState, action) => {
   switch (action.type) {
-    case productConstants.GET_ALL_PRODUCTS_SUCCESS:      
+    case productConstants.GET_PRODUCTS_BY_SLUG:      
       return {
         ...state,
         products: action.payload,
       }; 
-    case productConstants.GET_ALL_PRODUCTS_FAILURE:
-      return {
-        ...state,
-        error: action.payload.error,
-      }
     case productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS: 
       return {
         ...state,

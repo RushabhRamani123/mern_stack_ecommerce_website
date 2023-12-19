@@ -2,11 +2,7 @@ import { useState } from "react";
 import { Modal, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../actions/product";
-<<<<<<< HEAD
-import {intialData} from "../../actions/intialData"
-=======
->>>>>>> bae70329d0bda58bb530f089aba0ccd7f7c18d9e
-import axios from "axios";
+
 const Product = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
@@ -18,16 +14,8 @@ const Product = () => {
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
-  const cloudname = 'duzddtszj'
-  const upload_preset = 'images_uploads'
-<<<<<<< HEAD
-  console.log("This is the product",product);
-  const handleOk = async () => {
-    
-=======
-  console.log(product);
-  const handleOk = async() => {
->>>>>>> bae70329d0bda58bb530f089aba0ccd7f7c18d9e
+ console.log(product);
+  const handleOk = () => {
     setIsModalOpen(false);
     const form = new FormData();
     form.append("name", name);
@@ -35,25 +23,13 @@ const Product = () => {
     form.append("price", price);
     form.append("description", description);
     form.append("category", categoryId);
-    const formData = new FormData();
+
     for (let pic of productImage) {
-      formData.append("file", pic);
-      formData.append("upload_preset", upload_preset);
-      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudname}/image/upload`, formData)
-      let url = res.data.secure_url
-      console.log(url);
-      form.append("productPictures", url.toString());
+      form.append("productImage", pic);
     }
+
     dispatch(addProduct(form));
-    window.location.reload();
   };
-  const [flag, setFlag] = useState(0);
-  console.log(product);
-  if (flag == 0)
-  {
-    dispatch(intialData());
-    setFlag(1);
-    }
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -89,7 +65,6 @@ const Product = () => {
     console.log(categoryId);
   };
   const handelProductPicture = (e) => {
-    console.log(productImage);
     setProductPictures([...productImage, e.target.files[0]]);
   };
   const handleNameChange = (e) => {
@@ -104,72 +79,7 @@ const Product = () => {
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
   };
-  const data = [];
-  for (let i = 0; i < (product.products && product.products.length); i++) {
-    const productData = {
-      key: i + 1,
-      name: product.products[i].name,
-      price: product.products[i].price,
-      quantity: product.products[i].quantity,
-      description: product.products[i].description,
-    };
-
-    if (
-      product.products[i].productPictures &&
-      product.products[i].productPictures.length > 0
-    ) {
-      productData.productPictures = product.products[i].productPictures;
-    }
-
-    data.push(productData);
-  }
-  const data1 = [];
-  for (let i = 0; i < (product.products && product.products.length); i++) {
-    const maxLength = 15; // Set your desired maximum length
-
-// Assuming you are using this within a component or a function
-// and 'product' is a prop or a variable containing your product data
-const descriptionToDisplay =
-  product.products[i].description.length > maxLength
-    ? `${product.products[i].description.slice(0, maxLength)}...`
-    : product.products[i].description;
-
-    const productData = {
-      key: i + 1,
-      name: product.products[i].name,
-      price: product.products[i].price,
-      quantity: product.products[i].quantity,
-      description: descriptionToDisplay,
-    };
-
-    if (
-      product.products[i].productPictures &&
-      product.products[i].productPictures.length > 0
-    ) {
-      productData.productPictures = product.products[i].productPictures;
-    }
-
-    data1.push(productData);
-  }
   // table data
-  console.log("This is the product data",data);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  // Function to open the modal
-  const handleRowClick = (record) => {
-    setSelectedRow(record);
-    setIsModalVisible(true);
-    console.log(record);
-  }; 
-  const handleok = () => {
-    setIsModalVisible(false);
-  };
-  const handlecancel = () => {
-    setIsModalVisible(false);
-  };
-  const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
-  };
   const columns = [
     {
       title: "Name",
@@ -178,12 +88,20 @@ const descriptionToDisplay =
         {
           text: "Joe",
           value: "Joe",
-       }
+        },
+        {
+          text: "Category 1",
+          value: "Category 1",
+        },
+        {
+          text: "Category 2",
+          value: "Category 2",
+        },
       ],
       filterMode: "tree",
       filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
-      width: "20%",
+      width: "25%",
     },
     {
       title: "Price",
@@ -245,11 +163,66 @@ const descriptionToDisplay =
       filterMode: "tree",
       onFilter: (value, record) => record.address.startsWith(value),
       filterSearch: true,
-      width: "30%",
+      width: "25%",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      filters: [
+        {
+          text: "London",
+          value: "London",
+        },
+        {
+          text: "New York",
+          value: "New York",
+        },
+      ],
+      filterMode: "tree",
+      onFilter: (value, record) => record.address.startsWith(value),
+      filterSearch: true,
+      width: "25%",
     },
   ];
+  const data = [];
+  for (let i = 0; i < (product.products && product.products.length); i++) {
+    const productData = {
+      key: i + 1,
+      name: product.products[i].name,
+      price: product.products[i].price,
+      quantity: product.products[i].quantity,
+      description: product.products[i].description,
+      category: product.products[i].category,
+    };
 
+    if (
+      product.products[i].productPictures &&
+      product.products[i].productPictures.length > 0
+    ) {
+      productData.productPictures = product.products[i].productPictures;
+    }
 
+    data.push(productData);
+  }
+  console.log(data);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  // Function to open the modal
+  const handleRowClick = (record) => {
+    setSelectedRow(record);
+    setIsModalVisible(true);
+    console.log(record);
+  };
+  const handleok = () => {
+    setIsModalVisible(false);
+  };
+  const handlecancel = () => {
+    setIsModalVisible(false);
+  };
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log("params", pagination, filters, sorter, extra);
+  };
   return (
     <>
       <div>
@@ -356,7 +329,7 @@ const descriptionToDisplay =
       </Modal>
       <Table
         columns={columns}
-        dataSource={data1}
+        dataSource={data}
         onChange={onChange}
         onRow={(record) => ({
           onClick: () => handleRowClick(record),
@@ -374,18 +347,11 @@ const descriptionToDisplay =
       >
         {selectedRow && (
           <div>
-            <p><span style={{ fontWeight: "bold" }}>Name</span>:{selectedRow.name}</p>
-            <p><span style={{fontWeight:"bold"}}>Price</span>:{selectedRow.price}</p>
-            <p><span style={{fontWeight:"bold"}}>Quantity</span>:{selectedRow.quantity}</p>
-            <p><span style={{ fontWeight: "bold" }}>Description</span>:{selectedRow.description}</p>
-            <p><span style={{ fontWeight: "bold" }}>Product Image</span>:</p>
-            <div style={{ display: "flex", gap: "30px" }}>
-            {
-              selectedRow.productPictures && selectedRow.productPictures.map(picture => {
-                return (<img key={picture} src={picture} width="110px" height="50px" style={{ objectFit: "cover", borderRadius: "5px" , cursor:"pointer" }} />)
-              })
-            }
-           </div>
+            <p>Name:{selectedRow.name}</p>
+            <p>Price:{selectedRow.price}</p>
+            <p>Quantity:{selectedRow.quantity}</p>
+            <p>Description:{selectedRow.description}</p>
+            <p>Category:{selectedRow.category}</p>
           </div>
         )}
       </Modal>
