@@ -14,11 +14,11 @@ return async (dispatch) => {
 }
 }
 
-export const addToCart = (product, newQty = 1) => {
+export const addToCart = (product) => {
   return async (dispatch) => {
     const { cartItems } = store.getState().cart;  
     const qty = cartItems[product._id]
-      ? parseInt(cartItems[product._id].qty + newQty)
+      ? parseInt(cartItems[product._id].qty )
       : 1;
       cartItems[product._id] = {
         ...product,

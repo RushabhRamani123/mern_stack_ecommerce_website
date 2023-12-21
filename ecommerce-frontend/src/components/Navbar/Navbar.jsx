@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Modal } from "antd";
 import { login } from "../../actions/auth";
-
+import { signup } from "../../actions/user";
 const Navbar = () => {
   const category = useSelector((state) => state.category);
   const dispatch = useDispatch();
@@ -26,8 +26,31 @@ const Navbar = () => {
   const [isSingVisible, setIsSingupVisible] = useState(true);
   const [email, setemail] = useState(false);
   const [password, setpassword] = useState(false);
+  // const [name, setname] = useState(false);
+  const [firstname, setfirstname] = useState('');
+  const [lastname, setlastname] = useState('');
+  const [emailsignup, setemailsignup] = useState('');
+  const [passwordsignup, setpasswordsignup] = useState('');
   const user = useSelector((state) => state.user);
-  console.log(user);
+  const auth = useSelector((state) => state.auth);
+  console.log("This is the auth of the navbar:" + JSON.stringify(auth));
+  console.log("This is the user of the navbar:" + JSON.stringify(user));
+  // store the token in the localstorage
+  // get the token from the auth and then store it in the localstorage
+  // how to itterate through auth 
+  auth.token && localStorage.setItem("token", auth.token);
+
+  
+  const Signup = () => {
+    const user = {
+      firstName: firstname,
+      lastName: lastname,
+      email: emailsignup,
+      password: passwordsignup
+    }
+    console.log(user);
+    dispatch(signup(user));
+  }
   const handleOk = () => {
     setIsModalVisible(false);
   }
@@ -336,11 +359,12 @@ const Navbar = () => {
           ):(
               <>
                 <h1>Sign up</h1>
-                <input type="text" placeholder="Enter your First name"></input>
-                <input type="text" placeholder="Enter your Lastname"></input>
-                <input type="email" placeholder="Enter your email"></input>
-                <input type="password" placeholder="Enter your password"></input>
-                <button onClick={() =>setIsSingupVisible(true)}>Login</button>
+                <input type="text" placeholder="Enter your First name" onChange={(e) =>setfirstname(e.target.value)}></input>
+                <input type="text" placeholder="Enter your Lastname" onChange={(e) =>setlastname(e.target.value)}></input>
+                <input type="email" placeholder="Enter your email" onChange={(e) =>setemailsignup(e.target.value)}></input>
+                <input type="password" placeholder="Enter your password" onChange={(e) =>setpasswordsignup(e.target.value)}></input>
+                <button onClick={Signup}>Sign up</button> 
+                <button onClick={() => setIsSingupVisible(true)} >Login</button>
               </>
           )
             

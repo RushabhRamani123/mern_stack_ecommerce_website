@@ -2,10 +2,7 @@ import { useState } from "react";
 import { Modal, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../../actions/product";
-<<<<<<< HEAD
 import {intialData} from "../../actions/intialData"
-=======
->>>>>>> bae70329d0bda58bb530f089aba0ccd7f7c18d9e
 import axios from "axios";
 const Product = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,32 +17,30 @@ const Product = () => {
   const product = useSelector((state) => state.product);
   const cloudname = 'duzddtszj'
   const upload_preset = 'images_uploads'
-<<<<<<< HEAD
+
   console.log("This is the product",product);
   const handleOk = async () => {
-    
-=======
   console.log(product);
-  const handleOk = async() => {
->>>>>>> bae70329d0bda58bb530f089aba0ccd7f7c18d9e
-    setIsModalOpen(false);
-    const form = new FormData();
-    form.append("name", name);
-    form.append("quantity", quantity);
-    form.append("price", price);
-    form.append("description", description);
-    form.append("category", categoryId);
-    const formData = new FormData();
-    for (let pic of productImage) {
-      formData.append("file", pic);
-      formData.append("upload_preset", upload_preset);
-      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudname}/image/upload`, formData)
-      let url = res.data.secure_url
-      console.log(url);
-      form.append("productPictures", url.toString());
-    }
-    dispatch(addProduct(form));
-    window.location.reload();
+    const handleOk = async () => {
+      setIsModalOpen(false);
+      const form = new FormData();
+      form.append("name", name);
+      form.append("quantity", quantity);
+      form.append("price", price);
+      form.append("description", description);
+      form.append("category", categoryId);
+      const formData = new FormData();
+      for (let pic of productImage) {
+        formData.append("file", pic);
+        formData.append("upload_preset", upload_preset);
+        const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudname}/image/upload`, formData)
+        let url = res.data.secure_url
+        console.log(url);
+        form.append("productPictures", url.toString());
+      }
+      dispatch(addProduct(form));
+      window.location.reload();
+    };
   };
   const [flag, setFlag] = useState(0);
   console.log(product);
@@ -392,5 +387,4 @@ const descriptionToDisplay =
     </>
   );
 };
-
 export default Product;

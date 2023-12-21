@@ -14,12 +14,12 @@ const initState = {
 export default (state = initState, action) => {
   switch (action.type) {
     case authConstants.LOGIN_REQUEST:
-  return{
+      return {
         ...state,
         authenticating: true,
       };
     case authConstants.LOGIN_SUCCESS:
-      return{
+      return {
         ...state,
         authenticate: true,
         user: action.payload.user,
@@ -28,11 +28,14 @@ export default (state = initState, action) => {
 
     case authConstants.SIGNUP_SUCCESS: {
       console.log("SIGNUP SUCCESS");
-      return{
+      return {
         ...state,
         authenticate: true,
       };
-    
     }
+    default:
+      return state;
+    
+    
   }
 };

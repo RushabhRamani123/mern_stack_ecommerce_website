@@ -13,7 +13,8 @@ const userReducer = (state = initState, action) => {
     //   };
     //   break;
       case authConstants.LOGIN_SUCCESS:
-          
+      console.log("Login Success");
+      console.log(action.payload);
       return{
         ...state,
         loading: false,

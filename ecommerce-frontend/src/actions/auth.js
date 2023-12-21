@@ -6,7 +6,7 @@ export const login = (user) => {
     dispatch({
       type: authConstants.LOGIN_REQUEST,
     });
-    const res = await axios.post("/admin/signin", {
+    const res = await axios.post("/signin", {
       email: user.email,
       password: user.password,
     });
