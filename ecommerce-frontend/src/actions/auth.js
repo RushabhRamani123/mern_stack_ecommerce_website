@@ -1,6 +1,5 @@
 import axios from "../helpers/axios";
 import { authConstants } from "./constants";
-//authConstantsants
 export const login = (user) => {
   return async (dispatch) => {
     dispatch({
@@ -11,6 +10,7 @@ export const login = (user) => {
       password: user.password,
     });
     if (res.status === 200) {
+      console.log(res.data);
       const { token, user } = res.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
@@ -35,14 +35,11 @@ export const login = (user) => {
     }
   };
 };
-
-
 export const isuserLoggedIn = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
     if (token) {
       const user = JSON.parse(localStorage.getItem("user"));
-      
       dispatch({
         type: authConstants.LOGIN_SUCCESS,
         payload: {

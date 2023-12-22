@@ -16,6 +16,7 @@ const initialDataRotes = require("./routes/admin/intialData");
 // routes for the page
 const pageRoutes = require("./routes/admin/page");
 // environment variables or constants
+const addressRoutes = require("./routes/address");
 env.config();
 //database connection
 const mongoose = require("mongoose");
@@ -44,6 +45,7 @@ app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", cartRoutes);
 app.use("/api", initialDataRotes);
+app.use("/api", addressRoutes);
 //listening to the port
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);

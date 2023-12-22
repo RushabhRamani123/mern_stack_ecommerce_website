@@ -80,7 +80,8 @@ export const updateCategory = (formData) => {
 export const deleteCategory = (Ids) => {
     return async dispatch => {
         dispatch({ type: categoryConstansts.DELETE_CATEGORIES_REQUEST });
-        const res = await axios.post('/category/delete',{payload:{Ids}},{headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }});
+        const res = await axios.post('/category/delete', { payload: { Ids } },
+            { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
         if (res.status === 200) {
             dispatch(getAllCategory());
             dispatch({

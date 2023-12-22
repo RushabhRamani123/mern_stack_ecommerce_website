@@ -1,34 +1,87 @@
-const Cart = require("../models/cart");
 
-exports.addItemtoCart = async (req, res) => {
+const Cart = require('../models/cart');
+// const useSelector = require('react-redux').useSelector;
+// helper function to update
+async function runUpdate(condition, update) {
+  return Cart.findOneAndUpdate(condition, update, { new: true }).exec();
+}
+exports.addItemToCart = async (req, res) => {
   try {
-    let cart = await Cart.findOne({ user: req.user._id });
+    // find the user of the cart 
+    const cart = await Cart.findOne({ user: req.user._id }).exec();
+    // if found then update
+    if (cart) {
+    
+      let promiseArray = [];
+      req.body.cartItems.forEach((cartItem) => {
+        const product = cartItem.product;
+        const item = cart.cartItems.find((c) => c.product.toString() === product.toString());
+        let condition, update;
 
-    if (!cart) {
-      cart = new Cart({
-        user: req.user._id,
-        cartItems: [req.body.cartItems],
+        if (item) {
+          condition = { user: req.user._id, "cartItems.product": product };
+          update = {
+            $set: {
+              "cartItems.$": cartItem,
+            },
+          };
+        } else {
+          condition = { user: req.user._id };
+          update = {
+            $push: {
+              cartItems: cartItem,
+            },
+          };
+        }
+
+        promiseArray.push(runUpdate(condition, update));
       });
-      const savedCart = await cart.save();
-      return res.status(200).json(savedCart);
+
+      await Promise.all(promiseArray);
+      res.status(201).json({ message: "Cart updated successfully" });
     } else {
-      let cartItems = cart.cartItems.find((item) => {
-        return item.product == req.body.cartItems.product;
+      const newCart = new Cart({
+        user: req.user._id,
+        cartItems: req.body.cartItems,
       });
-      if (cartItems) {
-        cartItems.quantity = cartItems.quantity + 1;
-        cartItems.price = cartItems.price + req.body.cartItems.price;
-        const savedCart = await cart.save();
-        return res.status(200).json(savedCart);
-      } else {
-        cart.cartItems.push(req.body.cartItems);
-        const savedCart = await cart.save();
-        return res.status(200).json(savedCart);
-      }
+
+      const savedCart = await newCart.save();
+      res.status(201).json({ cart: savedCart });
     }
-  } catch (err) {
-    return res.status(400).json({
-      message: "Something went wrong in the cart controller",
-    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+exports.getCartItems = async (req, res) => {
+  // console.log(user._id);
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    
+    const cart = await Cart.findOne({ user: req.user._id }).populate("cartItems.product", "_id name price productPictures").exec();
+    if (cart) {
+      let cartItems = {};
+      cart.cartItems.forEach((item, index) => {
+        cartItems[item.product._id.toString()] = {
+          _id: item.product._id.toString(),
+          name: item.product.name,
+          img: item.product.productPictures.length > 0 ? item.product.productPictures[0].img : null,
+          price: item.product.price,
+          qty: item.quantity,
+        };
+      });
+      res.status(200).json({ cartItems });
+    } else {
+      res.status(404).json({ error: "Cart not found" });
+    }
+  } catch (error) {
+    console.error("Error in getCartItems:", error);
+    res.status(500).json({ error: error.message || "Internal server error" });
+  }
+};
+

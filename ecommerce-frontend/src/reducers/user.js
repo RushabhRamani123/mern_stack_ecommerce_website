@@ -1,4 +1,5 @@
 import { authConstants } from "../actions/constants";
+import { userConstants } from "../actions/constants";
 const initState = {
   error: null,
   message: "",
@@ -6,6 +7,41 @@ const initState = {
 };
 const userReducer = (state = initState, action) => {
   switch (action.type) {
+    case userConstants.GET_USER_ADDRESS_REQUEST:
+      return  {
+        ...state,
+        loading: true,
+      };
+    case userConstants.GET_USER_ADDRESS_SUCCESS:
+      console.log("Get User Address Success");
+      return  {
+        ...state,
+        add: action.payload.address,
+        loading: false,
+      };
+    case userConstants.GET_USER_ADDRESS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+    case userConstants.ADD_USER_ADDRESS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+      case userConstants.ADD_USER_ADDRESS_SUCCESS:
+      return {
+        ...state,
+        address: action.payload.address,
+        loading: false,
+      };
+    case userConstants.ADD_USER_ADDRESS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
     // case userContants.USER_REGISTER_REQUEST:
     //   state = {
     //     ...state,
