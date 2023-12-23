@@ -5,45 +5,69 @@ import { addToCart,getCartItems } from "../../actions/cart";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
+import './AddtoCart.css';
+import { FaWallet } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
+import { PiHouseSimpleFill } from "react-icons/pi";
 const AddtoCart = () => {
+  const [flagOff, setFlagOff] = useState(true);
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const [cartitems, setCartitems] = useState([]);
+  const [flag, setFlag] = useState(true);
   const dispatch = useDispatch();
-  const[Total,setTotal] = useState(0);
+  const [Total, setTotal] = useState(0);
   useEffect(() => {
-    cart.cartItems && setCartitems(cart.cartItems);
-   
+    cart.cartItems && setCartitems(cart.cartItems); 
+    if (flag===true && JSON.stringify(cartitems) !== "{}" || JSON.stringify(cartitems) !== "[]") {
+      let total = 0;
+      Object.keys(cartitems).map((key) => {
+        total += cartitems[key].qty * cartitems[key].price;
+      });
+    
+      setTotal(total);
+      setFlag(false);
+    }
   }, [cartitems]);
   
   useEffect(() => {
-    if (auth.authenticate) {
-      dispatch(getCartItems());
+    if (localStorage.getItem("token").length > 0) {
+      if (cartitems.length > 0 && flagOff === true) {
+        alert("This is the action of cart");
+        dispatch(getCartItems());
+        alert("This is the action of cart again");
+        Object.keys(cart.cartItems).map((key) => {
+        const { _id, name, price, img, qty } = cartitems[key];
+        // setTotal(Total + qty * price);
+        dispatch(addToCart({ _id, name, price, img, qty }));
+        setFlagOff(false);    
+      })
+      } 
     }
   },[auth.authenticate]);
  
  
-  console.log("cartitems", cartitems);
+ 
+
+
 
   return (
-    <div>
+    <div style={{overflow:'hidden'}}>
       <Navbar />
-      <div style={{ display: "flex", flexDirection: "row"}}>
-        <div style={{marginLeft:'5rem' ,width:'70%'}}>
-          {/* <h1 style={{color:'green'}}>My Cart</h1> */}
-         
-  <table style={{ width: "85%",textAlign: "center" , marginTop:'5rem',border:'1px solid black'}}>
-            <thead>
+      <div style={{ display: "flex", flexDirection: "row",position:'relative'}}>
+        <div style={{margin:'5rem' ,width:'100%'}}>   
+        <table style={{ width: "100%",textAlign: "center"}}className="content-table">
+            <thead style={{borderBottom:'1px solid black'}}>
               <tr style={{borderBottom:'1px solid black'}}>
-      <th scope="col" colSpan="2" style={{ alignContent: "center" }}>Image</th>
+                <th scope="col" colSpan="2" style={{ alignContent: "center" }}>Image</th>
       <th scope="col" colSpan="2" style={{ textAlign: "center", }}>Name</th>
       <th scope="col" colSpan="2" style={{ textAlign: "center"}}>Price</th>
       <th scope="col" colSpan="2" style={{ textAlign: "center" }}>Quantity</th>
-      <th scope="col" colSpan="2" style={{ textAlign: "center" }}>Sub Total</th>
-      <th scope="col" colSpan="2" style={{ textAlign: "center" }}>Remove</th></tr> 
-     
-  </thead>
-  <tbody>
+      <th scope="col" colSpan="2" style={{ textAlign: "center" }}>Sub Total</th>          
+                  <th scope="col" colSpan="2" style={{ textAlign: "center" }}>Remove</th>
+              </tr> 
+            </thead>
+            <tbody>
     {Object.keys(cartitems).map((key) => (
       <tr key={key}>
         <td colSpan="2">
@@ -53,22 +77,21 @@ const AddtoCart = () => {
             alt={cartitems[key].name}
           />
         </td>
-        <td colSpan="2" style={{color:'green',fontWeight:'bold'}}>{cartitems[key].name}</td>
-        <td colSpan="2">{cartitems[key].price}</td>
+        <td colSpan="2" style={{color:'#009879',fontWeight:'bold'}}>{cartitems[key].name}</td>
+        <td colSpan="2">₹{cartitems[key].price}</td>
         <td colSpan="2">
           
           <button
             style={{
-              border: "1px solid green",
-              padding: "3px 7px",
-              borderRadius: "50%",
+              backgroundColor: "transparent",
+              border: "none",
               fontWeight: "bold",
-              // marginRight: "5px",
             }}
             onClick={() => {
               console.log('Enter here in the button + + ');
               const updatedCartItems = { ...cartitems };
               updatedCartItems[key].qty = cartitems[key].qty + 1;
+              setFlag(true);
               console.log(updatedCartItems[key]);
               setCartitems(updatedCartItems);
               const { _id, name, price, img, qty } = updatedCartItems[key];
@@ -81,17 +104,17 @@ const AddtoCart = () => {
           <input type="text" style={{width:'30px', height:'30px', textAlign:'center'}} value={cartitems[key].qty}/>
           <button
             style={{
-              border: "1px solid green",
-              padding: "3px 9px",
-              borderRadius: "50%",
+              backgroundColor: "transparent",
+              border: "none",
               fontWeight: "bold",
               marginRight: "5px",
             }}
             onClick={() => {
               const updatedCartItems = { ...cartitems };
-              const prev_qty = cartitems[key].qty;
+             
               if (cartitems[key].qty === 1) {return;}
               updatedCartItems[key].qty = cartitems[key].qty - 1;
+              setFlag(true);
               setCartitems(updatedCartItems);
               console.log(updatedCartItems[key]);
               const { _id, name, price, img, qty } = updatedCartItems[key];
@@ -102,100 +125,105 @@ const AddtoCart = () => {
             -
           </button>
         </td>
-        <td colSpan="2">{cartitems[key].price * cartitems[key].qty}</td>
+        <td colSpan="2">₹{cartitems[key].price * cartitems[key].qty}</td>
         <td colSpan="2"><MdDelete style={{color:'red',fontSize:'20px'}} onClick={() => {}}/></td>
       </tr>
     ))}
   </tbody>
-</table>;
+          </table>
+          <p style={{ color: '#b7b7b7', fontSize: '14px', marginTop: '10px', fontWeight: 'bold', top, left: '94%', cursor: 'pointer', position: 'relative' }} >X clear cart</p>
+          <Link to="/" style={{
+            position: 'relative',
+            left: '85%',
+            width: '100%',
+            height: '40px',
+            backgroundColor: '#009879',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            marginTop: '10px',
+            fontWeight: 'bold',
+            marginBottom: '10px',
+            textDecoration: 'none',
+            padding: '15px',
+            alignItems: 'center',
+          }}><FaCartShopping style={{color:'white',fontSize:'20px',marginTop:'5px'}}/> Continue Shopping</Link>
+           
+          {/* <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{border:'1px solid #b7b7b7'}}></div>
+            <RiFingerprintLine style={{color:'#009879',fontSize:'20px',marginTop:'5px'}} />
+        </div> */}
+           
         </div>
-        
-        <div style={{ marginTop:'5rem',border:'1px solid black' , height:'300px',width:'300px',marginRight:'5rem'}}>
-          <div >
-            <h1 style={{color:'green' , fontWeight:'bold',margin:'0px'}}>Cart Total</h1>
-            <div style={{border:'1px solid black',margin:'1rem',padding:'1rem'}}>
-
-            </div>
-          </div>
-        <Link to="/checkout">Checkout </Link>
-       </div>
       </div>
+      <div style={{display:'flex',flexDirection:'row'}}>
+      <div style={{ marginLeft:'5rem',marginRight:'5rem',width:'40%'}}>
+                                <div style={{padding:'30px',border:'1px solid #b7b7b7' , display:'block' , width:'100%', borderRadius:'4px'}}>
+          <div style={{ marginBottom: '1rem!important' }}>
+                                      <h4 style={{marginBottom:'10px',marginTop:'0px', fontWeight:'700', fontSize:'1.5rem', color:'#009879'}}>Cart Totals</h4>
+                                    </div>
+                                    <div style={{ marginBottom: '1rem!important' }}>
+                                        <table style={{borderCollapse:'collapse',width:'100%'}}>
+                                            <tbody style={{border:'1px solid #b7b7b7'}}>
+                                                <tr>
+                                                    <td style={{border:'1px solid #b7b7b7' , padding:'20px'}}>Cart Subtotal<span style={{color:'#009879',fontWeight:'bold'}}>({Object.keys(cartitems).length}):</span></td>
+                                                    <td style={{border:'1px solid #b7b7b7' ,color:'#009879',fontWeight:'bold',padding:'20px'}}><span >{Total}</span></td>
+                                                </tr>
+                                                 <tr>
+                                                    <td style={{border:'1px solid #b7b7b7' , padding:'20px'}}>Shipping</td>
+                                                    <td style={{border:'1px solid #b7b7b7' , padding:'20px'}}> <i className="ti-gift mr-5"></i> Free Shipping</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style={{border:'1px solid #b7b7b7', padding:'20px'}}>Total:</td>
+                                                    <td style={{border:'1px solid #b7b7b7' , padding:'20px' , color:'#009879',fontWeight:'bold' , fontSize:'20px'}}><strong><span >₹{Total}</span></strong></td>
+                                                </tr>
+                                                
+              </tbody>
+                <div style={{ marginTop: '20px' }}
+                  onClick={() => {
+                  
+                     Object.keys(cartitems).map((key) => {
+                       const { _id, name, price, img, qty } = cartitems[key];
+                       dispatch(addToCart({ _id, name, price, img, qty }));
+                     })
+                }}    
+                >
+               
+                  <Link 
+                    to="/checkout"
+                style={{
+                  border: 'none',
+                  backgroundColor: '#009879',
+                  color: 'white', padding: '15px',
+                  width: '100%', borderRadius: '4px',
+                  textAlign: 'center',
+                  textDecoration: 'none',}}><FaWallet style={{ fontSize: '20px',marginTop:'5px'}}/> Proceed To CheckOut</Link>
+              </div></table></div></div></div>
+          <div>
+          <h1 style={{ marginLeft: '5rem', fontWeight: '700', fontSize: '1.5rem', color: '#009879' }}>Apply Cuppon</h1>
+          <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
+            <input
+              type="text"
+              placeholder="Enter Cuppon Code"
+              style={{
+                marginLeft: '5rem',
+                border: '1px solid #b7b7b7',
+                borderRadius: '4px',
+                width: '200px',
+                height: '40px',
+                paddingLeft: '15px',
+                paddingRight: '15rem',
+              }}
+            />
+            <p style={{
+              marginLeft: '10px', backgroundColor: '#009879', color: 'white', border: 'none',
+              borderRadius: '4px', padding: '9px', width: '100%', marginTop: '0px'
+            }}><PiHouseSimpleFill style={{color:'white',fontSize:'20px'}}/> Apply</p>
+          </div>
+          </div>
+       </div>
     </div>
   );
 };
-
 export default AddtoCart;
-/*
- {
-         Object.keys(cartitems).map((key) => {
-           return <>
-            <table style={{ width: '100%' }}>
-  <tbody>
-    {Object.keys(cartitems).map((key) => (
-      <tr key={key}>
-        <td style={{ display: 'flex', flexDirection: 'row' }}>
-          <img
-            style={{ height: '180px', width: '150px' }}
-            src={cartitems[key].img}
-            alt={cartitems[key].name}
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
-            <button
-              style={{
-                border: '1px solid green',
-                padding: '5px 12px',
-                borderRadius: '50%',
-                fontWeight: 'bold',
-                marginRight: '5px',
-              }}
-              onClick={() => {
-                console.log('Enter here in the button + + ');
-                const updatedCartItems = { ...cartitems };
-                updatedCartItems[key].qty = cartitems[key].qty + 1;
-                console.log(updatedCartItems[key]);
-                setCartitems(updatedCartItems);
-                const { _id, name, price, img, qty } = updatedCartItems[key];
-                setTotal(Total + qty * price);
-                dispatch(addToCart({ _id, name, price, img, qty }));
-              }}
-            >
-              +
-            </button>
-            <input
-              type="text"
-              style={{ width: '30px', height: '30px', textAlign: 'center' }}
-              value={cartitems[key].qty}
-            />
-            <button
-              style={{
-                border: '1px solid green',
-                padding: '5px 15px',
-                borderRadius: '50%',
-                fontWeight: 'bold',
-                marginLeft: '5px',
-              }}
-              onClick={() => {
-                const updatedCartItems = { ...cartitems };
-                const prev_qty = cartitems[key].qty;
-                if (cartitems[key].qty === 1) {return;}
-                updatedCartItems[key].qty = cartitems[key].qty - 1;
-                setCartitems(updatedCartItems);
-                console.log(updatedCartItems[key]);
-                const { _id, name, price, img, qty } = updatedCartItems[key];
-                setTotal(Total - (prev_qty - qty) * price);
-                dispatch(addToCart({ _id, name, price, img, qty }));}}>-</button>
-          </div>
-        </td>
-        <td>
-          <p style={{ margin: '0px', fontWeight: '700', fontSize: '20px' }}>{cartitems[key].name}</p>
-          <p style={{ marginTop: '5px', marginBottom: '5px', color: 'green', fontWeight: '500', fontSize: '20px' }}>
-            ₹{cartitems[key].price}
-          </p>
-          <p style={{ margin: '0px' }}>{cartitems[key].quantity}</p>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>;</>})
-        }
-*/
+ 

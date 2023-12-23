@@ -14,8 +14,16 @@ import { useEffect } from "react";
 import { Modal } from "antd";
 import { login } from "../../actions/auth";
 import { signup } from "../../actions/user";
+import {  Badge } from 'antd';
+import { Link } from "react-router-dom";
 const Navbar = () => {
   const category = useSelector((state) => state.category);
+  const cartitems = useSelector((state) => state.cart);
+
+  // useEffect(() => {
+  //   console.log(cartitems);
+  // }, [cartitems]);
+  // alert(cartitems.cartItems.length);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllCategory());
@@ -213,8 +221,22 @@ const Navbar = () => {
             </div>
           )}
           <div style={{ padding: "0.75rem", display: "flex", gap: "1em" }}>
-            <AiOutlineHeart style={{ fontSize: "2rem" }} />
-            <PiShoppingCartBold style={{ fontSize: "2rem" }} />
+            <div
+              // style={{ display: 'none' }}
+            >
+            <Badge count={3} size="small" color="red">
+              <AiOutlineHeart style={{ fontSize: "2rem" }} />
+            </Badge>
+          </div>
+            <div
+              style={{ '@media (max-width: 780px)': { display: 'none' } }}
+            >
+            <Link to="/product/addtoCart">
+            <Badge count={3} size="small" color="green">
+              <PiShoppingCartBold style={{ fontSize: "2rem" }} />
+              </Badge>
+              </Link>
+           </div>
           </div>
         </div>
         <div
@@ -236,7 +258,8 @@ const Navbar = () => {
                   setClickCategories(!clickCategories);
                   setFlag(false);
                 }}
-                style={{ fontSize: "1.5rem", color: "grey",cursor: "pointer"}}
+                style={{
+                  fontSize: "1.5rem", color: "grey", cursor: "pointer", }}
               />
               <h3 style={{ fontSize: "1.5rem", margin: "0px" , cursor: "pointer" , color:"green"}}>
                 Browse Categories

@@ -1,17 +1,12 @@
-
 const Cart = require('../models/cart');
-// const useSelector = require('react-redux').useSelector;
-// helper function to update
+
 async function runUpdate(condition, update) {
   return Cart.findOneAndUpdate(condition, update, { new: true }).exec();
 }
 exports.addItemToCart = async (req, res) => {
   try {
-    // find the user of the cart 
     const cart = await Cart.findOne({ user: req.user._id }).exec();
-    // if found then update
     if (cart) {
-    
       let promiseArray = [];
       req.body.cartItems.forEach((cartItem) => {
         const product = cartItem.product;

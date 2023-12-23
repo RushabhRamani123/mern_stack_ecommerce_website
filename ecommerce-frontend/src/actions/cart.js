@@ -4,6 +4,7 @@ import store from "../store";
 const getCartItems = () => {
   return async (dispatch) => {
     try {
+
       dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
       console.log("This is the action of cart");
       console.log(localStorage.getItem('token'));
@@ -29,6 +30,8 @@ const getCartItems = () => {
 
 export const addToCart = (product) => {
   return async (dispatch) => {
+    alert("This is the action of cart etijwe ner;n");
+    console.log("addToCart::", product);
     const {
       cart: { cartItems },
       auth,

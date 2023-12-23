@@ -19,7 +19,6 @@ export const getAllCategory = () => {
         }
     }
 }
-
 export const addCategory = (form) => {
     return async dispatch => {
         dispatch({type: categoryConstansts.ADD_NEW_CATEGORY_REQUEST});
