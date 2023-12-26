@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Modal, Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../../actions/product";
-import {intialData} from "../../actions/intialData"
+import { addProduct,deleteProductById } from "../../actions/product";
+import { intialData } from "../../actions/intialData"
+import './product.css';
 import axios from "axios";
 const Product = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,16 +20,10 @@ const Product = () => {
   const upload_preset = 'images_uploads'
 
   console.log("This is the product",product);
-  const handleOk = async () => {
   console.log(product);
     const handleOk = async () => {
       setIsModalOpen(false);
-      const form = new FormData();
-      form.append("name", name);
-      form.append("quantity", quantity);
-      form.append("price", price);
-      form.append("description", description);
-      form.append("category", categoryId);
+      let productPictures = [];
       const formData = new FormData();
       for (let pic of productImage) {
         formData.append("file", pic);
@@ -36,12 +31,18 @@ const Product = () => {
         const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudname}/image/upload`, formData)
         let url = res.data.secure_url
         console.log(url);
-        form.append("productPictures", url.toString());
+        productPictures.push(url.toString());
+      }
+      const form = {
+        name: name,
+        quantity: quantity,
+        price: price,
+        description: description,
+        category: categoryId,
+        productPictures: productPictures
       }
       dispatch(addProduct(form));
-      window.location.reload();
     };
-  };
   const [flag, setFlag] = useState(0);
   console.log(product);
   if (flag == 0)
@@ -101,12 +102,14 @@ const Product = () => {
   };
   const data = [];
   for (let i = 0; i < (product.products && product.products.length); i++) {
+    console.log(product.products[i]._id);
     const productData = {
       key: i + 1,
       name: product.products[i].name,
       price: product.products[i].price,
       quantity: product.products[i].quantity,
       description: product.products[i].description,
+      id: product.products[i]._id
     };
 
     if (
@@ -118,42 +121,14 @@ const Product = () => {
 
     data.push(productData);
   }
-  const data1 = [];
-  for (let i = 0; i < (product.products && product.products.length); i++) {
-    const maxLength = 15; // Set your desired maximum length
 
-// Assuming you are using this within a component or a function
-// and 'product' is a prop or a variable containing your product data
-const descriptionToDisplay =
-  product.products[i].description.length > maxLength
-    ? `${product.products[i].description.slice(0, maxLength)}...`
-    : product.products[i].description;
-
-    const productData = {
-      key: i + 1,
-      name: product.products[i].name,
-      price: product.products[i].price,
-      quantity: product.products[i].quantity,
-      description: descriptionToDisplay,
-    };
-
-    if (
-      product.products[i].productPictures &&
-      product.products[i].productPictures.length > 0
-    ) {
-      productData.productPictures = product.products[i].productPictures;
-    }
-
-    data1.push(productData);
-  }
-  // table data
   console.log("This is the product data",data);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   // Function to open the modal
   const handleRowClick = (record) => {
     setSelectedRow(record);
-    setIsModalVisible(true);
+    // setIsModalVisible(true);
     console.log(record);
   }; 
   const handleok = () => {
@@ -162,91 +137,102 @@ const descriptionToDisplay =
   const handlecancel = () => {
     setIsModalVisible(false);
   };
-  const onChange = (pagination, filters, sorter, extra) => {
-    console.log("params", pagination, filters, sorter, extra);
+  const onChange = (filters, sorter, extra) => {
+    console.log("params",  filters, sorter, extra);
   };
   const columns = [
     {
-      title: "Name",
+      title: 'Image',
+      dataIndex: 'productPictures',
+      titleStyle:{ background: 'blue', color: 'white', fontWeight: 'bold' },
+      onFilter: (value, record) => record.address.startsWith(value),
+      width: '15%',
+      render: (text, record) => (
+        <img src={record.productPictures[0]} alt="product" style={{ width: '50px', height: '50px' }} />
+      ),
+    },
+    {
+      title:"Name",
       dataIndex: "name",
-      filters: [
-        {
-          text: "Joe",
-          value: "Joe",
-       }
-      ],
-      filterMode: "tree",
+      filters: data.map(item => ({
+        text: item.name,
+        value: item.name,
+      })),
+      filterDropdownStyle: { backgroundColor: 'lightblue', padding: '8px' },
+      filterMode: "single",
       filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
       width: "20%",
+
     },
     {
       title: "Price",
       dataIndex: "price",
-      filters: [
-        {
-          text: "Joe",
-          value: "Joe",
-        },
-        {
-          text: "Category 1",
-          value: "Category 1",
-        },
-        {
-          text: "Category 2",
-          value: "Category 2",
-        },
-      ],
-      filterMode: "tree",
-      filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
       width: "15%",
     },
     {
       title: "Qauntity",
       dataIndex: "quantity",
-      filters: [
-        {
-          text: "Joe",
-          value: "Joe",
-        },
-        {
-          text: "Category 1",
-          value: "Category 1",
-        },
-        {
-          text: "Category 2",
-          value: "Category 2",
-        },
-      ],
-      filterMode: "tree",
-      filterSearch: true,
       onFilter: (value, record) => record.name.startsWith(value),
       width: "15%",
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      filters: [
-        {
-          text: "London",
-          value: "London",
-        },
-        {
-          text: "New York",
-          value: "New York",
-        },
-      ],
-      filterMode: "tree",
-      onFilter: (value, record) => record.address.startsWith(value),
-      filterSearch: true,
-      width: "30%",
+
+    {title: 'Action',
+    width: '15%',
+    dataIndex: 'id',
+    render: (record) => (
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          alignItems: 'center',
+          fontWeight:'bold',
+          cursor: 'pointer',
+          border: 'none',
+        }}
+      >
+        <button
+          style={{
+            padding: '10px',
+            borderRadius: '10px',
+            backgroundColor: '#046963',
+            color: 'white',
+          }}
+          onClick={() => {
+            alert(`Are you sure you want to delete this product with ID: ${record}`);
+            setIsModalVisible(false);
+            const payload = {
+              productId: record
+            };
+            alert(JSON.stringify(payload));
+            dispatch(deleteProductById(payload));
+          }}
+        >
+          Delete
+        </button>
+          <button
+            style={{
+              padding: "10px",
+              borderRadius: "10px",
+              backgroundColor: "#046963",
+              color: "white",
+            }}
+          onClick={() => setIsModalVisible(true)}
+          >
+          Info
+        </button>
+        </div>
+        
+        ),
     },
   ];
 
 
   return (
     <>
+    
+      <div style={{padding:"24px"}}>
       <div>
         <div
           style={{
@@ -350,15 +336,17 @@ const descriptionToDisplay =
         />
       </Modal>
       <Table
-        columns={columns}
-        dataSource={data1}
-        onChange={onChange}
-        onRow={(record) => ({
-          onClick: () => handleRowClick(record),
-        })}
-      />
-      ;
+  columns={columns}
+  dataSource={data}
+  onChange={onChange}
+  style={{ marginTop: "2rem" , width: "100%" , boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px;"}}
+  onRow={(record) => ({
+    onClick: () => handleRowClick(record),
+  })}
+/>
+
       <Modal
+        okButtonProps={{ style: { backgroundColor: "green" , color: "white" } }}
         title="Row Details"
         open={isModalVisible}
         onOk={handleok}
@@ -366,6 +354,9 @@ const descriptionToDisplay =
         onRow={(record) => ({
           onClick: () => handleRowClick(record),
         })}
+        cancelButtonProps={{
+          style: { backgroundColor: "red", color: "white", fontWeight: "bold" },
+        }}
       >
         {selectedRow && (
           <div>
@@ -374,16 +365,17 @@ const descriptionToDisplay =
             <p><span style={{fontWeight:"bold"}}>Quantity</span>:{selectedRow.quantity}</p>
             <p><span style={{ fontWeight: "bold" }}>Description</span>:{selectedRow.description}</p>
             <p><span style={{ fontWeight: "bold" }}>Product Image</span>:</p>
-            <div style={{ display: "flex", gap: "30px" }}>
+            <div style={{ display: "flex", gap: "30px" ,overflow: "hidden" }}>
             {
               selectedRow.productPictures && selectedRow.productPictures.map(picture => {
-                return (<img key={picture} src={picture} width="110px" height="50px" style={{ objectFit: "cover", borderRadius: "5px" , cursor:"pointer" }} />)
+                return (<img key={picture} src={picture}  style={{ borderRadius: "5px" , cursor:"pointer" , width: "100px", height: "130px" }} />)
               })
             }
            </div>
           </div>
         )}
       </Modal>
+      </div>
     </>
   );
 };

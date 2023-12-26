@@ -51,21 +51,19 @@ exports.addItemToCart = async (req, res) => {
 
 
 exports.getCartItems = async (req, res) => {
-  // console.log(user._id);
   try {
     if (!req.user) {
       return res.status(401).json({ error: "User not authenticated" });
     }
-
-    
-    const cart = await Cart.findOne({ user: req.user._id }).populate("cartItems.product", "_id name price productPictures").exec();
+    const cart = await Cart.findOne({ user: req.user._id }).populate("cartItems.product", "_id name price").exec();
     if (cart) {
       let cartItems = {};
+      console.log(cart.cartItems);
       cart.cartItems.forEach((item, index) => {
         cartItems[item.product._id.toString()] = {
           _id: item.product._id.toString(),
           name: item.product.name,
-          img: item.product.productPictures.length > 0 ? item.product.productPictures[0].img : null,
+          img: item.img ,
           price: item.product.price,
           qty: item.quantity,
         };

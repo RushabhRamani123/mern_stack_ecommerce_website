@@ -6,8 +6,6 @@ const getCartItems = () => {
     try {
 
       dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
-      console.log("This is the action of cart");
-      console.log(localStorage.getItem('token'));
       const res = await axios.post(`user/getCartItems`,null,{
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
       });
@@ -30,7 +28,6 @@ const getCartItems = () => {
 
 export const addToCart = (product) => {
   return async (dispatch) => {
-    alert("This is the action of cart etijwe ner;n");
     console.log("addToCart::", product);
     const {
       cart: { cartItems },
@@ -43,7 +40,7 @@ export const addToCart = (product) => {
       ...product,
       qty,
     };
-
+  
     if (auth.authenticate) {
       dispatch({ type: cartConstants.ADD_TO_CART_REQUEST });
       const payload = {
@@ -51,10 +48,10 @@ export const addToCart = (product) => {
           {
             product: product._id,
             quantity: qty,
+            img: cartItems[product._id].img,
           },
         ],
       };
-      console.log(payload);
       const res = await axios.post(`/user/cart/addtocart`, payload,
       { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
       console.log(res);
@@ -88,7 +85,7 @@ export const updateCart = () => {
       localStorage.removeItem("cart");
       if (cartItems) {
         const payload = {
-          cartItems: Object.keys(cartItems).map((key, index) => {
+          cartItems: Object.keys(cartItems).map((key) => {
             return {
               quantity: cartItems[key].qty,
               product: cartItems[key]._id,

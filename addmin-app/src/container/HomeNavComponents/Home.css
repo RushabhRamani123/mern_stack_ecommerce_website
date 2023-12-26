@@ -1,0 +1,9 @@
+:where(.css-dev-only-do-not-override-udkq42).ant-layout  {
+    box-sizing: border-box;
+    padding: 0px;
+}
+.dashboard::-webkit-scrollbar{
+    width: 0;
+    display: none;
+
+  }

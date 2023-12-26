@@ -37,8 +37,14 @@ const cartReducer = (state = initState, action) => {
                 cartItems: action.payload.cartItems,
                 updatingCart: true 
             }
-    
+        case cartConstants.REMOVE_CART_ITEM_SUCCESS:
+            return {
+                ...state,
+                cartItems: [],
+                delecatedCart: true
+            }
+        default:
+            return state; 
     }
-    return state;
 }
 export default cartReducer; 

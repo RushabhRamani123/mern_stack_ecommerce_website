@@ -41,7 +41,6 @@ const Category = () => {
   
     return result;
   };
-  
   const updateCheckedAndExpandedCategories = () => {
     const CheckedArray = []; 
     const ExpandedArray = [];
@@ -349,7 +348,8 @@ const Category = () => {
 const handleOkWithLogging = () => { handleOk();};
   return (
     <>
-      <div>
+      <div style={{padding: "24px"}}>
+      <div >
         <div
           style={{
             display: "flex",
@@ -494,6 +494,7 @@ const handleOkWithLogging = () => { handleOk();};
   </Modal>
       {renderUpdateCategoriesModal()}
       {/* <UpdateCategoryModal sendDataToParent={cheker} filler={"Category"} array={checkedArray} /> */}
+     </div>
     </>
   );
 };

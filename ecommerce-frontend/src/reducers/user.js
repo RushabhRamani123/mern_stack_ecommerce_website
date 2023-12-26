@@ -1,4 +1,4 @@
-import { authConstants } from "../actions/constants";
+import { authConstants, cartConstants } from "../actions/constants";
 import { userConstants } from "../actions/constants";
 const initState = {
   error: null,
@@ -13,7 +13,6 @@ const userReducer = (state = initState, action) => {
         loading: true,
       };
     case userConstants.GET_USER_ADDRESS_SUCCESS:
-      console.log("Get User Address Success");
       return  {
         ...state,
         add: action.payload.address,
@@ -42,28 +41,32 @@ const userReducer = (state = initState, action) => {
         loading: false,
         error: action.payload.error,
       };
-    // case userContants.USER_REGISTER_REQUEST:
-    //   state = {
-    //     ...state,
-    //     loading: true,
-    //   };
-    //   break;
       case authConstants.LOGIN_SUCCESS:
-      console.log("Login Success");
       console.log(action.payload);
       return{
         ...state,
         loading: false,
         message: action.payload,
       };
+      case userConstants.GET_USER_ORDER_REQUEST:
+        return{
+          ...state,
+          orderFetching: true,
+        };
+      case userConstants.GET_USER_ORDER_SUCCESS:
+        return{
+          ...state,
+          orders: action.payload.orders,
+          orderFetching: false,
+        };
+      case userConstants.GET_USER_ORDER_FAILURE:
+        return {
+          ...state,
+          error: action.payload.error,
+          orderFetching: false,
+      };
    
-    // case userContants.USER_REGISTER_FAILURE:
-    //   state = {
-    //     ...state,
-    //     loading: false,
-    //     error: action.payload.error,
-    //   };
-      //   break;
+      
       default:
         return state;
   }

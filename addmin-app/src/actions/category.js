@@ -2,14 +2,11 @@ import axios from "../helpers/axios";
 import { categoryConstansts } from "./constants";
 export const getAllCategory = () => {
     return async dispatch => {
-
         dispatch({ type: categoryConstansts.GET_ALL_CATEGORIES_REQUEST });
         const res = await axios.get('category/getCategories');
         console.log(res);
         if (res.status === 200) {
-
             const { categoryList } = res.data;
-
             dispatch({
                 type: categoryConstansts.GET_ALL_CATEGORIES_SUCCESS,
                 payload: { categories: categoryList }

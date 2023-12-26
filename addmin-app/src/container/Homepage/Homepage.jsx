@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Layout, Menu, theme } from 'antd';
-import { GoHome } from 'react-icons/go'
 import {FaProductHunt} from 'react-icons/fa';
-import { SiPowerpages } from 'react-icons/si';
 import { TbCategory } from 'react-icons/tb';
 import { BsFillCartCheckFill } from 'react-icons/bs';
 import { AiOutlinePoweroff } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import { AiFillDashboard } from "react-icons/ai";
 import Categroy from '../Category/Categroy';
 import Product from '../Product/Product';
 import Order from '../Order/Order';
-import Newpage from '../Newpage/Newpage';
+import Home from '../HomeNavComponents/Home';
 const { Header, Content,  Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -23,8 +22,7 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem('Home', '/', <GoHome style={{ fontSize: '20px' }}/>),
-  getItem('Page', '/page', <SiPowerpages style={{ fontSize: '20px' }}/>),
+  getItem('Dashboard', '/', <AiFillDashboard style={{ fontSize: '20px' }}/>),
   getItem('Category', '/category', <TbCategory style={{ fontSize: '20px' }}/>),
   getItem('Products', '/product', <FaProductHunt style={{ fontSize: '20px' }}/>),
   getItem('Orders', '/order', <BsFillCartCheckFill style={{ fontSize: '20px' }} />),
@@ -79,10 +77,9 @@ const App = () => {
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: '0' }}>
-          <div style={{ padding: 24, minHeight: 720, background: colorBgContainer }}>
+          <div style={{ minHeight: 720, background: colorBgContainer }}>
             <Routes>
-              <Route path="/*" element={<div>Toms Profile</div>} />
-              <Route path="/page" element={<div><Newpage /></div>} />
+              <Route path="/*" element={<div><Home /></div>} />
               <Route path="/category" element={<div><Categroy /></div>} />
               <Route path="/product" element={<div><Product /></div>} />
               <Route path="/order" element={<div><Order /></div>} />

@@ -1,0 +1,19 @@
+:where(.css-dev-only-do-not-override-udkq42).ant-table-wrapper .ant-table-pagination.ant-pagination {
+    margin: 16px 0;
+    display: none;
+}
+:where(.css-dev-only-do-not-override-udkq42).ant-table-wrapper .ant-table-thead >tr>th, :where(.css-dev-only-do-not-override-udkq42).ant-table-wrapper .ant-table-thead >tr>td {
+    position: relative;
+    color: rgba(0, 0, 0, 0.88);
+    font-weight: 600;
+    text-align: start;
+    background: #fafafa;
+    border-bottom: 1px solid #f0f0f0;
+    transition: 0.2s ease;
+    background-color: #001529;
+    color: white;
+}
+.anticon svg {
+    display: inline-block;
+    color: white;
+}

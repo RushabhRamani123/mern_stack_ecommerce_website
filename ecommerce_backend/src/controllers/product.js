@@ -26,7 +26,7 @@ exports.createProduct = async(req, res) => {
     });
 }
 exports.getproducts = async(req, res) => {
-  const products = await Product.find({});
+  const products = await Product.find({}).exec();
   res.status(200).json({ products });
 }
 exports.getProductsBySlug = async (req, res) => {
@@ -66,4 +66,20 @@ exports.getProductDetailsById = (req, res) => {
     });
 };
 
+exports.deleteProductById = async (req, res) => {
+  try {
+    const { productId } = req.body.payload;
+    console.log(productId);
+    if (!productId) {
+      return res.status(400).json({ error: "Params required" });
+    }
 
+    const result = await Product.deleteOne({ _id: productId }).exec();
+
+    if (result) {
+      res.status(202).json({ result });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

@@ -7,6 +7,7 @@ import  AddtoCart  from "./components/Addtocart/AddtoCart";
 import {useDispatch} from 'react-redux';
 import { updateCart } from "./actions/cart"
 import Checkout from './components/Checkout/Checkout';
+import Succ from './components/Successfullorder/index'
 function App() {
   const dispatch = useDispatch();
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/product/:productId/productDetails" element={<ProductDetailsPage />} />
         <Route path="/checkout" element={<Checkout/>} />
         <Route path="/:slug" element={<ProductsListPage />} />
+        <Route path="/success" element={<Succ />} />
      </Routes>
    
     </>

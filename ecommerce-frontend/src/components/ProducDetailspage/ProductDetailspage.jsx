@@ -8,6 +8,8 @@ import Navbar from '../Navbar/Navbar';
 import { LuUserCircle } from "react-icons/lu";
 import kl from '../../assets/kl.png';
 import rushabh from '../../assets/rushabh.png';
+import { FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 const ProductDetailspage = () => {
   const dispatch = useDispatch();
   const { productId } = useParams();
@@ -19,6 +21,48 @@ const ProductDetailspage = () => {
     }
     dispatch(getProductDetailsById(payload))
   }, [productId]);
+  const [clickedStars, setClickedStars] = useState([]);
+  const [starChangeCount, setStarChangeCount] = useState(0);
+
+  const handleStarClick = (index) => {
+    // If the star is already clicked, remove it and all stars after it
+    if (clickedStars.includes(index)) {
+      setClickedStars(clickedStars.slice(0, index));
+      setStarChangeCount(starChangeCount - 1);
+    } else {
+      // If the star is not clicked, add it to the clickedStars array
+      setStarChangeCount(starChangeCount + 1);
+      setClickedStars([...clickedStars, index]);
+    }
+
+    // Increment the star change count
+  };
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      // Check if the current star should be a solid or regular star
+      const isSolid = clickedStars.includes(i);
+      const StarIcon = isSolid ? FaStar : FaRegStar;
+
+      stars.push(
+        <StarIcon
+          key={i}
+          style={{
+            color: '#dbdb01',
+            fontSize: '1rem',
+            marginBottom: '1rem',
+            cursor: 'pointer',
+          }}
+          onClick={() => handleStarClick(i)}
+        />
+      );
+    }
+    return stars;
+  };
+
+
+
   console.log(" This is the picture url :"+pictureUrl);
   const productDetails = useSelector((state) => state.product.productDetails || {}); 
   console.log("This is the product details : ");
@@ -136,7 +180,17 @@ const ProductDetailspage = () => {
         {/* Add your Review */}
         <hr  />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h1>Add your Review</h1>
+          <h1 style={{
+          fontSize: '2rem', fontWeight: '500', 
+            marginBottom: '10px',
+          
+          fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+        }}>Add your Review</h1>
+          {/* This is the reviews */}
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            {renderStars()}
+            {starChangeCount}
+            </div>
           <div>
             <textarea
               name=""
@@ -167,7 +221,12 @@ const ProductDetailspage = () => {
           </button>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' ,marginTop:'3rem' }}>
-          <h1>Related Products</h1>
+          <h1 style={{
+          fontSize: '2rem', fontWeight: '500', 
+          marginBottom: '6px',
+          fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'
+        }}>Related Products</h1>
+          <hr style={{ width: '75px', margin: '0rem', borderBottom: '1px solid green', }} />
         </div>
 </div>
    </div>

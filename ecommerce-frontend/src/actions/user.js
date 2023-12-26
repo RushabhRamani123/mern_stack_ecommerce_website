@@ -1,10 +1,9 @@
-import {userConstants} from './constants'
+import {userConstants,cartConstants} from './constants'
 import axios from "../helpers/axios";
 
 export const getAddress = () => {
   return async (dispatch) => {
     try {
-      // alert("get address");
       const res = await axios.post(`/user/getaddress`, null, {
         headers: {
           Authorization: 'Bearer '+ `${localStorage.getItem("token")}`,
@@ -65,7 +64,6 @@ export const addAddress = (payload) => {
 
 export const signup = (user) => {
     console.log(user);
-    alert("signup");
   return async (dispatch) => {
     dispatch({ type: userConstants.USER_REGISTER_REQUEST });
     const res = await axios.post(`/signup`, {
@@ -85,6 +83,33 @@ export const signup = (user) => {
           payload: { error: res.data.error },
         });
       }
+    }
+  };
+};
+export const addOrder = (payload) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`/addOrder`, payload);
+      dispatch({ type: userConstants.ADD_USER_ORDER_REQUEST });
+      if (res.status === 201) {
+        console.log(res);
+        const { order } = res.data;
+        dispatch({
+          type: cartConstants.RESET_CART,
+        });
+        dispatch({
+          type: userConstants.ADD_USER_ORDER_SUCCESS,
+          payload: { order },
+        });
+      } else {
+        const { error } = res.data;
+        dispatch({
+          type: userConstants.ADD_USER_ORDER_FAILURE,
+          payload: { error },
+        });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };

@@ -18,8 +18,8 @@ import {  Badge } from 'antd';
 import { Link } from "react-router-dom";
 const Navbar = () => {
   const category = useSelector((state) => state.category);
-  const cartitems = useSelector((state) => state.cart);
-
+  const cartitems = useSelector((state) => state.cart.cartItems);
+  
   // useEffect(() => {
   //   console.log(cartitems);
   // }, [cartitems]);
@@ -27,6 +27,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllCategory());
+    // dispatch(getC)
   }, []);
   const [clickCategories, setClickCategories] = useState(false);
   const [loginconfirm, setLoginconfirm] = useState(true);
@@ -41,13 +42,20 @@ const Navbar = () => {
   const [passwordsignup, setpasswordsignup] = useState('');
   const user = useSelector((state) => state.user);
   const auth = useSelector((state) => state.auth);
+  const cart = useSelector((state) => state.cart);
+  console.log("This is the cart of the navbar:" + JSON.stringify(cart.cartItems.length));
   console.log("This is the auth of the navbar:" + JSON.stringify(auth));
   console.log("This is the user of the navbar:" + JSON.stringify(user));
   // store the token in the localstorage
   // get the token from the auth and then store it in the localstorage
   // how to itterate through auth 
   auth.token && localStorage.setItem("token", auth.token);
-
+  // const user = useSelector((state) => state.user);
+  useEffect(() => {
+    Object.keys(user).map((key) => {
+      console.log("This is the user:"+JSON.stringify(user[key]));
+    });
+  },[user])
   
   const Signup = () => {
     const user = {
@@ -71,8 +79,8 @@ const Navbar = () => {
      password: password
     }
     dispatch(login(user));
-
-
+    setLoginconfirm(false);
+    setIsModalVisible(false);
   }
   const Margin = {
 
@@ -193,9 +201,7 @@ const Navbar = () => {
             <FcShop style={{ fontSize: "2rem" }} />
             <h3
               onClick={() =>
-              {(window.location.href = "http://localhost:5174/signin");}
-                
-              }
+              {(window.location.href = "http://localhost:5174/signin");}}
               style={{ cursor: "pointer" }}
             >
               Become Seller
@@ -210,29 +216,14 @@ const Navbar = () => {
               Login
             </div>
           ):(
-            <div>
-              <CgProfile
-                style={{
-                  fontSize: "2rem",
-                  paddingTop: "0.75rem",
-                  color: "grey",
-                }}
-              />
-            </div>
+            <div style={{ fontSize: "1rem", color: "green" , marginTop: "1.5rem" }}>Rushabh</div>
           )}
           <div style={{ padding: "0.75rem", display: "flex", gap: "1em" }}>
-            <div
-              // style={{ display: 'none' }}
-            >
-            <Badge count={3} size="small" color="red">
-              <AiOutlineHeart style={{ fontSize: "2rem" }} />
-            </Badge>
-          </div>
             <div
               style={{ '@media (max-width: 780px)': { display: 'none' } }}
             >
             <Link to="/product/addtoCart">
-            <Badge count={3} size="small" color="green">
+            <Badge count={Object.keys(cartitems).length} size="small" color="green">
               <PiShoppingCartBold style={{ fontSize: "2rem" }} />
               </Badge>
               </Link>
@@ -370,26 +361,131 @@ const Navbar = () => {
             </motion.div>
           )}
         </div>
-        <Modal title="Title" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
           {isSingVisible? (<>
-            <h1>Sign in</h1>
-            <input type="email" placeholder="Enter your email" onChange={(e) =>setemail(e.target.value)}></input>
-            <input type="password" placeholder="Enter your password" onChange={(e) =>setpassword(e.target.value)}></input>
-            <button onClick={Login}>Login</button>
-          <p>If you account is not there first create your account : </p>
-          <button onClick={() =>setIsSingupVisible(false)}> Sign up</button></>
-            
-          ):(
-              <>
-                <h1>Sign up</h1>
-                <input type="text" placeholder="Enter your First name" onChange={(e) =>setfirstname(e.target.value)}></input>
-                <input type="text" placeholder="Enter your Lastname" onChange={(e) =>setlastname(e.target.value)}></input>
-                <input type="email" placeholder="Enter your email" onChange={(e) =>setemailsignup(e.target.value)}></input>
-                <input type="password" placeholder="Enter your password" onChange={(e) =>setpasswordsignup(e.target.value)}></input>
-                <button onClick={Signup}>Sign up</button> 
-                <button onClick={() => setIsSingupVisible(true)} >Login</button>
-              </>
-          )
+  <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Sign in</h1>
+  <input
+    type="email"
+    placeholder="Enter your email"
+    style={{ padding: '0.5rem', marginBottom: '1rem', width: '100%' }}
+    onChange={(e) => setemail(e.target.value)}
+  />
+  <input
+    type="password"
+    placeholder="Enter your password"
+    style={{ padding: '0.5rem', marginBottom: '1rem', width: '100%' }}
+    onChange={(e) => setpassword(e.target.value)}
+  />
+  <button
+    style={{
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      padding: '0.5rem',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+    }}
+    onClick={Login}
+  >
+    Login
+  </button>
+  <p style={{ marginTop: '1rem' }}>If you don't have an account, create one:</p>
+  <button
+    style={{
+      backgroundColor: '#008CBA',
+      color: 'white',
+      padding: '0.5rem',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+    }}
+    onClick={() => setIsSingupVisible(false)}
+  >
+    Sign up
+  </button>
+</> ):(
+          <>
+          <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#2C3E50' }}>Sign up</h1>
+          <input
+            type="text"
+            placeholder="Enter your First name"
+            style={{
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              width: '100%',
+              border: '1px solid #3498db',
+              borderRadius: '4px',
+              boxSizing: 'border-box',
+            }}
+            onChange={(e) => setfirstname(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Enter your Lastname"
+            style={{
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              width: '100%',
+              border: '1px solid #3498db',
+              borderRadius: '4px',
+              boxSizing: 'border-box',
+            }}
+            onChange={(e) => setlastname(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Enter your email"
+            style={{
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              width: '100%',
+              border: '1px solid #3498db',
+              borderRadius: '4px',
+              boxSizing: 'border-box',
+            }}
+            onChange={(e) => setemailsignup(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            style={{
+              padding: '0.5rem',
+              marginBottom: '1rem',
+              width: '100%',
+              border: '1px solid #3498db',
+              borderRadius: '4px',
+              boxSizing: 'border-box',
+            }}
+            onChange={(e) => setpasswordsignup(e.target.value)}
+          />
+          <button
+            style={{
+              backgroundColor: '#2ecc71',
+              color: 'white',
+              padding: '0.5rem',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+            onClick={Signup}
+          >
+            Sign up
+          </button>
+          <button
+            style={{
+              backgroundColor: '#3498db',
+              color: 'white',
+              padding: '0.5rem',
+              border: 'none',
+              borderRadius: '4px',
+                    cursor: 'pointer',
+                    marginLeft: '1rem'
+            }}
+            onClick={() => setIsSingupVisible(true)}
+          >
+            Login
+          </button>
+        </>)
             
          }
           </Modal>
