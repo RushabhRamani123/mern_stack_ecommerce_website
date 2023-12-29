@@ -40,11 +40,15 @@ exports.addOrder = async (req, res) => {
   exports.getOrders = async (req, res) => {
     try {
       const orders = await Order.find({ user: req.user._id })
-        .select("_id paymentStatus paymentType orderStatus items")
+        .select("_id paymentStatus paymentType orderStatus totalAmount items")
         .populate("items.productId", "_id name productPictures")
         .exec();
-  
-      res.status(200).json({ orders });
+    
+      if (orders) {
+        res.status(200).json({ orders });
+        localStorage.setItem("orders", orders);
+      }
+      
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

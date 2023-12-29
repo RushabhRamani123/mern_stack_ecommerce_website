@@ -1,4 +1,4 @@
-import Navbar from '../Navbar/Navbar'
+import Navbar1 from '../Navbar/Navbar1'
 import { useEffect} from 'react'
 import { useDispatch , useSelector} from 'react-redux'
 import { Link, useParams } from 'react-router-dom';
@@ -12,10 +12,10 @@ import Slider from 'rc-slider';
 import { useState } from 'react';
 import 'rc-slider/assets/index.css';
 import './p.css'; 
+import Footer from '../Footer/Footer';
+import ScrollToTopButton from '../Herosection/ScrollToTopButton';
 // import ReactSlider  from 'rc-slider';
 function ProductsListPage() {
-  let MaxPrice;
-  let MinPrice;
   const { slug } = useParams();
   const [sortType, setSortType] = useState('');
   console.log(slug);
@@ -27,8 +27,11 @@ function ProductsListPage() {
     console.log(product);
     const [priceRange, setPriceRange] = useState([0, 490000]);    
   const [productsPic, setProductsPic] = useState([]);
+  const [data , setData] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(500000);
+  const [MaxPrice, setMaxPrice1] = useState(500000);
+  const [MinPrice, setMinPrice1] = useState(0);
   useEffect(() => {
     // ... (other useEffect logic)
 
@@ -42,10 +45,10 @@ function ProductsListPage() {
         description: product.products.products[i].description
       });
     }
-     MaxPrice = Math.max(...productsPic.map(product => product.price));
-     MinPrice = Math.min(...productsPic.map(product => product.price));
+     setMaxPrice1(Math.max(...productsPic.map(product => product.price)));
+     setMinPrice1(Math.min(...productsPic.map(product => product.price)));
     setPriceRange([MinPrice, MaxPrice]);
-    // Set the productsPic state with the data
+    setData(productsData);
     setProductsPic(productsData);
   }, [product.products.products]);
   
@@ -68,14 +71,12 @@ function ProductsListPage() {
       setProductsPic(filteredProducts);
       return;
     }
-    else if (sortType === 'Reset') {
-      setProductsPic(productsPic);
-    }
+    
   };
-
+  const Reset = () => {setProductsPic(data);setPriceRange([MinPrice, MaxPrice]);}
   return (
     <div>
-      <Navbar/>
+      <Navbar1 data={["Samsung"]} />
       
       <div style={{ display: 'flex', flexDirection: 'row' , position: 'relative'}}>
       <div style={{ marginLeft: '5rem', marginTop: '1rem',   display: 'flex', flexDirection: 'column' , position: 'relative', gap: '1rem'}}>
@@ -137,7 +138,7 @@ function ProductsListPage() {
             }} >FILTERS</p>
             <div style={{ marginLeft: '1rem', marginTop: '1rem' , marginRight: '1rem'}}>
               <hr></hr>
-              <div>
+              <div >
                 <Slider
                   defaultValue={[MinPrice,MaxPrice]}
                   min={0}
@@ -145,7 +146,7 @@ function ProductsListPage() {
                   range
                   value={priceRange}
                   onChange={newRange => { setSortType('filter'); setPriceRange(newRange); setMinPrice(priceRange[0]) ; setMaxPrice(priceRange[1]); }} />
-                {priceRange[0]} - {priceRange[1]}
+               <div style={{ display: 'flex', flexDirection: 'row' , marginTop: '1rem' }}><strong style={{ marginRight: '5px' }}>Range:</strong> {priceRange[0]} - {priceRange[1]}</div>
                 <div>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <p style={{ marginBottom: '0px' , fontWeight: 'bold' }}>Price :</p>
@@ -182,11 +183,6 @@ function ProductsListPage() {
                       width:'18px'}} />
                       <p>Release Date</p>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <input type="checkbox" style={{
-                      width:'18px'}} />
-                      <p>Avg Ratings</p>
-                    </div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <h4 style={{ marginBottom: '2px' }}>Items Condition :</h4>
@@ -206,7 +202,7 @@ function ProductsListPage() {
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: '#108312',
+                    backgroundColor: '#088178',
                     borderRadius: '10px',
                     border: 'none',
                     width: '30%',
@@ -218,8 +214,8 @@ function ProductsListPage() {
                   <p style={{ color: 'white', marginLeft: '0.2rem' ,fontSize: '1rem'  }}>Filter</p>
                     </button>
                     <button
-                      onClick={() =>{setSortType('Reset')}}
-                      style={{ padding: '0.5rem', marginLeft: '1rem', color: 'white', borderRadius: '10px', backgroundColor: '#108312', border: 'none' }}>Reset</button>
+                      onClick={Reset}
+                      style={{ padding: '0.5rem', marginLeft: '1rem', color: 'white', borderRadius: '10px', backgroundColor: '#088178', border: 'none' }}>Reset</button>
                  </div>
                </div>
                 
@@ -229,7 +225,7 @@ function ProductsListPage() {
           </div>
           <div> 
           <div className='products' style={{
-            marginLeft: '2rem', marginTop: '1rem', position: 'relative', 'overflowY': 'scroll', height: '130vh',
+            marginLeft: '2rem', marginTop: '1rem',  overflowY: 'scroll', height: '130vh',
           }}>
             
         {productsPic.map((productPic) => {
@@ -303,8 +299,10 @@ function ProductsListPage() {
         })}
           </div>
           </div>
-          </div>
-          </div>
+      </div>
+      <Footer />
+      <ScrollToTopButton />
+      </div>
   )
 }
 

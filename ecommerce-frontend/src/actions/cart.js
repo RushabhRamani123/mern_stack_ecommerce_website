@@ -1,6 +1,6 @@
 import axios from "../helpers/axios";
 import { cartConstants } from "./constants";
-import store from "../store";
+import {store} from "../store";
 const getCartItems = () => {
   return async (dispatch) => {
     try {
@@ -9,10 +9,8 @@ const getCartItems = () => {
       const res = await axios.post(`user/getCartItems`,null,{
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
       });
-      console.log(res);
       if (res.status === 200) {
         const { cartItems } = res.data;
-        console.log({ getCartItems: cartItems });
         if (cartItems) {
           dispatch({
             type: cartConstants.ADD_TO_CART_SUCCESS,
@@ -28,7 +26,6 @@ const getCartItems = () => {
 
 export const addToCart = (product) => {
   return async (dispatch) => {
-    console.log("addToCart::", product);
     const {
       cart: { cartItems },
       auth,
@@ -54,16 +51,12 @@ export const addToCart = (product) => {
       };
       const res = await axios.post(`/user/cart/addtocart`, payload,
       { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
-      console.log(res);
       if (res.status === 201) {
         dispatch(getCartItems());
       }
     } else {
       localStorage.setItem("cart", JSON.stringify(cartItems));
     }
-
-    console.log("addToCart::", cartItems);
-
     dispatch({
       type: cartConstants.ADD_TO_CART_SUCCESS,
       payload: { cartItems },
@@ -78,9 +71,6 @@ export const updateCart = () => {
     let cartItems = localStorage.getItem("cart")
       ? JSON.parse(localStorage.getItem("cart"))
       : null;
-
-    console.log("upppppppppp");
-
     if (auth.authenticate) {
       localStorage.removeItem("cart");
       if (cartItems) {
@@ -93,7 +83,7 @@ export const updateCart = () => {
           }),
         };
         if (Object.keys(cartItems).length > 0) {
-          const res = await axios.post(`/user/cart/addtocart`, payload);
+          const res = await axios.post(`/user/cart/addtocart`,payload);
           if (res.status === 201) {
             dispatch(getCartItems());
           }
@@ -112,4 +102,38 @@ export const updateCart = () => {
   };
 };
 
+export const removeCartItem = (payload) => {
+   
+  return async (dispatch) => {
+    console.log("This is the payload", payload);
+    try {
+      const res = await axios.post(`/user/cart/removeItem`, payload, {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+      });
+      if (res.status === 200) {
+        dispatch(getCartItems());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+export const clearCart = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(`/user/cart/clearCart`,null, {
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+      });
+      if (res.status === 200) {
+        dispatch(getCartItems());
+      } else {
+        const { error } = res.data;
+        dispatch({ type: cartConstants.CLEAR_CART_FAILURE, payload: { error } });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+}
+ 
 export { getCartItems };

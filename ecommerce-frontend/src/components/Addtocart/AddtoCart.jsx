@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Navbar from "../Navbar/Navbar";
-import { addToCart, getCartItems } from "../../actions/cart";
+import Navbar1 from "../Navbar/Navbar1";
+import {addToCart,getCartItems,removeCartItem,clearCart} from "../../actions/cart";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
@@ -9,25 +9,30 @@ import "./AddtoCart.css";
 import { FaWallet } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { PiHouseSimpleFill } from "react-icons/pi";
-
+import Footer from '../Footer/Footer'
 const AddtoCart = () => {
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
-  const [clearCart,setClearCart] = useState(false);
+  const [productId, setProductId] = useState('');
+  // const [clearCart, setClearCart] = useState(false);
+  const [clear, setClear] = useState(false);
   const [cartitems, setCartitems] = useState([]);
   const [flag, setFlag] = useState(true);
   const dispatch = useDispatch();
   const [Total, setTotal] = useState(0);
-  useEffect(() => {
-    if (clearCart) {
-      // Clear the cart logic goes here (dispatch an action, etc.)
-      // For example, dispatch({ type: 'CLEAR_CART' });
-      dispatch({ type: 'REMOVE_CART_ITEM_SUCCESS' });
 
-      // Reset the clearCart state to trigger a re-render
-      setClearCart(false);
-    }
-  }, [clearCart, dispatch]);
+   
+    useEffect(() => {
+      if (clear) {
+        dispatch(clearCart());
+      }
+    },[clear])
+  
+ 
+  useEffect(() => {   
+    if (productId)
+      dispatch(removeCartItem({ productId: productId }));
+  }, [productId]);
   useEffect(() => {
     cart.cartItems && setCartitems(cart.cartItems);
     if (
@@ -42,13 +47,13 @@ const AddtoCart = () => {
       setTotal(total);
       setFlag(false);
     }
-  }, [cartitems]);
+  }, [cart]);
   useEffect(() => {
     dispatch(getCartItems());
   }, [auth.authenticate]);
   return (
     <div style={{ overflow: "hidden" }}>
-      <Navbar />
+        <Navbar1 data={["Shop","Cart"]} />
       <div
         style={{ display: "flex", flexDirection: "row", position: "relative" }}
       >
@@ -163,7 +168,7 @@ const AddtoCart = () => {
                   <td colSpan="2">
                     <MdDelete
                       style={{ color: "red", fontSize: "20px" }}
-                      onClick={() => {}}
+                      onClick={()=>{setProductId(cartitems[key]._id);}}
                     />
                   </td>
                 </tr>
@@ -181,7 +186,7 @@ const AddtoCart = () => {
               cursor: "pointer",
               position: "relative",
             }}
-            onClick={()=>setClearCart(true)}
+            onClick={()=>setClear(true)}
           >
             X clear cart
           </p>
@@ -295,11 +300,9 @@ const AddtoCart = () => {
                 <div
                   style={{ marginTop: "20px" }}
                   onClick={() => {
-                    alert(JSON.stringify(cartitems));
+                    
                     Object.keys(cartitems).map((key) => {
                       const { _id, name, price, img, qty } = cartitems[key];
-                      console.log(key, _id, name, price, img, qty);
-                      alert(key + name + price + img + qty);
                       dispatch(addToCart({ _id, name, price, img, qty }));
                     });
                   }}
@@ -368,6 +371,7 @@ const AddtoCart = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

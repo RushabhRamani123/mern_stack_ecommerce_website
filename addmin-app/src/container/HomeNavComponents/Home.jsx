@@ -56,7 +56,6 @@ const Home = () => {
         borderWidth: 1,
       }],
   };
-  
   const options = {
     scales: {
       x: {
@@ -69,17 +68,6 @@ const Home = () => {
       },
     },
   };
-
-
-
-
-
-
-
-
-
-
-
   const chartRef = useRef(null);
   const myChartRef = useRef(null);
 
@@ -105,7 +93,7 @@ const Home = () => {
               label: 'Sales',
                 above: 'rgb(255, 0, 0)',   // Area will be red above the origin
                 below: 'rgb(0, 0, 255)',   // Area will be blue below the origin
-              data: [10, 120, 30, 40, 100, 60, 70, 80, 90, 50, 110, 20],
+              data: [80, 120, 110, 60, 50, 20, 70, 10, 30, 90, 100, 40],
               
             },
           ],
@@ -141,7 +129,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="dashboard" style={{ backgroundColor: '#F8F9FA', height: '100vh', width: '100%' , padding: '0px'}}>
+    <div className="dashboard" style={{ backgroundColor: '#F8F9FA', height: '100vh', width: '100%' , padding: '0px', overflow: 'hidden'}}>
       <div>
       <h1 style={{ paddingTop: '2rem' , paddingLeft: '2rem' , paddingRight: '2rem',margin:'0px' , fontSize: '30px' , fontStyle: 'Roboto, Helvetica, Arial, sans-serif' }}>Dashboard</h1>
       <p style={{ padding: '2rem' ,paddingTop: '5px' ,  fontStyle: 'Roboto, Helvetica, Arial, sans-serif' }}>Whole data about your business here</p>  
@@ -209,7 +197,7 @@ const Home = () => {
         </div>
         <div style={{ width: '100%', padding: '2rem' , backgroundColor: 'white', borderRadius: '10px' }}>
         <h2>My Bar Chart</h2>
-      <Bar data={data} options={options} />
+      <Bar data={data} style={{ width: '45%', height: '50%' }} options={options} />
 </div>
      </div>
 

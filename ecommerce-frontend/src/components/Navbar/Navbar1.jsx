@@ -20,9 +20,11 @@ import React from 'react';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 // import { Link } from 'react-router-dom';
 import { Dropdown, Space } from 'antd';
-const Navbar= () => {
+const Navbar1 = (props) => {
+  const { data } = props;
   const category = useSelector((state) => state.category);
   const cartitems = useSelector((state) => state.cart.cartItems);
+  // alert(props.data);
   
   // useEffect(() => {
   //   console.log(cartitems);
@@ -61,7 +63,6 @@ const Navbar= () => {
     });
   },[user])
   const items = [
-   
     {
       key: '2',
       label: (
@@ -71,7 +72,6 @@ const Navbar= () => {
       ),
       // icon: <SmileOutlined />,
     },
-   
     {
       key: '4',
       danger: true,
@@ -100,6 +100,7 @@ const Navbar= () => {
      password: password
     }
     dispatch(login(user));
+ 
     if (auth.authenticate) {
       setLoginconfirm(false);
     }
@@ -197,7 +198,21 @@ const Navbar= () => {
         >
           <div style={{ paddingTop: "0.25rem" }}>
             <img src={logo} alt="logo" style={{ height: "2em" }} />
-          </div>
+                  </div>
+        <div style={{ display: "flex", gap: "2rem", cursor: "pointer" }}>
+              <motion.h3
+              whileHover={{ color: "#088178" }}
+              >Home</motion.h3>
+              <motion.h3
+              whileHover={{color:"#088178"}}
+              >About</motion.h3>
+              <motion.h3
+              whileHover={{color:"#088178"}}
+              >Shop</motion.h3>
+              <motion.h3
+              whileHover={{color:"#088178"}}
+              >Contact</motion.h3>
+            </div>
           <div style={{ position: "relative" }}>
             <BiSearchAlt
               onClick={handleSearch}
@@ -216,7 +231,7 @@ const Navbar= () => {
               ref={inputRef}
               placeholder="Search the products..."
               style={{
-                width: "40em",
+                width: "20em",
                 padding: "1rem 3rem",
                 borderRadius: "0.5rem",
                 border: "1px solid #e8ebe9",
@@ -225,17 +240,6 @@ const Navbar= () => {
               }}
             />
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <FcShop style={{ fontSize: "2rem" }} />
-            <h3
-              onClick={() =>
-              {(window.location.href = "http://localhost:5174/signin");}}
-              style={{ cursor: "pointer" }}
-            >
-              Become Seller
-            </h3>
-          </div>
-
           {loginconfirm ? (
             <div
               onClick={() =>setIsModalVisible(true) }
@@ -267,147 +271,10 @@ const Navbar= () => {
               </Badge>
               </Link>
            </div>
-          </div>
-        </div>
-        <div
-          className="category-section lg:hidden"
-          style={{ padding: "0rem 2rem" }}
-        >
-          <div style={{ width: "100%", border: "0.5px solid #e8ebe9" }}></div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div style={{ display: "flex", alignContent: "center" }}>
-              <AiOutlineAppstore
-                
-                onClick={() => {
-                  setClickCategories(!clickCategories);
-                  setFlag(false);
-                }}
-                style={{
-                  fontSize: "1.5rem", color: "grey", cursor: "pointer", }}
-              />
-              <h3 style={{ fontSize: "1.5rem", margin: "0px" , cursor: "pointer" , color:"#088178"}}>
-                Browse Categories
-              </h3>
-            </div>
-            <div style={{ display: "flex", gap: "2rem", cursor: "pointer" }}>
-              <motion.h3
-              whileHover={{ color: "#088178" }}
-              >Home</motion.h3>
-              <motion.h3
-              whileHover={{color:"#088178"}}
-              >About</motion.h3>
-              <motion.h3
-              whileHover={{color:"#088178"}}
-              >Shop</motion.h3>
-              <motion.h3
-              whileHover={{color:"#088178"}}
-              >Contact</motion.h3>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <TfiHeadphoneAlt style={{ fontSize: "1.5rem", color: "grey" }} />
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-              >
-                <h3>Support</h3>
-                <h3 style={{ color: "#088178" }}>1900-888</h3>
+                  </div>
+                  
+  
               </div>
-            </div>
-          </div>
-          <div style={{ width: "100%", border: "0.5px solid #e8ebe9",zIndex: "10000",}}
-></div>
-          {clickCategories && (
-            <motion.div style={{ position: "relative", zIndex: "100000" }}>
-              <motion.div
-                style={{
-                  height: "50vh",
-                  width: "15%",
-                  borderLeft: "1px solid #e8ebe9",
-                  borderRight: "1px solid #e8ebe9",
-                  borderBottom: "1px solid #e8ebe9",
-                  backgroundColor: "white",
-                  zIndex: "10000",
-                  position: "absolute",
-                }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column ",
-                      gap: "10px",
-                      padding: "1.5rem",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                        gap: "5px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {renderCategory()}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-              {flag == true && (
-                <motion.div
-                  style={{
-                    height: "50vh",
-                    width: "55%",
-                    borderLeft: "1px solid #e8ebe9",
-                    borderRight: "1px solid #e8ebe9",
-                    borderBottom: "1px solid #e8ebe9",
-                    backgroundColor: "white",
-                    zIndex: "10000",
-                    marginLeft: "15%",
-                    position: "absolute",
-                  }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column ",
-                        gap: "2rem",
-                        padding: "1.5rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "flex-start",
-                          gap: "2rem",
-                          cursor: "pointer",
-                        }}
-                      >
-                        {renderChildCategories(
-                          category.categories[index].children
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </motion.div>
-          )}
-        </div>
         <Modal  visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
           {isSingVisible? (<>
   <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Sign in</h1>
@@ -537,8 +404,26 @@ const Navbar= () => {
          }
           </Modal>
       </div>
+      <div key={index}
+        style={{
+          border: "1px solid #e8ebe9", width: "100%",
+          backgroundColor: "#F7F8F9", display: "flex", flexDirection: "row",
+          alignItems: "end",
+          
+          marginBottom: "1.5rem",
+        }}>
+            <p style={{ marginTop: "1.5rem", marginLeft: "5rem", color: "#088178" }}>Home</p>
+      {data && data.map((item,index) => (
+        <div key={index} style={{ display: "flex", flexDirection: "row", marginLeft: "1rem" }}>
+          <p style={{ color: "grey" }}>{">"}</p>
+          <p style={{ marginLeft: "1rem" , color: "grey" }}>{item}</p>
+       </div>
+        
+      ))
+      }
+          </div>
     </>
   );
 };
 
-export default Navbar;
+export default Navbar1;

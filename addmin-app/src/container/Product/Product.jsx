@@ -200,12 +200,10 @@ const Product = () => {
             color: 'white',
           }}
           onClick={() => {
-            alert(`Are you sure you want to delete this product with ID: ${record}`);
             setIsModalVisible(false);
             const payload = {
               productId: record
             };
-            alert(JSON.stringify(payload));
             dispatch(deleteProductById(payload));
           }}
         >

@@ -25,7 +25,7 @@ export const getCustomerOrders = () => {
 export const updateOrder = (payload) => {
   return async (dispatch) => {
     console.log(payload);
-    alert(JSON.stringify(payload));
+    // alert(JSON.stringify(payload));
     dispatch({ type: orderConstants.UPDATE_CUSTOMER_ORDER_REQUEST });
     try {
       const res = await axios.post("/order/update", payload, {

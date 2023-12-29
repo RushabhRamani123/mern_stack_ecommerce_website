@@ -7,10 +7,13 @@ import  AddtoCart  from "./components/Addtocart/AddtoCart";
 import {useDispatch} from 'react-redux';
 import { updateCart } from "./actions/cart"
 import Checkout from './components/Checkout/Checkout';
-import Succ from './components/Successfullorder/index'
+import Succ from './components/Successfullorder/index'; 
+import {useSelector} from 'react-redux';
+import OrderList from './components/Order/OrderList';
 function App() {
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.user);
+  
   useEffect(() => {
     dispatch(updateCart());
   }, []);
@@ -23,6 +26,7 @@ function App() {
         <Route path="/checkout" element={<Checkout/>} />
         <Route path="/:slug" element={<ProductsListPage />} />
         <Route path="/success" element={<Succ />} />
+        <Route path="/order" element={<OrderList />} />
      </Routes>
    
     </>

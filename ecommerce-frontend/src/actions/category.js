@@ -5,7 +5,6 @@ export const getAllCategory = () => {
 
         dispatch({ type: categoryConstansts.GET_ALL_CATEGORIES_REQUEST });
         const res = await axios.get('category/getCategories');
-        console.log(res);
         if (res.status === 200) {
 
             const { categoryList } = res.data;
@@ -33,7 +32,6 @@ export const addCategory = (form) => {
                 }
            });
             if (res.status === 200) {
-                console.log(res);
                 dispatch({
                     type: categoryConstansts.ADD_NEW_CATEGORY_SUCCESS,
                     payload: { category: res.data}

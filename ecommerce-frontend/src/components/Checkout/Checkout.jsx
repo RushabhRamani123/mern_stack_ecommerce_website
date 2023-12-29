@@ -1,4 +1,4 @@
-import Navbar from "../Navbar/Navbar";
+import Navbar1 from "../Navbar/Navbar1";
 import { getAddress, addAddress } from "../../actions/user";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -9,14 +9,14 @@ import { getCartItems } from "../../actions/cart";
 import { MdOutlinePayment } from "react-icons/md";
 import { addOrder } from "../../actions/order";
 import { Link } from "react-router-dom";
-
+import Footer from '../Footer/Footer'
 const Checkout = () => {
   const [isLoginVisible, setLoginVisible] = useState(false);
   const [isCouponVisible, setCouponVisible] = useState(false);
-  const [isAddressVisible, setAddressVisible] = useState(false);
+  const [isAddressVisible, setAddressVisible] = useState(true);
   const [isEditVisible, setEditVisible] = useState(false);
   const [isNewAddressVisible, setNewAddressVisible] = useState(false);
-  const [isLoginPending, setLoginPending] = useState(true);
+  const [isLoginPending, setLoginPending] = useState(false);
   const [isSubmit, setSubmit] = useState(false);
   const [isOrderVisible, setOrderVisible] = useState(false);
   const [flag, setFlag] = useState(true);
@@ -106,7 +106,7 @@ const Checkout = () => {
 
   return (
     <div style={{ overflow: "hidden" }}>
-      <Navbar />
+       <Navbar1 data={["Shop","Cart","Checkout"]} />
       {/* This is the checkout section consisting of login and signup section As well cupon */}
       <div
         style={{
@@ -709,6 +709,7 @@ const Checkout = () => {
                     <MdOutlinePayment fontSize={"1rem"} /> UPI
                   </p>
                 </div>
+                <div onClick={() => localStorage.removeItem("cart")}>
                 <Link
                   to='/success'
                   style={{
@@ -720,12 +721,14 @@ const Checkout = () => {
                     alignItems: "left",
                     width: "100px",
                     cursor: "pointer",
+                    textDecoration: "none",
                   }}
 
-                  onClick={() => submitOrder()}
+                  onClick={() =>submitOrder()}
                 >
                   Place Order
                 </Link>
+                </div>
               </div>
             </div>
           ) : (
@@ -833,6 +836,7 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
