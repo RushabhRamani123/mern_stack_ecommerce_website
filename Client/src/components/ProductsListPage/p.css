@@ -1,0 +1,10 @@
+  .products::-webkit-scrollbar{
+    width: 0;
+    display: none;
+    }
+  #speechify-listening-nudge, #speechify-feedback-form {
+    --speechify-primary-color: #009879;
+    --font-family: ABCDiatype;
+    --transitions: none;
+}
+

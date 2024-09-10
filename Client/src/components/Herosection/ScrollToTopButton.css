@@ -1,0 +1,23 @@
+#scrollToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color:#088178; /* Change to your desired button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  
+  #scrollToTopBtn.show {
+    display: block;
+    opacity: 1;
+  }
+  
+  #scrollToTopBtn.hide {
+    opacity: 0;
+  }
+  
